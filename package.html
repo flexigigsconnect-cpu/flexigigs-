@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Flexigigs - Premium Packages">
+    <title>Flexigigs | Premium Packages</title>
+    
+    <link rel="icon" href="https://i.postimg.cc/Vv19gBFx/IMG-20250924-155058.jpg" type="image/jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        /* =========================================
+           1. CSS Variables & Theme Configuration
+           ========================================= */
+        :root {
+            --font-primary: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            --header-height: 88px;
+            --container-max: 1280px;
+            --container-padding: 0 1.5rem;
+            
+            /* Futuristic Radii */
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-full: 9999px;
+            
+            --transition-fast: 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+            --transition-smooth: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+
+            /* Futuristic Orange Palette */
+            --accent-color: #ff6b00; 
+            --accent-gradient: linear-gradient(135deg, #ff8a00, #ff3d00);
+            
+            /* Futuristic Glowing Shadows */
+            --shadow-glow-orange: 0 10px 30px -5px rgba(255, 107, 0, 0.3), 0 0 15px rgba(255, 107, 0, 0.1);
+            --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.04);
+            --shadow-header: 0 4px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Futuristic Light Theme */
+        [data-theme="light"] {
+            --bg-color: #fcfcfd;
+            --surface-color: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --header-bg: rgba(255, 255, 255, 0.65);
+            --header-border: rgba(255, 107, 0, 0.1);
+            --btn-hover-bg: rgba(255, 107, 0, 0.05);
+            --overlay-bg: rgba(15, 23, 42, 0.4);
+            
+            --hero-badge-bg: rgba(255, 107, 0, 0.08);
+            --hero-badge-text: #e05e00;
+            --input-bg: #ffffff;
+            --input-border: rgba(255, 107, 0, 0.2);
+        }
+
+        /* Futuristic Dark Theme */
+        [data-theme="dark"] {
+            --bg-color: #0d0704;
+            --surface-color: #1a0f08;
+            --text-primary: #ffffff;
+            --text-secondary: #a89f98;
+            --header-bg: rgba(13, 7, 4, 0.65);
+            --header-border: rgba(255, 107, 0, 0.15);
+            --btn-hover-bg: rgba(255, 107, 0, 0.1);
+            --overlay-bg: rgba(0, 0, 0, 0.8);
+            
+            --hero-badge-bg: rgba(255, 107, 0, 0.15);
+            --hero-badge-text: #ff8a00;
+            --input-bg: #1a0f08;
+            --input-border: rgba(255, 107, 0, 0.25);
+        }
+
+        /* =========================================
+           2. Base Reset & Futuristic Background
+           ========================================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: var(--font-primary); 
+            background-color: var(--bg-color); 
+            background-image: 
+                radial-gradient(circle at 15% 10%, rgba(255, 107, 0, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 85% 90%, rgba(255, 107, 0, 0.04) 0%, transparent 40%);
+            background-attachment: fixed;
+            color: var(--text-primary); 
+            line-height: 1.6; 
+            transition: background-color var(--transition-smooth), color var(--transition-smooth); 
+            -webkit-font-smoothing: antialiased; 
+            overflow-x: hidden; 
+            padding-bottom: 40px; 
+        }
+        
+        [data-theme="dark"] body {
+            background-image: 
+                radial-gradient(circle at 15% 10%, rgba(255, 107, 0, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 85% 90%, rgba(255, 107, 0, 0.08) 0%, transparent 40%);
+        }
+
+        html { scroll-behavior: smooth; }
+        body.no-scroll { overflow: hidden; }
+        .container { max-width: var(--container-max); margin: 0 auto; padding: var(--container-padding); }
+
+        /* =========================================
+           3. HEADER (Without Menu Drawer)
+           ========================================= */
+        .site-header { 
+            position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height); 
+            background: var(--header-bg); 
+            backdrop-filter: blur(40px) saturate(250%); 
+            -webkit-backdrop-filter: blur(40px) saturate(250%); 
+            border-bottom: 1px solid var(--header-border); 
+            z-index: 1000; 
+            transition: all var(--transition-smooth); 
+        }
+        .site-header.scrolled { 
+            box-shadow: var(--shadow-header); 
+            background: var(--surface-color); 
+        }
+        [data-theme="dark"] .site-header.scrolled {
+            background: rgba(26, 15, 8, 0.95);
+        }
+        
+        .header-inner { display: flex; align-items: center; justify-content: space-between; height: 100%; }
+        
+        .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--text-primary); transition: opacity var(--transition-fast), transform var(--transition-fast); }
+        .brand:hover { opacity: 0.9; transform: scale(1.03); }
+        .brand-logo-wrapper { width: 48px; height: 48px; border-radius: var(--radius-md); overflow: hidden; display: flex; align-items: center; justify-content: center; background: var(--surface-color); border: 1px solid var(--header-border); box-shadow: 0 8px 16px rgba(255,107,0,0.08); }
+        .brand-logo { width: 100%; height: 100%; object-fit: cover; }
+        .brand-name { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.04em; }
+
+        .header-controls { display: flex; align-items: center; gap: 8px; }
+        .icon-btn { background: transparent; border: none; color: var(--text-primary); width: 48px; height: 48px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.6rem; transition: background-color var(--transition-fast), transform var(--transition-fast); }
+        .icon-btn:hover { background-color: var(--btn-hover-bg); transform: scale(1.05); color: var(--accent-color); }
+        .icon-btn:active { transform: scale(0.92); }
+        .icon-light, .icon-dark { display: none; }
+        [data-theme="dark"] .icon-light { display: block; }
+        [data-theme="light"] .icon-dark { display: block; }
+
+        /* General Buttons */
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0.9rem 2rem; border-radius: var(--radius-full); font-size: 1rem; font-weight: 700; text-decoration: none; cursor: pointer; border: none; transition: all var(--transition-smooth); }
+        .btn-primary { background: var(--accent-gradient); background-size: 200% auto; color: #ffffff; box-shadow: var(--shadow-glow-orange); }
+        .btn-primary:hover { background-position: right center; transform: translateY(-4px) scale(1.02); box-shadow: 0 20px 40px -5px rgba(255, 107, 0, 0.5); }
+        .btn-primary:active { transform: scale(0.96); }
+
+        /* =========================================
+           4. Futuristic Packages Section
+           ========================================= */
+        main { padding-top: calc(var(--header-height) + 2rem); }   
+        .packages-section { margin-bottom: 5rem; }
+        .section-header { margin-bottom: 2.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;}
+        .section-header h2 { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; display: flex; align-items: center; gap: 12px; }
+        .section-header h2::before { content: ''; display: block; width: 12px; height: 12px; border-radius: 50%; background: var(--accent-color); box-shadow: 0 0 15px var(--accent-color); }
+        
+        .filter-badge-status { display: none; background: var(--hero-badge-bg); color: var(--hero-badge-text); font-size: 0.85rem; font-weight: 700; padding: 8px 16px; border-radius: var(--radius-full); border: 1px solid var(--input-border); align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(255, 107, 0, 0.05); }
+        .filter-badge-status button { border: none; background: transparent; color: inherit; cursor: pointer; display: flex; align-items: center; font-size: 1.1rem; transition: transform var(--transition-fast); }
+        .filter-badge-status button:hover { transform: scale(1.2) rotate(90deg); }
+        
+        /* NEW: Controls Bar CSS */
+        .packages-controls { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+        .search-box { flex: 1; min-width: 250px; position: relative; }
+        .search-box input { width: 100%; padding-left: 2.8rem; }
+        .search-box i { position: absolute; left: 1.2rem; top: 50%; transform: translateY(-50%); font-size: 1.2rem; color: var(--text-secondary); }
+        .sort-select { width: auto; min-width: 200px; cursor: pointer; }
+        .pkg-card.search-hidden { display: none !important; }
+
+        .packages-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+        @media (min-width: 768px) { .packages-grid { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); } }
+        
+        .spinner { animation: spin 1s linear infinite; margin-bottom: 10px; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* UNIQUE PACKAGE BORDER STYLES */
+        .pkg-card { 
+            background: var(--surface-color); 
+            border-radius: var(--radius-lg); 
+            overflow: visible; 
+            display: flex; 
+            flex-direction: column; 
+            position: relative;
+            z-index: 1;
+            transition: all var(--transition-smooth);
+            /* Assign a default width to the border */
+            border-width: 2px;
+            border-style: solid;
+        }
+
+        /* Dynamic cyclic colors for unique borders on each card */
+        .pkg-card:nth-child(6n+1) { border-color: #ff6b00; box-shadow: 0 8px 25px rgba(255, 107, 0, 0.1); }
+        .pkg-card:nth-child(6n+2) { border-color: #3b82f6; box-shadow: 0 8px 25px rgba(59, 130, 246, 0.1); }
+        .pkg-card:nth-child(6n+3) { border-color: #10b981; box-shadow: 0 8px 25px rgba(16, 185, 129, 0.1); }
+        .pkg-card:nth-child(6n+4) { border-color: #8b5cf6; box-shadow: 0 8px 25px rgba(139, 92, 246, 0.1); }
+        .pkg-card:nth-child(6n+5) { border-color: #ec4899; box-shadow: 0 8px 25px rgba(236, 72, 153, 0.1); }
+        .pkg-card:nth-child(6n+6) { border-color: #06b6d4; box-shadow: 0 8px 25px rgba(6, 182, 212, 0.1); }
+        
+        .pkg-card-inner {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: calc(var(--radius-lg) - 2px);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        [data-theme="dark"] .pkg-card-inner { background: rgba(26, 15, 8, 0.8); }
+        
+        .pkg-card:hover { transform: translateY(-10px) scale(1.02); }
+        .pkg-card.hidden { display: none !important; }
+        
+        .pkg-image-wrapper { width: 100%; aspect-ratio: 16/9; background: var(--btn-hover-bg); position: relative; overflow: hidden; border-bottom: 1px solid var(--input-border); }
+        .pkg-main-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+        .pkg-card:hover .pkg-main-img { transform: scale(1.08); }
+        .pkg-badge-trending { position: absolute; top: 1rem; left: 1rem; background: var(--accent-gradient); color: white; padding: 6px 14px; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; gap: 6px; box-shadow: 0 6px 15px rgba(255, 107, 0, 0.4); z-index: 2; letter-spacing: 1px; text-transform: uppercase; }
+        
+        .pkg-thumbnails { position: absolute; bottom: 0.75rem; right: 0.75rem; display: flex; gap: 8px; z-index: 2; }
+        .pkg-thumb { width: 44px; height: 44px; border-radius: 10px; border: 2px solid transparent; box-shadow: 0 4px 12px rgba(0,0,0,0.3); background: var(--surface-color); overflow: hidden; cursor: pointer; opacity: 0.7; transition: all var(--transition-fast); }
+        .pkg-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .pkg-thumb:hover, .pkg-thumb.active { opacity: 1; border-color: var(--accent-color); transform: scale(1.15); box-shadow: 0 8px 16px rgba(255,107,0,0.4); }
+        
+        .pkg-content { padding: 1.75rem; display: flex; flex-direction: column; flex-grow: 1; }
+        .pkg-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem; line-height: 1.2; letter-spacing: -0.02em; }
+        .pkg-price-box { margin-bottom: 1.5rem; background: var(--hero-badge-bg); padding: 1rem 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--input-border); }
+        .pkg-price { font-size: 1.6rem; font-weight: 800; color: var(--accent-color); display: flex; align-items: baseline; gap: 6px; letter-spacing: -0.02em; }
+        .pkg-price span { font-size: 0.9rem; font-weight: 600; color: var(--text-secondary); opacity: 0.8; }
+        .pkg-price-note { font-size: 0.75rem; color: var(--text-secondary); margin-top: 6px; line-height: 1.4; font-weight: 500; }
+        
+        .pkg-includes-title { font-size: 0.85rem; font-weight: 700; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; }
+        .pkg-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 2rem; }
+        .pkg-tag { background: var(--surface-color); border: 1px solid var(--input-border); color: var(--text-primary); font-size: 0.8rem; font-weight: 600; padding: 6px 14px; border-radius: var(--radius-full); transition: all var(--transition-fast); cursor: default; }
+        .pkg-tag:hover { border-color: var(--accent-color); color: var(--accent-color); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(255,107,0,0.1); }
+        
+        .pkg-footer { margin-top: auto; }
+        .btn-enquiry { width: 100%; justify-content: center; padding: 1.1rem; font-size: 1.05rem; }
+        .btn-enquiry:disabled { background: var(--btn-hover-bg); color: var(--text-secondary); cursor: not-allowed; box-shadow: none; border: 1px solid var(--input-border); transform: none; }
+
+        /* =========================================
+           5. Modal Form
+           ========================================= */
+        .enquiry-modal-overlay { position: fixed; inset: 0; background: var(--overlay-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity var(--transition-smooth); padding: 1rem; }
+        .enquiry-modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .enquiry-modal { background: var(--surface-color); width: 100%; max-width: 500px; border-radius: var(--radius-lg); box-shadow: var(--shadow-glow-orange); transform: translateY(40px) scale(0.95); opacity: 0; transition: all var(--transition-smooth); display: flex; flex-direction: column; max-height: 90vh; border: 1px solid var(--accent-color); }
+        .enquiry-modal-overlay.active .enquiry-modal { transform: translateY(0) scale(1); opacity: 1; }
+        
+        .modal-header { padding: 1.75rem; border-bottom: 1px solid var(--input-border); display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h3 { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; color: var(--accent-color); }
+        .modal-close { background: var(--btn-hover-bg); border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-primary); font-size: 1.4rem; transition: all var(--transition-fast); }
+        .modal-close:hover { transform: scale(1.1) rotate(90deg); background: var(--accent-color); color: white; box-shadow: 0 4px 10px rgba(255,107,0,0.3); }
+        
+        .modal-body { padding: 1.75rem; overflow-y: auto; flex-grow: 1; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; color: var(--text-secondary); letter-spacing: 0.5px;}
+        .form-control { width: 100%; padding: 1rem 1.25rem; border-radius: 14px; border: 2px solid var(--input-border); background: var(--input-bg); color: var(--text-primary); font-family: inherit; font-size: 1rem; font-weight: 600; outline: none; transition: border-color var(--transition-fast), box-shadow var(--transition-fast); }
+        .form-control:focus { border-color: var(--accent-color); box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.15); background: var(--surface-color); }
+        textarea.form-control { resize: vertical; min-height: 120px; }
+        
+        .modal-footer { padding: 1.75rem; border-top: 1px solid var(--input-border); }
+
+        /* Scroll Reveal */
+        .fade-in-up { opacity: 0; transform: translateY(40px); transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1), transform 1s cubic-bezier(0.22, 1, 0.36, 1); }
+        .fade-in-up.is-visible { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            :root { --header-height: 76px; --container-padding: 0 1.25rem; }
+            .brand-logo-wrapper { width: 44px; height: 44px; }
+            .brand-name { font-size: 1.25rem; }
+            .icon-btn { width: 40px; height: 40px; font-size: 1.4rem; }
+            .btn { width: 100%; }
+            .section-header h2 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header" id="header">
+        <div class="container header-inner">
+            <a href="/" class="brand" aria-label="Flexigigs Home">
+                <div class="brand-logo-wrapper">
+                    <img src="https://i.postimg.cc/Vv19gBFx/IMG-20250924-155058.jpg" alt="Flexigigs Logo" class="brand-logo">
+                </div>
+                <span class="brand-name">Flexigigs</span>
+            </a>
+
+            <div class="header-controls">
+                <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme">
+                    <i class="ph ph-sun icon-light"></i>
+                    <i class="ph ph-moon icon-dark"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="packages-section" class="packages-section container fade-in-up">
+            <div class="section-header">
+                <h2>Premium Packages</h2>
+                <div class="filter-badge-status" id="filter-status-badge">
+                    <span>Showing: Trending</span>
+                    <button id="clear-filter-btn" aria-label="Clear filter"><i class="ph-bold ph-x-circle"></i></button>
+                </div>
+            </div>
+
+            <div class="packages-controls">
+                <div class="search-box">
+                    <input type="text" id="search-input" class="form-control" placeholder="Search packages, features, tags...">
+                    <i class="ph ph-magnifying-glass"></i>
+                </div>
+                <select id="sort-select" class="form-control sort-select">
+                    <option value="default">Default Order</option>
+                    <option value="low-to-high">Price: Low to High</option>
+                    <option value="high-to-low">Price: High to Low</option>
+                </select>
+            </div>
+            
+            <div id="packages-loader" style="text-align: center; padding: 2rem; color: var(--accent-color);">
+                <i class="ph ph-spinner-gap spinner" style="font-size: 2.5rem;"></i>
+                <p style="margin-top: 10px; font-weight: 700; color: var(--text-secondary);">Loading exclusive packages...</p>
+            </div>
+
+            <div class="packages-grid" id="packages-grid">
+                </div>
+        </section>
+    </main>
+
+    <div class="enquiry-modal-overlay" id="enquiry-modal">
+        <div class="enquiry-modal">
+            <div class="modal-header">
+                <h3>Package Enquiry</h3>
+                <button class="modal-close" id="close-modal"><i class="ph-bold ph-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="whatsapp-enquiry-form">
+                    <input type="hidden" id="enquiry-package-name" value="">
+                    
+                    <div class="form-group">
+                        <label for="eq-name">Full Name *</label>
+                        <input type="text" id="eq-name" class="form-control" placeholder="John Doe" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="eq-company">Company Name</label>
+                        <input type="text" id="eq-company" class="form-control" placeholder="e.g. Innovate Tech">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="eq-phone">Phone Number *</label>
+                        <input type="tel" id="eq-phone" class="form-control" placeholder="+91 xxxxxxxxxx" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="eq-email">Email ID *</label>
+                        <input type="email" id="eq-email" class="form-control" placeholder="john@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eq-address">Address</label>
+                        <input type="text" id="eq-address" class="form-control" placeholder="City, State">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="eq-desc">Describe the Business & Requirements *</label>
+                        <textarea id="eq-desc" class="form-control" placeholder="Tell us briefly about what you do and what you expect from this package..." required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="submit-enquiry" style="width: 100%;">
+                    <i class="ph-fill ph-whatsapp-logo" style="font-size: 1.2rem;"></i> Send Enquiry
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Theme Management ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const htmlElement = document.documentElement;
+            const savedTheme = localStorage.getItem('theme');
+            const header = document.getElementById('header');
+            
+            if (savedTheme) htmlElement.setAttribute('data-theme', savedTheme);
+            else htmlElement.setAttribute('data-theme', 'light');
+
+            themeToggle.addEventListener('click', () => {
+                const newTheme = htmlElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                htmlElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
+            });
+
+            // --- Google Drive Link Converter ---
+            // Reverted strictly back to the code you provided originally
+            function convertToHostingLink(url) {
+                if (!url || typeof url !== 'string') return null;
+                const idMatch = url.match(/(?:\/file\/d\/|\/open\?id=|id=)([-_a-zA-Z0-9]{25,})/);
+                if (idMatch && idMatch[1]) return `https://lh3.googleusercontent.com/d/${idMatch[1]}`;
+                return null;
+            }
+
+            // --- Dynamic Packages Logic ---
+            const PKG_SHEET_URL = `https://docs.google.com/spreadsheets/d/1fb4Db32XVD6UmAxgAqm_rRuuM3nmy5arIakRZKf9MY0/gviz/tq?tqx=out:json`;
+            const pkgGrid = document.getElementById('packages-grid');
+            const pkgLoader = document.getElementById('packages-loader');
+            const filterStatusBadge = document.getElementById('filter-status-badge');
+            const clearFilterBtn = document.getElementById('clear-filter-btn');
+
+            // Modal Elements
+            const modalOverlay = document.getElementById('enquiry-modal');
+            const closeBtn = document.getElementById('close-modal');
+            const submitBtn = document.getElementById('submit-enquiry');
+            const hiddenPkgName = document.getElementById('enquiry-package-name');
+
+            let activeFilter = 'all'; 
+
+            function applyPackageFilter(filterType) {
+                activeFilter = filterType;
+                const cards = document.querySelectorAll('.pkg-card');
+                
+                if (filterType === 'trending') {
+                    cards.forEach(card => {
+                        if (card.getAttribute('data-trending') === '1') {
+                            card.classList.remove('hidden');
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                    });
+                    filterStatusBadge.style.display = 'inline-flex';
+                } else {
+                    cards.forEach(card => card.classList.remove('hidden'));
+                    filterStatusBadge.style.display = 'none';
+                }
+            }
+
+            clearFilterBtn.addEventListener('click', () => {
+                applyPackageFilter('all');
+            });
+
+            // Image Thumbnail Interaction
+            pkgGrid.addEventListener('click', (e) => {
+                const thumbDiv = e.target.closest('.pkg-thumb');
+                if (thumbDiv) {
+                    const card = thumbDiv.closest('.pkg-card');
+                    const mainImg = card.querySelector('.pkg-main-img');
+                    const clickedImg = thumbDiv.querySelector('img');
+                    
+                    mainImg.src = clickedImg.src;
+                    
+                    card.querySelectorAll('.pkg-thumb').forEach(t => t.classList.remove('active'));
+                    thumbDiv.classList.add('active');
+                }
+            });
+
+            async function fetchPackages() {
+                try {
+                    const response = await fetch(PKG_SHEET_URL);
+                    const textData = await response.text();
+                    const jsonString = textData.substring(textData.indexOf('{'), textData.lastIndexOf('}') + 1);
+                    const jsonData = JSON.parse(jsonString);
+                    const rows = jsonData.table.rows;
+
+                    pkgLoader.style.display = 'none';
+                    
+                    if (rows.length === 0) {
+                        pkgGrid.innerHTML = `<p style="text-align: center; color: var(--text-secondary); grid-column: 1/-1;">No packages available at the moment.</p>`;
+                        return;
+                    }
+
+                    rows.forEach((row, index) => {
+                        if (!row || !row.c) return;
+
+                        const img1Raw = row.c[1] ? row.c[1].v : null;
+                        const img2Raw = row.c[2] ? row.c[2].v : null;
+                        const img3Raw = row.c[3] ? row.c[3].v : null;
+                        const price = row.c[4] ? row.c[4].v : 'Custom';
+                        const pkgName = row.c[5] ? row.c[5].v : 'Premium Package';
+                        const includesRaw = row.c[6] ? row.c[6].v : '';
+                        const stock = row.c[7] ? row.c[7].v : null; 
+                        const trending = row.c[8] ? row.c[8].v : null; 
+
+                        const img1 = convertToHostingLink(img1Raw) || 'https://via.placeholder.com/600x400?text=No+Image';
+                        const img2 = convertToHostingLink(img2Raw);
+                        const img3 = convertToHostingLink(img3Raw);
+
+                        const includeArray = includesRaw.split(';').map(item => item.trim()).filter(item => item.length > 0);
+                        let tagsHtml = '';
+                        includeArray.forEach(item => {
+                            tagsHtml += `<span class="pkg-tag">${item}</span>`;
+                        });
+
+                        const isAvailable = (stock == 1);
+                        const isTrending = (trending == 1);
+
+                        let thumbsHtml = '';
+                        if (img2 || img3) {
+                            thumbsHtml += `<div class="pkg-thumbnails">`;
+                            thumbsHtml += `<div class="pkg-thumb active"><img src="${img1}" alt="Thumbnail" referrerpolicy="no-referrer"></div>`;
+                            if (img2) thumbsHtml += `<div class="pkg-thumb"><img src="${img2}" alt="Thumbnail" referrerpolicy="no-referrer"></div>`;
+                            if (img3) thumbsHtml += `<div class="pkg-thumb"><img src="${img3}" alt="Thumbnail" referrerpolicy="no-referrer"></div>`;
+                            thumbsHtml += `</div>`;
+                        }
+
+                        const card = document.createElement('div');
+                        card.className = 'pkg-card';
+                        card.setAttribute('data-trending', trending || '2');
+                        
+                        card.innerHTML = `
+                            <div class="pkg-card-inner">
+                                <div class="pkg-image-wrapper">
+                                    ${isTrending ? `<div class="pkg-badge-trending"><i class="ph-bold ph-fire"></i> Trending</div>` : ''}
+                                    <img src="${img1}" class="pkg-main-img" alt="${pkgName}" referrerpolicy="no-referrer">
+                                    ${thumbsHtml}
+                                </div>
+                                <div class="pkg-content">
+                                    <h3 class="pkg-title">${pkgName}</h3>
+                                    <div class="pkg-price-box">
+                                        <div class="pkg-price"><span>Starting at</span> ₹ ${price}</div>
+                                        <div class="pkg-price-note">* Standard price. May vary based on specific project requirements.</div>
+                                    </div>
+                                    <div class="pkg-includes-title">Package Includes:</div>
+                                    <div class="pkg-tags">
+                                        ${tagsHtml}
+                                    </div>
+                                    <div class="pkg-footer">
+                                        <button class="btn btn-primary btn-enquiry" data-pkgname="${pkgName}" ${!isAvailable ? 'disabled' : ''}>
+                                            ${isAvailable ? `Enquiry Now <i class="ph-bold ph-paper-plane-right"></i>` : `Not Available`}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        pkgGrid.appendChild(card);
+                    });
+
+                    document.querySelectorAll('.btn-enquiry').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const name = e.currentTarget.getAttribute('data-pkgname');
+                            openEnquiryModal(name);
+                        });
+                    });
+
+                } catch (error) {
+                    console.error("Error loading packages:", error);
+                    pkgLoader.innerHTML = `<p style="color: #ef4444;">Failed to load packages. Please check connection.</p>`;
+                }
+            }
+
+            // Modal Handlers
+            function openEnquiryModal(packageName) {
+                hiddenPkgName.value = packageName;
+                document.getElementById('whatsapp-enquiry-form').reset();
+                modalOverlay.classList.add('active');
+                document.body.classList.add('no-scroll');
+            }
+
+            function closeEnquiryModal() {
+                modalOverlay.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+            }
+
+            closeBtn.addEventListener('click', closeEnquiryModal);
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) closeEnquiryModal();
+            });
+
+            submitBtn.addEventListener('click', () => {
+                const form = document.getElementById('whatsapp-enquiry-form');
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+
+                const pkg = hiddenPkgName.value;
+                const name = document.getElementById('eq-name').value;
+                const company = document.getElementById('eq-company').value || 'N/A';
+                const phone = document.getElementById('eq-phone').value;
+                const email = document.getElementById('eq-email').value;
+                const address = document.getElementById('eq-address').value || 'N/A';
+                const desc = document.getElementById('eq-desc').value;
+
+                const message = `*NEW PACKAGE ENQUIRY* 🚀\n\n*Package:* ${pkg}\n*Name:* ${name}\n*Company:* ${company}\n*Phone:* ${phone}\n*Email:* ${email}\n*Address:* ${address}\n\n*Business Description & Requirements:*\n${desc}`;
+
+                const encodedMsg = encodeURIComponent(message);
+                const waUrl = `https://wa.me/917450985883?text=${encodedMsg}`;
+                
+                window.open(waUrl, '_blank');
+                closeEnquiryModal();
+            });
+
+            fetchPackages();
+
+            // --- Intersection Observer for Scroll Animations ---
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, { 
+                threshold: 0.1, 
+                rootMargin: "0px 0px -50px 0px" 
+            });
+
+            document.querySelectorAll('.fade-in-up').forEach(el => {
+                revealObserver.observe(el);
+            });
+
+            // ==============================================================
+            // --- NEW: Dynamic Search & Sort Logic Added Below Existing ---
+            // ==============================================================
+            const searchInput = document.getElementById('search-input');
+            const sortSelect = document.getElementById('sort-select');
+
+            // 1. Live Search Logic
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                const cards = document.querySelectorAll('.pkg-card');
+                
+                cards.forEach(card => {
+                    const title = card.querySelector('.pkg-title').textContent.toLowerCase();
+                    const tags = card.querySelector('.pkg-tags').textContent.toLowerCase();
+                    
+                    if (title.includes(query) || tags.includes(query)) {
+                        card.classList.remove('search-hidden');
+                    } else {
+                        card.classList.add('search-hidden');
+                    }
+                });
+            });
+
+            // 2. Dynamic Sorting Logic
+            sortSelect.addEventListener('change', (e) => {
+                const sortType = e.target.value;
+                const grid = document.getElementById('packages-grid');
+                const cards = Array.from(grid.querySelectorAll('.pkg-card'));
+
+                cards.forEach((card, index) => {
+                    // Tag original order to reset back to default
+                    if (!card.hasAttribute('data-original-index')) {
+                        card.setAttribute('data-original-index', index);
+                    }
+                    
+                    // Parse number values from the DOM to avoid modifying the fetch loop
+                    const priceText = card.querySelector('.pkg-price').textContent;
+                    const priceMatch = priceText.match(/₹\s*([0-9.,]+)/);
+                    let priceVal = 0;
+                    
+                    if (priceMatch) {
+                        priceVal = parseFloat(priceMatch[1].replace(/,/g, ''));
+                    } else if (priceText.toLowerCase().includes('custom')) {
+                        // Place "Custom" pricing at the end of sorting list
+                        priceVal = 9999999; 
+                    }
+                    card.setAttribute('data-price', priceVal);
+                });
+
+                // Apply the sort
+                cards.sort((a, b) => {
+                    if (sortType === 'low-to-high') {
+                        return parseFloat(a.getAttribute('data-price')) - parseFloat(b.getAttribute('data-price'));
+                    } else if (sortType === 'high-to-low') {
+                        return parseFloat(b.getAttribute('data-price')) - parseFloat(a.getAttribute('data-price'));
+                    } else {
+                        return parseInt(a.getAttribute('data-original-index')) - parseInt(b.getAttribute('data-original-index'));
+                    }
+                });
+
+                // Re-append to grid in the new order
+                cards.forEach(card => grid.appendChild(card));
+            });
+
+        });
+    </script>
+</body>
+</html>

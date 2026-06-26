@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Flexigigs | Start Your Brand</title>
+    
+    <link rel="icon" href="https://i.postimg.cc/Vv19gBFx/IMG-20250924-155058.jpg" type="image/jpeg">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        /* =========================================
+           1. CSS Variables & Theme Configuration
+           ========================================= */
+        :root {
+            --font-primary: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            --header-height: 88px;
+            --container-max: 800px;
+            --container-padding: 0 1.5rem;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-full: 9999px;
+            
+            --transition-fast: 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+            --transition-smooth: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+            --accent-color: #ff6b00; 
+            --accent-gradient: linear-gradient(135deg, #ff8a00, #e52e71);
+            
+            --shadow-header: 0 4px 40px rgba(0, 0, 0, 0.03);
+            --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Light Theme Variables */
+        [data-theme="light"] {
+            --bg-color: #fcfcfd;
+            --surface-color: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --header-bg: rgba(255, 255, 255, 0.55);
+            --header-border: rgba(15, 23, 42, 0.08);
+            --btn-hover-bg: rgba(15, 23, 42, 0.04);
+            --overlay-bg: rgba(15, 23, 42, 0.4);
+            --input-bg: #f8fafc;
+            --input-border: #e2e8f0;
+            --step-bg: #ffffff;
+            --arrow-color: #cbd5e1;
+            --progress-bg: #e2e8f0;
+        }
+
+        /* Dark Theme Variables */
+        [data-theme="dark"] {
+            --bg-color: #050810;
+            --surface-color: #0f1422;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --header-bg: rgba(5, 8, 16, 0.55);
+            --header-border: rgba(255, 255, 255, 0.08);
+            --btn-hover-bg: rgba(255, 255, 255, 0.08);
+            --overlay-bg: rgba(0, 0, 0, 0.7);
+            --input-bg: #1e293b;
+            --input-border: #334155;
+            --step-bg: #0f1422;
+            --arrow-color: #334155;
+            --progress-bg: #334155;
+        }
+
+        /* =========================================
+           2. Base Reset & Ambient Background
+           ========================================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: var(--font-primary); 
+            background-color: var(--bg-color); 
+            background-image: radial-gradient(circle at 50% 0%, rgba(255, 107, 0, 0.03) 0%, transparent 60%);
+            background-attachment: fixed;
+            color: var(--text-primary); 
+            line-height: 1.6; 
+            transition: background-color var(--transition-smooth), color var(--transition-smooth); 
+            -webkit-font-smoothing: antialiased; 
+            overflow-x: hidden; 
+            padding-top: calc(var(--header-height) + 2rem);
+            padding-bottom: 4rem;
+        }
+        
+        [data-theme="dark"] body {
+            background-image: radial-gradient(circle at 50% 0%, rgba(255, 107, 0, 0.08) 0%, transparent 60%);
+        }
+
+        body.no-scroll { overflow: hidden; }
+        .container { max-width: var(--container-max); margin: 0 auto; padding: var(--container-padding); }
+
+        /* =========================================
+           3. Premium Glassmorphism Header
+           ========================================= */
+        .site-header { 
+            position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height); 
+            background: var(--header-bg); 
+            backdrop-filter: blur(40px) saturate(250%); 
+            -webkit-backdrop-filter: blur(40px) saturate(250%); 
+            border-bottom: 1px solid var(--header-border); 
+            z-index: 1000; 
+            transition: all var(--transition-smooth); 
+        }
+        .site-header.scrolled { 
+            box-shadow: var(--shadow-header); 
+            background: var(--surface-color); 
+        }
+        [data-theme="dark"] .site-header.scrolled { background: rgba(15, 20, 34, 0.95); }
+        
+        .header-inner { display: flex; align-items: center; justify-content: space-between; height: 100%; max-width: 1280px; margin: 0 auto; padding: var(--container-padding); }
+        
+        .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--text-primary); transition: opacity var(--transition-fast), transform var(--transition-fast); }
+        .brand:hover { opacity: 0.9; transform: scale(1.03); }
+        .brand-logo-wrapper { width: 48px; height: 48px; border-radius: var(--radius-md); overflow: hidden; display: flex; align-items: center; justify-content: center; background: var(--surface-color); border: 1px solid var(--header-border); box-shadow: 0 8px 16px rgba(0,0,0,0.04); }
+        .brand-logo { width: 100%; height: 100%; object-fit: cover; }
+        .brand-name { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.04em; }
+
+        .header-controls { display: flex; align-items: center; }
+        .icon-btn { background: transparent; border: none; color: var(--text-primary); width: 48px; height: 48px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.6rem; transition: background-color var(--transition-fast), transform var(--transition-fast); }
+        .icon-btn:hover { background-color: var(--btn-hover-bg); transform: scale(1.05); }
+        .icon-btn:active { transform: scale(0.92); }
+        .icon-light, .icon-dark { display: none; }
+        [data-theme="dark"] .icon-light { display: block; }
+        [data-theme="light"] .icon-dark { display: block; }
+
+        /* =========================================
+           4. Process Section
+           ========================================= */
+        .process-header { text-align: center; margin-bottom: 3rem; }
+        .process-header h1 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.2; margin-bottom: 1rem; letter-spacing: -0.03em; }
+        .text-gradient { background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .process-header p { font-size: 1.1rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto; }
+
+        .process-flow { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+        
+        .step-card { 
+            background: var(--step-bg); 
+            border: 1px solid var(--header-border); 
+            border-radius: var(--radius-lg); 
+            padding: 1.5rem; 
+            width: 100%; 
+            max-width: 500px; 
+            text-align: center; 
+            box-shadow: var(--shadow-card);
+            transition: transform var(--transition-fast), border-color var(--transition-fast);
+            position: relative;
+        }
+        .step-card:hover { transform: translateY(-5px); border-color: var(--accent-color); }
+        
+        .step-number { 
+            position: absolute; 
+            top: -12px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            background: var(--accent-gradient); 
+            color: white; 
+            width: 28px; 
+            height: 28px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 0.8rem; 
+            font-weight: 800; 
+            border: 3px solid var(--bg-color);
+        }
+
+        .step-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; margin-top: 0.5rem; }
+        .step-card p { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; }
+
+        .process-arrow { 
+            font-size: 2rem; 
+            color: var(--arrow-color); 
+            margin: 0.5rem 0; 
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .action-area { text-align: center; margin-top: 3rem; }
+        .btn-primary { 
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            padding: 1.2rem 2.5rem; border-radius: var(--radius-full); font-size: 1.1rem; font-weight: 700; 
+            border: none; cursor: pointer; color: #ffffff;
+            background: var(--accent-gradient); background-size: 200% auto;
+            box-shadow: 0 10px 25px -5px rgba(255, 107, 0, 0.4); 
+            transition: all var(--transition-smooth);
+        }
+        .btn-primary:hover { background-position: right center; transform: translateY(-4px) scale(1.02); box-shadow: 0 15px 30px -5px rgba(255, 107, 0, 0.5); }
+        .btn-primary:active { transform: scale(0.96); }
+
+        /* =========================================
+           5. Modern Multi-Step Modal Styles
+           ========================================= */
+        .modal-overlay { position: fixed; inset: 0; background: var(--overlay-bg); backdrop-filter: blur(10px); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity var(--transition-smooth); padding: 1rem; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        
+        .custom-modal { background: var(--surface-color); width: 100%; max-width: 650px; border-radius: var(--radius-lg); box-shadow: 0 30px 60px rgba(0,0,0,0.3); transform: translateY(40px) scale(0.95); opacity: 0; transition: all var(--transition-smooth); display: flex; flex-direction: column; max-height: 90vh; border: 1px solid var(--header-border); overflow: hidden;}
+        .modal-overlay.active .custom-modal { transform: translateY(0) scale(1); opacity: 1; }
+        
+        .modal-header { padding: 1.5rem 1.5rem 1rem 1.5rem; border-bottom: 1px solid var(--header-border); display: flex; flex-direction: column; gap: 1rem; }
+        .modal-header-top { display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h3 { font-size: 1.3rem; font-weight: 800; }
+        .modal-close { background: var(--btn-hover-bg); border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-primary); font-size: 1.2rem; transition: all var(--transition-fast); }
+        .modal-close:hover { transform: scale(1.1) rotate(90deg); background: var(--header-border); }
+        
+        /* Progress Bar */
+        .progress-container { width: 100%; height: 6px; background: var(--progress-bg); border-radius: var(--radius-full); overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--accent-gradient); width: 0%; transition: width 0.4s ease; }
+
+        .modal-body { position: relative; flex-grow: 1; overflow: hidden; background: var(--bg-color); }
+        
+        /* Form Slider - 500% for 5 slides */
+        .form-slider { display: flex; width: 500%; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; }
+        /* Each slide takes 20% of the 500% container */
+        .form-slide { width: 20%; padding: 1.5rem; overflow-y: auto; max-height: calc(90vh - 160px); }
+        
+        .slide-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--accent-color); display: flex; align-items: center; gap: 8px;}
+        
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+        .form-group { margin-bottom: 0.5rem; transition: all var(--transition-fast); }
+        .form-group.full-width { grid-column: 1 / -1; }
+        
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; color: var(--text-secondary); }
+        .form-control { width: 100%; padding: 0.9rem 1rem; border-radius: 12px; border: 2px solid var(--input-border); background: var(--input-bg); color: var(--text-primary); font-family: inherit; font-size: 0.95rem; outline: none; transition: all var(--transition-fast); }
+        .form-control:focus { border-color: var(--accent-color); background: var(--surface-color); box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.1); }
+        select.form-control { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; }
+        textarea.form-control { resize: vertical; min-height: 100px; }
+        
+        /* Modern Multi-select Checkboxes */
+        .checkbox-grid { display: flex; flex-direction: column; gap: 10px; }
+        .custom-checkbox-wrapper { position: relative; width: 100%; }
+        .custom-checkbox-wrapper input[type="checkbox"] { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
+        .custom-checkbox-label { display: flex; align-items: center; padding: 14px 20px; background: var(--input-bg); border: 2px solid var(--input-border); border-radius: var(--radius-md); font-size: 0.95rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: all var(--transition-fast); user-select: none; width: 100%; }
+        .custom-checkbox-wrapper input[type="checkbox"]:checked ~ .custom-checkbox-label { background: rgba(255, 107, 0, 0.1); border-color: var(--accent-color); color: var(--accent-color); box-shadow: inset 0 2px 5px rgba(255, 107, 0, 0.05); }
+        .custom-checkbox-wrapper input[type="checkbox"]:focus ~ .custom-checkbox-label { box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.1); }
+
+        /* Custom Continuous Range Slider */
+        .range-slider-wrapper { padding: 10px 0; margin-bottom: 1rem; }
+        .budget-display { font-size: 1.6rem; font-weight: 800; color: var(--accent-color); margin-bottom: 1.5rem; text-align: center; letter-spacing: -0.02em; }
+        
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+        input[type=range]::-webkit-slider-thumb { 
+            -webkit-appearance: none; 
+            height: 28px; 
+            width: 28px; 
+            border-radius: 50%; 
+            background: var(--accent-gradient); 
+            cursor: pointer; 
+            margin-top: -11px; 
+            box-shadow: 0 4px 12px rgba(255,107,0,0.5); 
+            border: 4px solid var(--surface-color); 
+            transition: transform var(--transition-fast);
+        }
+        input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+        input[type=range]::-webkit-slider-thumb:active { transform: scale(0.95); }
+        
+        input[type=range]::-webkit-slider-runnable-track { 
+            width: 100%; 
+            height: 6px; 
+            cursor: pointer; 
+            background: var(--input-border); 
+            border-radius: 4px; 
+        }
+        input[type=range]:focus { outline: none; }
+        
+        .modal-footer { padding: 1.25rem 1.5rem; border-top: 1px solid var(--header-border); display: flex; justify-content: space-between; gap: 1rem; background: var(--surface-color); }
+        
+        .btn-nav { padding: 0.9rem 1.5rem; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all var(--transition-fast); border: none; display: flex; align-items: center; gap: 8px;}
+        .btn-prev { background: var(--input-bg); color: var(--text-primary); border: 1px solid var(--input-border); }
+        .btn-prev:hover { background: var(--btn-hover-bg); }
+        .btn-next, .btn-submit { background: var(--accent-gradient); color: white; flex-grow: 1; justify-content: center; box-shadow: 0 4px 15px rgba(255, 107, 0, 0.3); }
+        .btn-next:hover, .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255, 107, 0, 0.4); }
+
+        .error-message { color: #ef4444; font-size: 0.8rem; font-weight: 600; margin-top: 4px; display: none; }
+        .has-error .form-control { border-color: #ef4444; }
+        .has-error .error-message { display: block; }
+
+        /* Dynamic Category Group */
+        #other-cat-group { display: none; opacity: 0; transform: translateY(-10px); transition: all 0.4s ease; }
+        #other-cat-group.active { display: block; opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 600px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .form-slide { max-height: calc(90vh - 180px); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header" id="header">
+        <div class="header-inner">
+            <a href="#" class="brand">
+                <div class="brand-logo-wrapper">
+                    <img src="https://i.postimg.cc/Vv19gBFx/IMG-20250924-155058.jpg" alt="Flexigigs Logo" class="brand-logo">
+                </div>
+                <span class="brand-name">Flexigigs</span>
+            </a>
+
+            <div class="header-controls">
+                <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme">
+                    <i class="ph ph-sun icon-light"></i>
+                    <i class="ph ph-moon icon-dark"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Body -->
+    <main class="container">
+        <div class="process-header">
+            <h1>How to start a <span class="text-gradient">Brand</span></h1>
+            <p>Follow our proven 7-step ecosystem map to build, scale, and thrive from day one.</p>
+        </div>
+
+        <div class="process-flow">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Define Your Niche</h3>
+                <p>Describe your core idea, identify your target audience, and set the vision for your business properly.</p>
+            </div>
+            <i class="ph-bold ph-arrow-down process-arrow"></i>
+
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Executive Outreach</h3>
+                <p>Our professional executives will reach out to you directly to discuss your specific requirements.</p>
+            </div>
+            <i class="ph-bold ph-arrow-down process-arrow"></i>
+
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Brand Creation</h3>
+                <p>We lay the foundational groundwork to give your business a unique, memorable, and strong identity.</p>
+            </div>
+            <i class="ph-bold ph-arrow-down process-arrow"></i>
+
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <h3>Logo Design</h3>
+                <p>Our expert designers will craft a premium logo that visually represents your brand's essence perfectly.</p>
+            </div>
+            <i class="ph-bold ph-arrow-down process-arrow"></i>
+
+            <div class="step-card">
+                <div class="step-number">5</div>
+                <h3>Marketing Setup</h3>
+                <p>We configure your initial marketing channels and strategies to ensure you reach the right audience.</p>
+            </div>
+            <i class="ph-bold ph-arrow-down process-arrow"></i>
+
+            <div class="step-card">
+                <div class="step-number">6</div>
+                <h3>Website Build</h3>
+                <p>A high-end, responsive digital storefront is developed to scale your business operations online.</p>
+            </div>
+            <i class="ph-bold ph-arrow-down process-arrow"></i>
+
+            <div class="step-card">
+                <div class="step-number">7</div>
+                <h3>Packaging & Systems</h3>
+                <p>Finalize designs for product packaging and integrate any other operational systems your business requires.</p>
+            </div>
+        </div>
+
+        <div class="action-area">
+            <button class="btn-primary" id="start-btn">
+                Let's Get Started <i class="ph-bold ph-rocket-launch"></i>
+            </button>
+        </div>
+    </main>
+
+    <!-- Professional 5-Step Survey Modal -->
+    <div class="modal-overlay" id="form-modal">
+        <div class="custom-modal">
+            <div class="modal-header">
+                <div class="modal-header-top">
+                    <h3>Start Your Brand Journey</h3>
+                    <button class="modal-close" id="close-modal"><i class="ph-bold ph-x"></i></button>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+            </div>
+            
+            <div class="modal-body">
+                <form id="survey-form">
+                    <div class="form-slider" id="form-slider">
+                        
+                        <!-- Slide 1: Contact Info -->
+                        <div class="form-slide">
+                            <h4 class="slide-title"><i class="ph-fill ph-user-circle"></i> Basic Information</h4>
+                            <div class="form-grid">
+                                <div class="form-group full-width">
+                                    <label for="s-name">Full Name *</label>
+                                    <input type="text" id="s-name" class="form-control" placeholder="John Doe" required>
+                                    <span class="error-message">Name is required.</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="s-whatsapp">WhatsApp Number *</label>
+                                    <input type="tel" id="s-whatsapp" class="form-control" placeholder="+91 xxxxxxxxxx" required>
+                                    <span class="error-message">WhatsApp number required.</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="s-phone">Phone Number (Optional)</label>
+                                    <input type="tel" id="s-phone" class="form-control" placeholder="+91 xxxxxxxxxx">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="s-email">Email ID *</label>
+                                    <input type="email" id="s-email" class="form-control" placeholder="john@example.com" required>
+                                    <span class="error-message">Valid email is required.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 2: Category & Stage -->
+                        <div class="form-slide">
+                            <h4 class="slide-title"><i class="ph-fill ph-storefront"></i> Tell Us About Your Business</h4>
+                            <div class="form-grid">
+                                <div class="form-group full-width">
+                                    <label for="s-address">Address *</label>
+                                    <input type="text" id="s-address" class="form-control" placeholder="Street, City, State" required>
+                                    <span class="error-message">Address is required.</span>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="s-category">Business Category *</label>
+                                    <select id="s-category" class="form-control" required>
+                                        <option value="" disabled selected>Select Category</option>
+                                        <option value="Clothing">Clothing</option>
+                                        <option value="Food">Food</option>
+                                        <option value="Cosmetics">Cosmetics</option>
+                                        <option value="Electronics">Electronics</option>
+                                        <option value="Services">Services</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                    <span class="error-message">Please select a category.</span>
+                                </div>
+                                
+                                <!-- Dynamic 'Other' Category TextBox -->
+                                <div class="form-group full-width" id="other-cat-group">
+                                    <label for="s-other-cat">Type your Category Manually *</label>
+                                    <input type="text" id="s-other-cat" class="form-control" placeholder="E.g. Real Estate, Consulting...">
+                                    <span class="error-message">Please write your category.</span>
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label for="s-stage">Business Stage *</label>
+                                    <select id="s-stage" class="form-control" required>
+                                        <option value="" disabled selected>Select Stage</option>
+                                        <option value="Just an Idea">Just an Idea</option>
+                                        <option value="Starting Soon">Starting Soon</option>
+                                        <option value="Already Running">Already Running</option>
+                                    </select>
+                                    <span class="error-message">Please select a stage.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 3: Business Description -->
+                        <div class="form-slide">
+                            <h4 class="slide-title"><i class="ph-fill ph-pencil-line"></i> Describe Your Business</h4>
+                            <div class="form-grid">
+                                <div class="form-group full-width">
+                                    <label for="s-niche">The Niche of the Business *</label>
+                                    <input type="text" id="s-niche" class="form-control" placeholder="E.g. Sustainable Fashion, Healthy Snacks" required>
+                                    <span class="error-message">Business niche is required.</span>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="s-biz-name">Name of the Business (Optional)</label>
+                                    <input type="text" id="s-biz-name" class="form-control" placeholder="If not decided yet, leave blank">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="s-mode">Business Mode *</label>
+                                    <select id="s-mode" class="form-control" required>
+                                        <option value="" disabled selected>Select Mode</option>
+                                        <option value="Online">Online</option>
+                                        <option value="Offline">Offline</option>
+                                        <option value="Hybrid">Hybrid (Both)</option>
+                                    </select>
+                                    <span class="error-message">Please select business mode.</span>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="s-desc">Describe the Business Properly *</label>
+                                    <textarea id="s-desc" class="form-control" placeholder="Tell us exactly what you do, who your target audience is, and your main goals..." required></textarea>
+                                    <span class="error-message">Description is required.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 4: Requirements -->
+                        <div class="form-slide">
+                            <h4 class="slide-title"><i class="ph-fill ph-package"></i> What Do You Need?</h4>
+                            <div class="form-grid">
+                                <div class="form-group full-width">
+                                    <label>Select Your Required Setup *</label>
+                                    <div class="checkbox-grid" id="needs-grid">
+                                        <label class="custom-checkbox-wrapper">
+                                            <input type="checkbox" name="needs" value="Complete online setup">
+                                            <span class="custom-checkbox-label">Complete online setup</span>
+                                        </label>
+                                        <label class="custom-checkbox-wrapper">
+                                            <input type="checkbox" name="needs" value="Launch a product">
+                                            <span class="custom-checkbox-label">Launch a product</span>
+                                        </label>
+                                        <label class="custom-checkbox-wrapper">
+                                            <input type="checkbox" name="needs" value="Complete startup kit for beginners">
+                                            <span class="custom-checkbox-label">Complete startup kit for beginners</span>
+                                        </label>
+                                        <label class="custom-checkbox-wrapper">
+                                            <input type="checkbox" name="needs" value="Complete startup kit for pro">
+                                            <span class="custom-checkbox-label">Complete startup kit for pro</span>
+                                        </label>
+                                        <!-- Added New Options -->
+                                        <label class="custom-checkbox-wrapper">
+                                            <input type="checkbox" name="needs" value="Real time customer experience">
+                                            <span class="custom-checkbox-label">Real time customer experience</span>
+                                        </label>
+                                        <label class="custom-checkbox-wrapper">
+                                            <input type="checkbox" name="needs" value="Website logo and brand setup">
+                                            <span class="custom-checkbox-label">Website logo and brand setup</span>
+                                        </label>
+                                        <label class="custom-checkbox-wrapper">
+                                            <input type="checkbox" name="needs" value="Simple landing page">
+                                            <span class="custom-checkbox-label">Simple landing page</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Manual Request Box -->
+                                <div class="form-group full-width" style="margin-top: 0.5rem;">
+                                    <label for="s-manual-need">Need something else? (Optional)</label>
+                                    <textarea id="s-manual-need" class="form-control" style="min-height: 80px;" placeholder="Write any specific services or custom requirements here..."></textarea>
+                                </div>
+                                <span class="error-message full-width" id="needs-error" style="margin-top: -10px; margin-bottom: 10px;">Please select at least one option or write your requirement below.</span>
+                            </div>
+                        </div>
+
+                        <!-- Slide 5: Budget & Notes -->
+                        <div class="form-slide">
+                            <h4 class="slide-title"><i class="ph-fill ph-wallet"></i> Budget & Details</h4>
+                            <div class="form-grid">
+                                <div class="form-group full-width range-slider-wrapper">
+                                    <label for="s-budget">Estimated Budget Range *</label>
+                                    <div class="budget-display" id="budget-value">₹ 99</div>
+                                    <!-- Dynamic range input setup -->
+                                    <input type="range" id="s-budget" min="99" max="49999" value="99" step="100">
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label for="s-notes">Additional Notes (Optional)</label>
+                                    <textarea id="s-notes" class="form-control" placeholder="Any specific ideas, preferred colors, examples, or specific requirements..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn-nav btn-prev" id="btn-prev" style="display: none;"><i class="ph-bold ph-arrow-left"></i> Back</button>
+                <button type="button" class="btn-nav btn-next" id="btn-next">Next <i class="ph-bold ph-arrow-right"></i></button>
+                <button type="button" class="btn-nav btn-submit" id="btn-submit" style="display: none;">Submit on Email <i class="ph-bold ph-paper-plane-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Theme Logic ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const htmlElement = document.documentElement;
+            const header = document.getElementById('header');
+            const savedTheme = localStorage.getItem('theme');
+            
+            if (savedTheme) htmlElement.setAttribute('data-theme', savedTheme);
+            else htmlElement.setAttribute('data-theme', 'light');
+
+            themeToggle.addEventListener('click', () => {
+                const newTheme = htmlElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                htmlElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
+            });
+
+            // --- Multi-Step Form Logic ---
+            const modalOverlay = document.getElementById('form-modal');
+            const startBtn = document.getElementById('start-btn');
+            const closeBtn = document.getElementById('close-modal');
+            
+            const formSlider = document.getElementById('form-slider');
+            const slides = document.querySelectorAll('.form-slide');
+            const btnPrev = document.getElementById('btn-prev');
+            const btnNext = document.getElementById('btn-next');
+            const btnSubmit = document.getElementById('btn-submit');
+            const progressBar = document.getElementById('progress-bar');
+            
+            let currentStep = 0;
+            const totalSteps = slides.length; // 5 steps
+
+            // --- Dynamic Category Logic ---
+            const categorySelect = document.getElementById('s-category');
+            const otherCatGroup = document.getElementById('other-cat-group');
+            const otherCatInput = document.getElementById('s-other-cat');
+
+            categorySelect.addEventListener('change', (e) => {
+                if (e.target.value === 'Other') {
+                    otherCatGroup.classList.add('active');
+                    otherCatInput.setAttribute('required', 'true');
+                } else {
+                    otherCatGroup.classList.remove('active');
+                    otherCatInput.removeAttribute('required');
+                    otherCatInput.value = ''; // clear when hidden
+                }
+            });
+
+            // --- Dynamic Budget Slider Logic ---
+            const budgetSlider = document.getElementById('s-budget');
+            const budgetDisplay = document.getElementById('budget-value');
+            const checkboxes = document.querySelectorAll('input[name="needs"]');
+            
+            const formatINR = (amount) => {
+                return new Intl.NumberFormat('en-IN', {
+                    style: 'currency',
+                    currency: 'INR',
+                    maximumFractionDigits: 0
+                }).format(amount);
+            };
+
+            function updateBudgetBase() {
+                const checkedBoxes = document.querySelectorAll('input[name="needs"]:checked');
+                const checkedCount = checkedBoxes.length;
+                const manualNeeds = document.getElementById('s-manual-need').value.trim();
+                
+                let hasCompletePackage = false;
+                checkedBoxes.forEach(cb => {
+                    if (cb.value === "Complete startup kit for beginners" || cb.value === "Complete startup kit for pro") {
+                        hasCompletePackage = true;
+                    }
+                });
+                
+                let newMin = 99; // Default 
+                
+                if (hasCompletePackage) {
+                    newMin = 1999;
+                } else if (checkedCount > 1 || (checkedCount === 1 && manualNeeds !== '')) {
+                    newMin = 399; // Start from 399 if more than 1 selected or selected + manual
+                } else if (checkedCount === 0 && manualNeeds !== '') {
+                    newMin = 99; // Textbox only
+                }
+
+                // Update min bounds
+                budgetSlider.min = newMin;
+                
+                // If current value is lower than new min, snap it to new min
+                if (parseInt(budgetSlider.value) < newMin) {
+                    budgetSlider.value = newMin;
+                }
+                
+                budgetDisplay.textContent = formatINR(budgetSlider.value);
+            }
+
+            checkboxes.forEach(cb => cb.addEventListener('change', updateBudgetBase));
+            document.getElementById('s-manual-need').addEventListener('input', updateBudgetBase);
+
+            budgetSlider.addEventListener('input', (e) => {
+                budgetDisplay.textContent = formatINR(e.target.value);
+            });
+
+            // --- Navigation Logic ---
+            function updateUI() {
+                // Move slider - 20% per slide (100 / 5 slides = 20%)
+                formSlider.style.transform = `translateX(-${currentStep * 20}%)`;
+                
+                // Update Progress Bar
+                const progressPercentage = ((currentStep + 1) / totalSteps) * 100;
+                progressBar.style.width = `${progressPercentage}%`;
+
+                // Update Buttons
+                if (currentStep === 0) {
+                    btnPrev.style.display = 'none';
+                    btnNext.style.display = 'flex';
+                    btnSubmit.style.display = 'none';
+                } else if (currentStep === totalSteps - 1) {
+                    btnPrev.style.display = 'flex';
+                    btnNext.style.display = 'none';
+                    btnSubmit.style.display = 'flex';
+                } else {
+                    btnPrev.style.display = 'flex';
+                    btnNext.style.display = 'flex';
+                    btnSubmit.style.display = 'none';
+                }
+            }
+
+            function validateCurrentStep() {
+                let isValid = true;
+                const currentSlide = slides[currentStep];
+                
+                // Validate regular inputs & selects on the current slide
+                const requiredFields = currentSlide.querySelectorAll('input[required], select[required], textarea[required]');
+                requiredFields.forEach(field => {
+                    const group = field.closest('.form-group');
+                    if (!field.value.trim() || (field.type === 'email' && !field.checkValidity())) {
+                        group.classList.add('has-error');
+                        isValid = false;
+                    } else {
+                        group.classList.remove('has-error');
+                    }
+                    
+                    // clear error on typing
+                    field.addEventListener('input', () => group.classList.remove('has-error'), {once: true});
+                    field.addEventListener('change', () => group.classList.remove('has-error'), {once: true});
+                });
+
+                // specifically validate Checkboxes / Manual Needs on Slide 4 (Index 3)
+                if (currentStep === 3) {
+                    const needsChecked = document.querySelectorAll('input[name="needs"]:checked');
+                    const manualNeed = document.getElementById('s-manual-need').value.trim();
+                    const needsError = document.getElementById('needs-error');
+                    
+                    if (needsChecked.length === 0 && manualNeed === '') {
+                        needsError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        needsError.style.display = 'none';
+                    }
+                    
+                    document.querySelectorAll('input[name="needs"]').forEach(cb => {
+                        cb.addEventListener('change', () => needsError.style.display = 'none', {once: true});
+                    });
+                    document.getElementById('s-manual-need').addEventListener('input', () => {
+                        needsError.style.display = 'none';
+                    }, {once: true});
+                }
+
+                return isValid;
+            }
+
+            btnNext.addEventListener('click', () => {
+                if (validateCurrentStep()) {
+                    currentStep++;
+                    updateUI();
+                }
+            });
+
+            btnPrev.addEventListener('click', () => {
+                currentStep--;
+                updateUI();
+            });
+
+            // Modal Controls
+            function openModal() {
+                currentStep = 0;
+                document.getElementById('survey-form').reset();
+                
+                // Reset Dynamic fields
+                otherCatGroup.classList.remove('active');
+                otherCatInput.removeAttribute('required');
+                
+                // Reset budget starting state
+                budgetSlider.min = 99;
+                budgetSlider.value = 99;
+                budgetDisplay.textContent = formatINR(99);
+                
+                document.querySelectorAll('.has-error').forEach(el => el.classList.remove('has-error'));
+                document.getElementById('needs-error').style.display = 'none';
+                updateUI();
+                
+                modalOverlay.classList.add('active');
+                document.body.classList.add('no-scroll');
+            }
+
+            function closeModal() {
+                modalOverlay.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+            }
+
+            startBtn.addEventListener('click', openModal);
+            closeBtn.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) closeModal();
+            });
+
+            // Submit Logic
+            btnSubmit.addEventListener('click', () => {
+                if (!validateCurrentStep()) return;
+
+                const name = document.getElementById('s-name').value;
+                const whatsapp = document.getElementById('s-whatsapp').value;
+                const phone = document.getElementById('s-phone').value || 'Not provided';
+                const email = document.getElementById('s-email').value;
+                
+                const address = document.getElementById('s-address').value;
+                let category = document.getElementById('s-category').value;
+                if (category === 'Other') {
+                    category = document.getElementById('s-other-cat').value;
+                }
+                const stage = document.getElementById('s-stage').value;
+
+                const niche = document.getElementById('s-niche').value;
+                const bizName = document.getElementById('s-biz-name').value || 'Not provided';
+                const mode = document.getElementById('s-mode').value;
+                const desc = document.getElementById('s-desc').value;
+
+                // Get selected needs + manual needs
+                const needsElements = document.querySelectorAll('input[name="needs"]:checked');
+                let needsArr = [];
+                needsElements.forEach(el => needsArr.push(el.value));
+                
+                const manualNeedValue = document.getElementById('s-manual-need').value.trim();
+                if (manualNeedValue !== '') {
+                    needsArr.push(`Custom: ${manualNeedValue}`);
+                }
+                const needsString = needsArr.join(', ');
+
+                const budget = formatINR(budgetSlider.value);
+                const notes = document.getElementById('s-notes').value || 'None';
+
+                // Format Email Body
+                const subject = `New Brand Startup Survey - ${name}`;
+                const body = `Hello Flexigigs Team,
+
+Here is a new brand startup request:
+
+--- PERSONAL DETAILS ---
+Full Name: ${name}
+WhatsApp Number: ${whatsapp}
+Phone Number: ${phone}
+Email ID: ${email}
+
+--- BUSINESS INFO ---
+Address: ${address}
+Category: ${category}
+Current Stage: ${stage}
+
+--- BUSINESS DESCRIPTION ---
+Business Niche: ${niche}
+Business Name: ${bizName}
+Business Mode: ${mode}
+
+Description:
+${desc}
+
+--- REQUIREMENTS & BUDGET ---
+Services Needed: ${needsString}
+Estimated Budget: ${budget}
+
+--- ADDITIONAL NOTES ---
+${notes}
+
+Looking forward to hearing from you.
+
+Best regards,
+${name}`;
+
+                // Trigger Default Email Client
+                const encodedSubject = encodeURIComponent(subject);
+                const encodedBody = encodeURIComponent(body);
+                window.location.href = `mailto:flexigigsconnect@gmail.com?subject=${encodedSubject}&body=${encodedBody}`;
+                
+                closeModal();
+            });
+        });
+    </script>
+</body>
+</html>

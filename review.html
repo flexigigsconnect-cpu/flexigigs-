@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Flexigigs - Customer Reviews">
+    <title>Flexigigs | Client Reviews</title>
+    
+    <link rel="icon" href="https://i.postimg.cc/Vv19gBFx/IMG-20250924-155058.jpg" type="image/jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        /* =========================================
+           1. CSS Variables & Theme Configuration
+           ========================================= */
+        :root {
+            --font-primary: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            --header-height: 88px;
+            --container-max: 1000px;
+            
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-full: 9999px;
+            
+            --transition-fast: 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+            --transition-smooth: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+
+            --accent-color: #ff6b00; 
+            --accent-gradient: linear-gradient(135deg, #ff8a00, #ff3d00);
+            --star-color: #f59e0b;
+            
+            --shadow-glow-orange: 0 10px 30px -5px rgba(255, 107, 0, 0.3), 0 0 15px rgba(255, 107, 0, 0.1);
+            --shadow-header: 0 4px 40px rgba(0, 0, 0, 0.05);
+            --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        [data-theme="light"] {
+            --bg-color: #fcfcfd;
+            --surface-color: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --header-bg: rgba(255, 255, 255, 0.65);
+            --header-border: rgba(255, 107, 0, 0.1);
+            --btn-hover-bg: rgba(255, 107, 0, 0.05);
+            --overlay-bg: rgba(15, 23, 42, 0.85);
+            --card-border: rgba(0, 0, 0, 0.05);
+            --input-bg: #ffffff;
+            --input-border: rgba(255, 107, 0, 0.2);
+            --skeleton-bg: #e2e8f0;
+            --skeleton-shine: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0d0704;
+            --surface-color: #1a0f08;
+            --text-primary: #ffffff;
+            --text-secondary: #a89f98;
+            --header-bg: rgba(13, 7, 4, 0.65);
+            --header-border: rgba(255, 107, 0, 0.15);
+            --btn-hover-bg: rgba(255, 107, 0, 0.1);
+            --overlay-bg: rgba(0, 0, 0, 0.9);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --input-bg: #1a0f08;
+            --input-border: rgba(255, 107, 0, 0.25);
+            --skeleton-bg: #2d1f16;
+            --skeleton-shine: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+        }
+
+        /* =========================================
+           2. Base Reset & Background
+           ========================================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: var(--font-primary); 
+            background-color: var(--bg-color); 
+            background-image: 
+                radial-gradient(circle at 15% 10%, rgba(255, 107, 0, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 85% 90%, rgba(255, 107, 0, 0.04) 0%, transparent 40%);
+            background-attachment: fixed;
+            color: var(--text-primary); 
+            line-height: 1.6; 
+            transition: background-color var(--transition-smooth), color var(--transition-smooth); 
+            -webkit-font-smoothing: antialiased; 
+            overflow-x: hidden; 
+            padding-bottom: 40px; 
+        }
+
+        html { scroll-behavior: smooth; }
+        body.no-scroll { overflow: hidden; }
+        .container { max-width: var(--container-max); margin: 0 auto; padding-inline: 1.5rem; }
+
+        /* =========================================
+           3. HEADER 
+           ========================================= */
+        .site-header { 
+            position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height); 
+            background: var(--header-bg); 
+            backdrop-filter: blur(40px) saturate(250%); 
+            -webkit-backdrop-filter: blur(40px) saturate(250%); 
+            border-bottom: 1px solid var(--header-border); 
+            z-index: 1000; 
+            transition: all var(--transition-smooth); 
+        }
+        .site-header.scrolled { box-shadow: var(--shadow-header); background: var(--surface-color); }
+        [data-theme="dark"] .site-header.scrolled { background: rgba(26, 15, 8, 0.95); }
+        
+        .header-inner { display: flex; align-items: center; justify-content: space-between; height: 100%; gap: 1rem; }
+        
+        .header-left { display: flex; align-items: center; gap: 16px; }
+        .back-btn { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: var(--radius-full); background: var(--btn-hover-bg); color: var(--text-primary); text-decoration: none; transition: all var(--transition-fast); }
+        .back-btn:hover { background: var(--accent-color); color: white; transform: translateX(-3px); }
+
+        .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--text-primary); transition: opacity var(--transition-fast), transform var(--transition-fast); }
+        .brand:hover { opacity: 0.9; }
+        .brand-logo-wrapper { width: 48px; height: 48px; border-radius: var(--radius-md); overflow: hidden; display: flex; align-items: center; justify-content: center; background: var(--surface-color); border: 1px solid var(--header-border); box-shadow: 0 8px 16px rgba(255,107,0,0.08); }
+        .brand-logo { width: 100%; height: 100%; object-fit: cover; }
+        .brand-name { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.04em; }
+
+        .header-controls { display: flex; align-items: center; gap: 8px; }
+        .icon-btn { background: transparent; border: none; color: var(--text-primary); width: 48px; height: 48px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.6rem; transition: background-color var(--transition-fast), transform var(--transition-fast); }
+        .icon-btn:hover { background-color: var(--btn-hover-bg); transform: scale(1.05); color: var(--accent-color); }
+        .icon-light, .icon-dark { display: none; }
+        [data-theme="dark"] .icon-light { display: block; }
+        [data-theme="light"] .icon-dark { display: block; }
+
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0.9rem 2rem; border-radius: var(--radius-full); font-size: 1.1rem; font-weight: 700; text-decoration: none; cursor: pointer; border: none; transition: all var(--transition-smooth); }
+        .btn-primary { background: var(--accent-gradient); background-size: 200% auto; color: #ffffff; box-shadow: var(--shadow-glow-orange); }
+        .btn-primary:hover { background-position: right center; transform: translateY(-4px) scale(1.02); box-shadow: 0 20px 40px -5px rgba(255, 107, 0, 0.5); }
+
+        .btn-google { background: #4285F4; color: white; box-shadow: 0 10px 30px -5px rgba(66, 133, 244, 0.3); }
+        .btn-google:hover { background: #3b78e7; transform: translateY(-4px) scale(1.02); box-shadow: 0 20px 40px -5px rgba(66, 133, 244, 0.5); }
+        
+        .btn-outline { background: transparent; border: 2px solid var(--input-border); color: var(--text-primary); }
+        .btn-outline:hover { background: var(--btn-hover-bg); }
+
+        /* =========================================
+           4. REVIEWS CONTENT
+           ========================================= */
+        main { padding-top: calc(var(--header-height) + 4rem); min-height: 100vh; }
+        
+        .reviews-hero { text-align: center; margin-bottom: 4rem; animation: fadeInUp 0.8s ease backwards; }
+        .reviews-hero h1 { font-size: 2.8rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1rem; color: var(--text-primary); }
+        .reviews-hero h1 span { color: var(--accent-color); background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .reviews-hero p { font-size: 1.15rem; color: var(--text-secondary); line-height: 1.8; max-width: 600px; margin: 0 auto 2rem auto; }
+
+        /* Reviews Grid */
+        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; animation: fadeInUp 0.8s ease 0.2s backwards; }
+        
+        .review-card {
+            background: var(--surface-color); border: 1px solid var(--card-border); border-radius: var(--radius-lg); 
+            padding: 2rem; transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+            box-shadow: var(--shadow-card); display: flex; flex-direction: column; gap: 1rem;
+            animation: fadeInUp 0.5s ease backwards;
+        }
+        .review-card:hover { transform: translateY(-5px); border-color: rgba(255, 107, 0, 0.2); box-shadow: var(--shadow-glow-orange); }
+        
+        .review-header { display: flex; align-items: center; justify-content: space-between; }
+        .reviewer-name { font-size: 1.2rem; font-weight: 700; color: var(--text-primary); }
+        .review-stars { display: flex; gap: 4px; color: var(--star-color); font-size: 1.2rem; }
+        .review-text { font-size: 1rem; color: var(--text-secondary); flex-grow: 1; font-style: italic; }
+
+        /* Skeleton Loader */
+        .skeleton-card { background: var(--surface-color); border: 1px solid var(--card-border); border-radius: var(--radius-lg); padding: 2rem; position: relative; overflow: hidden; }
+        .skeleton-card::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: var(--skeleton-shine); animation: shimmer 2s infinite; }
+        .skel-line { height: 20px; background: var(--skeleton-bg); border-radius: 4px; margin-bottom: 10px; }
+        .skel-line.title { width: 40%; margin-bottom: 20px; }
+        .skel-line.text { width: 100%; }
+        .skel-line.text:last-child { width: 70%; }
+
+        @keyframes shimmer { 100% { left: 200%; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* =========================================
+           5. MODAL FORM
+           ========================================= */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--overlay-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            z-index: 2000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity var(--transition-smooth); padding: 1rem;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+        .modal-content {
+            background: var(--surface-color); width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto;
+            border-radius: var(--radius-lg); box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid var(--header-border);
+            transform: translateY(20px); transition: transform var(--transition-smooth); padding: 2.5rem; position: relative;
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+
+        .close-modal {
+            position: absolute; top: 1.5rem; right: 1.5rem; background: var(--btn-hover-bg); border: none;
+            width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; color: var(--text-primary); font-size: 1.2rem; transition: all var(--transition-fast);
+        }
+        .close-modal:hover { background: var(--accent-color); color: white; transform: rotate(90deg); }
+
+        .modal-header { text-align: center; margin-bottom: 2rem; transition: opacity var(--transition-fast); }
+        .modal-header h3 { font-size: 1.8rem; font-weight: 800; color: var(--text-primary); }
+        .modal-header p { color: var(--text-secondary); font-size: 0.95rem; margin-top: 0.5rem; }
+
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; color: var(--text-primary); }
+        .form-control {
+            width: 100%; padding: 0.9rem 1.2rem; border-radius: 12px; border: 2px solid var(--input-border);
+            background: var(--input-bg); color: var(--text-primary); font-family: inherit; font-size: 1rem;
+            outline: none; transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+        }
+        .form-control:focus { border-color: var(--accent-color); box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.15); }
+        textarea.form-control { resize: vertical; min-height: 120px; }
+
+        /* Interactive Stars */
+        .interactive-stars { display: flex; gap: 8px; font-size: 2.2rem; cursor: pointer; justify-content: center; margin-bottom: 10px; }
+        .interactive-stars i { color: var(--skeleton-bg); transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1); }
+        
+        /* Success State */
+        .success-state {
+            display: none; text-align: center; padding: 1rem 0; animation: fadeInUp 0.5s ease backwards;
+        }
+        .success-icon {
+            font-size: 4rem; color: #10b981; margin-bottom: 1rem;
+            animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes scaleIn { from { transform: scale(0); } to { transform: scale(1); } }
+
+        /* Scrollbar for modal */
+        .modal-content::-webkit-scrollbar { width: 8px; }
+        .modal-content::-webkit-scrollbar-track { background: transparent; }
+        .modal-content::-webkit-scrollbar-thumb { background: var(--input-border); border-radius: 10px; }
+
+        @media (max-width: 768px) {
+            .reviews-hero h1 { font-size: 2.2rem; }
+            .modal-content { padding: 1.5rem; }
+            .container { padding-inline: 1.25rem; }
+            .brand-name { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header" id="header">
+        <div class="container header-inner">
+            <div class="header-left">
+                <a href="index.html" class="back-btn" aria-label="Back to Home">
+                    <i class="ph-bold ph-arrow-left"></i>
+                </a>
+                <a href="index.html" class="brand" aria-label="Flexigigs Home">
+                    <div class="brand-logo-wrapper">
+                        <img src="https://i.postimg.cc/Vv19gBFx/IMG-20250924-155058.jpg" alt="Flexigigs Logo" class="brand-logo">
+                    </div>
+                    <span class="brand-name">Flexigigs</span>
+                </a>
+            </div>
+            
+            <div class="header-controls">
+                <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme">
+                    <i class="ph ph-sun icon-light"></i>
+                    <i class="ph ph-moon icon-dark"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="reviews-hero">
+            <h1>What Our Clients <span>Say</span></h1>
+            <p>Discover real stories and experiences from the founders, creators, and partners who have built strategies with FLEXIGIGS.in.</p>
+            <button class="btn btn-primary" id="open-review-modal">
+                <i class="ph-bold ph-pencil-simple"></i> Add Your Review
+            </button>
+        </section>
+
+        <section class="reviews-grid" id="reviews-container">
+            <div class="skeleton-card">
+                <div class="skel-line title"></div>
+                <div class="skel-line text"></div>
+                <div class="skel-line text"></div>
+            </div>
+            <div class="skeleton-card">
+                <div class="skel-line title"></div>
+                <div class="skel-line text"></div>
+                <div class="skel-line text"></div>
+            </div>
+            <div class="skeleton-card">
+                <div class="skel-line title"></div>
+                <div class="skel-line text"></div>
+                <div class="skel-line text"></div>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal-overlay" id="review-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-review-modal" aria-label="Close modal"><i class="ph-bold ph-x"></i></button>
+            
+            <div class="modal-header" id="modal-header-text">
+                <h3>Share Your Experience</h3>
+                <p>Your feedback helps us grow and serve you better.</p>
+            </div>
+
+            <form id="review-form">
+                <div id="form-inputs">
+                    <div class="form-group">
+                        <label for="rev-name">Your Name *</label>
+                        <input type="text" id="rev-name" class="form-control" placeholder="John Doe" required>
+                    </div>
+                    
+                    <div class="form-group" style="text-align: center;">
+                        <label>Your Rating *</label>
+                        <div class="interactive-stars" id="star-selector">
+                            <i class="ph ph-star" data-value="1"></i>
+                            <i class="ph ph-star" data-value="2"></i>
+                            <i class="ph ph-star" data-value="3"></i>
+                            <i class="ph ph-star" data-value="4"></i>
+                            <i class="ph ph-star" data-value="5"></i>
+                        </div>
+                        <input type="hidden" id="rev-rating" value="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rev-text">Your Review (Optional)</label>
+                        <textarea id="rev-text" class="form-control" placeholder="Tell us what you loved about working with us..."></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;" id="submit-btn">
+                    Submit Review
+                </button>
+                
+                <div class="success-state" id="success-state">
+                    <div class="success-icon">
+                        <i class="ph-fill ph-check-circle"></i>
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text-primary);">Thank You!</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">Your review has been successfully submitted. We deeply appreciate your feedback.</p>
+                    
+                    <div style="padding: 1.5rem; background: var(--btn-hover-bg); border-radius: var(--radius-md); margin-bottom: 1.5rem;">
+                        <p style="font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">Would you mind taking a moment to share your experience on Google as well?</p>
+                        <a href="https://g.page/r/CbPreng-d8bBEBM/review" target="_blank" class="btn btn-google" style="width: 100%; margin-bottom: 1rem;">
+                            <i class="ph-bold ph-google-logo"></i> Leave a Google Review
+                        </a>
+                        <button type="button" class="btn btn-outline" id="close-success-btn" style="width: 100%;">
+                            Maybe Later
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Theme Management ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const htmlElement = document.documentElement;
+            const savedTheme = localStorage.getItem('theme');
+            const header = document.getElementById('header');
+            
+            if (savedTheme) htmlElement.setAttribute('data-theme', savedTheme);
+            else htmlElement.setAttribute('data-theme', 'light');
+
+            themeToggle.addEventListener('click', () => {
+                const newTheme = htmlElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                htmlElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
+            });
+
+            // --- Modal Management ---
+            const modal = document.getElementById('review-modal');
+            const btnOpen = document.getElementById('open-review-modal');
+            const btnClose = document.getElementById('close-review-modal');
+            const formInputs = document.getElementById('form-inputs');
+            const modalHeader = document.getElementById('modal-header-text');
+            const submitBtn = document.getElementById('submit-btn');
+            const successState = document.getElementById('success-state');
+            const btnCloseSuccess = document.getElementById('close-success-btn');
+            const form = document.getElementById('review-form');
+            const ratingInput = document.getElementById('rev-rating');
+
+            function openModal() {
+                modal.classList.add('active');
+                document.body.classList.add('no-scroll');
+                
+                // Reset UI to input state
+                formInputs.style.display = 'block';
+                submitBtn.style.display = 'block';
+                modalHeader.style.display = 'block';
+                successState.style.display = 'none';
+                
+                form.reset();
+                ratingInput.value = 0; // Reset hidden input
+                renderStars(0, false); // Reset visual stars
+            }
+
+            function closeModal() {
+                modal.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+            }
+
+            btnOpen.addEventListener('click', openModal);
+            btnClose.addEventListener('click', closeModal);
+            btnCloseSuccess.addEventListener('click', closeModal);
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
+
+            // --- Interactive Star Rating Logic ---
+            const stars = document.querySelectorAll('#star-selector i');
+
+            function renderStars(rating, isHover) {
+                stars.forEach((star, index) => {
+                    if (index < rating) {
+                        star.classList.replace('ph', 'ph-fill');
+                        star.style.color = 'var(--star-color)';
+                        if (isHover) star.style.transform = 'scale(1.15)';
+                    } else {
+                        star.classList.replace('ph-fill', 'ph');
+                        star.style.color = 'var(--skeleton-bg)';
+                        star.style.transform = 'scale(1)';
+                    }
+                });
+            }
+
+            stars.forEach(star => {
+                star.addEventListener('mouseover', function() {
+                    renderStars(this.getAttribute('data-value'), true);
+                });
+
+                star.addEventListener('mouseout', function() {
+                    renderStars(ratingInput.value, false);
+                });
+
+                star.addEventListener('click', function() {
+                    ratingInput.value = this.getAttribute('data-value');
+                    renderStars(ratingInput.value, false);
+                    // Add a tiny bounce effect on click
+                    this.style.transform = 'scale(1.3)';
+                    setTimeout(() => this.style.transform = 'scale(1)', 150);
+                });
+            });
+
+            // Initialize at 0 stars
+            renderStars(0, false);
+
+            // --- Fetch Data using Google Visualization API (GViz) ---
+            const SHEET_ID = "1Riot-ss3_vBbDuvFJRs9tPKunkLzfDcbt3dyMI3HLoI";
+            const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+            const reviewsContainer = document.getElementById('reviews-container');
+
+            function generateStarsHTML(ratingNumber) {
+                const num = parseInt(ratingNumber) || 5;
+                let html = '';
+                for (let i = 0; i < 5; i++) {
+                    if (i < num) {
+                        html += '<i class="ph-fill ph-star"></i>';
+                    } else {
+                        html += '<i class="ph ph-star"></i>';
+                    }
+                }
+                return html;
+            }
+
+            fetch(GVIZ_URL)
+                .then(res => res.text())
+                .then(text => {
+                    // GViz returns a wrapped response, strip the prefix and suffix to parse JSON
+                    const jsonString = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+                    const data = JSON.parse(jsonString);
+                    
+                    reviewsContainer.innerHTML = ''; // Clear skeletons
+
+                    const rows = data.table.rows;
+
+                    if (!rows || rows.length === 0) {
+                        reviewsContainer.innerHTML = '<p id="no-reviews-msg" style="grid-column: 1/-1; text-align:center; color: var(--text-secondary);">No reviews yet. Be the first!</p>';
+                        return;
+                    }
+
+                    // Reverse the rows so newest is at the top
+                    [...rows].reverse().forEach(row => {
+                        if(!row.c[1]) return; // Skip if no name
+
+                        const name = row.c[1].v;
+                        const rating = row.c[2] ? row.c[2].v : 5;
+                        const reviewText = row.c[3] && row.c[3].v ? row.c[3].v : '';
+
+                        const card = document.createElement('div');
+                        card.className = 'review-card';
+                        
+                        card.innerHTML = `
+                            <div class="review-header">
+                                <span class="reviewer-name">${name}</span>
+                                <div class="review-stars">
+                                    ${generateStarsHTML(rating)}
+                                </div>
+                            </div>
+                            ${reviewText ? `<p class="review-text">"${reviewText}"</p>` : ''}
+                        `;
+                        
+                        reviewsContainer.appendChild(card);
+                    });
+                })
+                .catch(err => {
+                    console.error("Error fetching reviews:", err);
+                    reviewsContainer.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color: var(--accent-color);">Failed to load reviews. Please refresh the page.</p>';
+                });
+
+            // --- Silent Google Form Submission & Optimistic UI Update ---
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const name = document.getElementById('rev-name').value;
+                const rating = document.getElementById('rev-rating').value;
+                const reviewText = document.getElementById('rev-text').value;
+
+                if (rating === '0') {
+                    alert("Please select a star rating before submitting.");
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('entry.1184489729', name);
+                formData.append('entry.1461284890', rating);
+                formData.append('entry.1407434888', reviewText);
+
+                const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLScXqQEWGJ-iZk-1v0oKAxpiyGhKfY_s3m1alMTithMV1fnzUw/formResponse';
+
+                // Change button state
+                submitBtn.innerText = 'Submitting...';
+                submitBtn.disabled = true;
+
+                // Submit silently using mode: 'no-cors'
+                fetch(formUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: formData
+                }).then(() => {
+                    // 1. Show Success State
+                    formInputs.style.display = 'none';
+                    submitBtn.style.display = 'none';
+                    modalHeader.style.display = 'none';
+                    successState.style.display = 'block';
+                    submitBtn.innerText = 'Submit Review';
+                    submitBtn.disabled = false;
+                    
+                    // 2. Optimistic UI Update: Create and prepend the new review card
+                    const newCard = document.createElement('div');
+                    newCard.className = 'review-card';
+                    newCard.innerHTML = `
+                        <div class="review-header">
+                            <span class="reviewer-name">${name}</span>
+                            <div class="review-stars">
+                                ${generateStarsHTML(rating)}
+                            </div>
+                        </div>
+                        ${reviewText ? `<p class="review-text">"${reviewText}"</p>` : ''}
+                    `;
+                    
+                    // Remove "No reviews yet" message if it exists
+                    const noReviewsMsg = document.getElementById('no-reviews-msg');
+                    if (noReviewsMsg) noReviewsMsg.remove();
+                    
+                    // Add the new card to the top of the grid
+                    reviewsContainer.prepend(newCard);
+
+                }).catch(error => {
+                    console.error('Error submitting form', error);
+                    submitBtn.innerText = 'Submit Review';
+                    submitBtn.disabled = false;
+                    alert('There was an error submitting your review. Please try again.');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
