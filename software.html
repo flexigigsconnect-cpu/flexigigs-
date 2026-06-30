@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Flexigigs - Software Development Solutions & Packages">
+    <title>Flexigigs | Software Solutions</title>
+    
+    <link rel="icon" href="https://i.postimg.cc/Vv19gBFx/IMG-20250924-155058.jpg" type="image/jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        /* =========================================
+           1. CSS Variables & Theme Configuration
+           ========================================= */
+        :root {
+            --font-primary: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            --header-height: 80px;
+            --container-max: 1050px; 
+            --container-padding: 0 1.2rem;
+            
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-full: 9999px;
+            
+            --transition-fast: 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+            --transition-smooth: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+
+            /* The Orange Theme */
+            --accent-color: #ff6b00; 
+            --accent-gradient: linear-gradient(135deg, #ff8a00, #ff3d00);
+            --shadow-header: 0 4px 20px rgba(0, 0, 0, 0.04);
+            --shadow-card: 0 8px 30px rgba(0,0,0,0.03);
+            --shadow-glow: 0 10px 30px -5px rgba(255, 107, 0, 0.3);
+        }
+
+        [data-theme="light"] {
+            --bg-color: #fcfcfd;
+            --surface-color: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --text-tertiary: #94a3b8;
+            --header-bg: rgba(255, 255, 255, 0.85);
+            --header-border: rgba(255, 107, 0, 0.1);
+            --card-border: rgba(0, 0, 0, 0.05);
+            --btn-bg: rgba(255, 107, 0, 0.05);
+            --btn-text: #0f172a;
+            --pricing-bg: #f8fafc;
+            --input-bg: #ffffff;
+            --input-border: rgba(255, 107, 0, 0.2);
+            --overlay-bg: rgba(15, 23, 42, 0.6);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0d0704;
+            --surface-color: #1a0f08;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --header-bg: rgba(13, 7, 4, 0.85);
+            --header-border: rgba(255, 107, 0, 0.15);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --btn-bg: rgba(255, 107, 0, 0.1);
+            --btn-text: #f8fafc;
+            --pricing-bg: #1f110a;
+            --input-bg: #1a0f08;
+            --input-border: rgba(255, 107, 0, 0.25);
+            --overlay-bg: rgba(0, 0, 0, 0.8);
+        }
+
+        /* =========================================
+           2. Base Reset & Animations
+           ========================================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: var(--font-primary); background-color: var(--bg-color); color: var(--text-primary); 
+            line-height: 1.6; transition: background-color var(--transition-smooth), color var(--transition-smooth); 
+            -webkit-font-smoothing: antialiased; padding-bottom: 60px; overflow-x: hidden;
+            background-image: radial-gradient(circle at 15% 10%, rgba(255, 107, 0, 0.05) 0%, transparent 40%), radial-gradient(circle at 85% 90%, rgba(255, 107, 0, 0.04) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        .container { max-width: var(--container-max); margin: 0 auto; padding: var(--container-padding); }
+        html { scroll-behavior: smooth; }
+        body.no-scroll { overflow: hidden; }
+
+        /* Scroll Reveal Animation Classes */
+        .fade-in-up { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+        .fade-in-up.is-visible { opacity: 1; transform: translateY(0); }
+
+        /* Section Title Styling */
+        .section-title {
+            text-align: center; font-size: 2.2rem; font-weight: 800; margin-bottom: 3rem;
+            color: var(--text-primary); letter-spacing: -0.02em; display: flex; align-items: center; justify-content: center; gap: 15px;
+        }
+        .section-title::before, .section-title::after {
+            content: ''; display: block; width: 50px; height: 4px; background: var(--accent-gradient); border-radius: var(--radius-full); box-shadow: var(--shadow-glow);
+        }
+
+        /* =========================================
+           3. HEADER
+           ========================================= */
+        .site-header { 
+            position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height); 
+            background: var(--header-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+            border-bottom: 1px solid var(--header-border); z-index: 1000; transition: all var(--transition-smooth); 
+        }
+        .site-header.scrolled { box-shadow: var(--shadow-header); }
+        .header-inner { display: flex; align-items: center; justify-content: space-between; height: 100%; }
+        
+        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-primary); font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em; transition: transform var(--transition-fast);}
+        .brand:hover { transform: scale(1.03); }
+        .brand-logo-wrapper { width: 38px; height: 38px; border-radius: 10px; overflow: hidden; border: 1px solid var(--header-border); box-shadow: 0 4px 10px rgba(255,107,0,0.1);}
+        .brand-logo { width: 100%; height: 100%; object-fit: cover; }
+
+        .icon-btn { background: transparent; border: none; color: var(--text-primary); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.4rem; transition: all var(--transition-fast); }
+        .icon-btn:hover { background: var(--btn-bg); color: var(--accent-color); transform: scale(1.05); }
+        
+        .icon-light, .icon-dark { display: none; }
+        [data-theme="dark"] .icon-light { display: block; }
+        [data-theme="light"] .icon-dark { display: block; }
+
+        /* General Buttons */
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 1rem 2rem; border-radius: var(--radius-full); font-size: 1rem; font-weight: 700; text-decoration: none; cursor: pointer; border: none; transition: all var(--transition-smooth); font-family: inherit;}
+        .btn-primary { background: var(--accent-gradient); color: #ffffff; box-shadow: var(--shadow-glow); }
+        .btn-primary:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 15px 30px -5px rgba(255, 107, 0, 0.4); }
+        
+        .btn-outline { background: transparent; border: 2px solid var(--accent-color); color: var(--accent-color); }
+        .btn-outline:hover { background: var(--accent-color); color: #ffffff; }
+
+        /* Forms */
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; color: var(--text-secondary); letter-spacing: 0.5px;}
+        .form-control { width: 100%; padding: 1rem 1.25rem; border-radius: 14px; border: 2px solid var(--input-border); background: var(--input-bg); color: var(--text-primary); font-family: inherit; font-size: 0.95rem; font-weight: 600; outline: none; transition: border-color var(--transition-fast), box-shadow var(--transition-fast); }
+        .form-control:focus { border-color: var(--accent-color); box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.15); background: var(--surface-color); }
+        textarea.form-control { resize: vertical; min-height: 100px; }
+
+        /* =========================================
+           4. HERO SECTION
+           ========================================= */
+        main { padding-top: calc(var(--header-height) + 4rem); } 
+        
+        .hero-wrapper { display: flex; flex-direction: column; align-items: center; gap: 3rem; margin-bottom: 5rem; text-align: center; }
+        @media (min-width: 768px) { .hero-wrapper { flex-direction: row; text-align: left; } .hero-text { flex: 1; padding-right: 1rem; } .hero-image-box { flex: 1; } }
+        
+        .hero-text h1 { font-size: 3rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1rem; line-height: 1.2;}
+        .hero-text h1 span { background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-text p { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.7;}
+        
+        /* Floating Image Animation */
+        .hero-image-box img { width: 100%; max-width: 500px; border-radius: var(--radius-lg); box-shadow: var(--shadow-glow); animation: float 6s ease-in-out infinite; }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+
+        /* =========================================
+           5. CUSTOM QUOTE & INDUSTRIES
+           ========================================= */
+        .custom-quote-section { margin-bottom: 6rem; }
+        .custom-quote-card {
+            background: var(--surface-color); border: 1px solid var(--card-border); border-radius: var(--radius-lg);
+            padding: 3rem; box-shadow: var(--shadow-glow); display: flex; flex-direction: column; gap: 2rem;
+            position: relative; overflow: hidden;
+        }
+        .custom-quote-card::before {
+            content: ''; position: absolute; top: 0; right: 0; width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(255,107,0,0.08) 0%, transparent 70%); border-radius: 50%; pointer-events: none;
+        }
+        
+        .cq-layout { display: grid; grid-template-columns: 1fr; gap: 3rem; position: relative; z-index: 2; }
+        @media (min-width: 992px) { .cq-layout { grid-template-columns: 1fr 1.5fr; } }
+
+        .cq-info h3 { font-size: 2rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-primary); letter-spacing: -0.02em;}
+        .cq-info h3 span { color: var(--accent-color); }
+        .cq-info p { font-size: 1rem; color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.6;}
+        
+        .industry-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 2rem; }
+        .industry-tag { background: var(--btn-bg); color: var(--text-primary); padding: 8px 14px; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 600; border: 1px solid var(--input-border); transition: all var(--transition-fast);}
+        .industry-tag:hover { background: var(--accent-color); color: #fff; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(255,107,0,0.2); }
+
+        .cq-image-box img { width: 100%; border-radius: var(--radius-md); box-shadow: var(--shadow-card); }
+
+        .cq-form-grid { display: grid; grid-template-columns: 1fr; gap: 0 1.5rem; }
+        @media (min-width: 768px) { .cq-form-grid { grid-template-columns: 1fr 1fr; } .cq-full-width { grid-column: 1 / -1; } }
+
+        /* =========================================
+           6. SOFTWARE PRICING PACKAGES
+           ========================================= */
+        .pricing-section { margin-bottom: 5rem; }
+        .pricing-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: stretch; margin-bottom: 4rem;}
+        @media (min-width: 992px) { .pricing-grid { grid-template-columns: repeat(3, 1fr); } }
+
+        .pricing-card {
+            background: var(--surface-color); border: 1px solid var(--card-border); border-radius: var(--radius-lg);
+            padding: 2.5rem 2rem; display: flex; flex-direction: column; position: relative; z-index: 1;
+            transition: all var(--transition-smooth); box-shadow: var(--shadow-card);
+        }
+        .pricing-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-glow); border-color: rgba(255, 107, 0, 0.3); }
+        
+        .pricing-card.highlight { border: 2px solid var(--accent-color); box-shadow: 0 15px 40px rgba(255, 107, 0, 0.15); transform: scale(1.02); }
+        .pricing-card.highlight:hover { transform: scale(1.02) translateY(-10px); }
+        
+        .popular-badge {
+            position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent-gradient);
+            color: white; padding: 4px 16px; border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1px; box-shadow: var(--shadow-glow); white-space: nowrap;
+        }
+
+        .plan-name { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px;}
+        .plan-price { font-size: 2.2rem; font-weight: 800; color: var(--accent-color); margin-bottom: 0.5rem; display: flex; align-items: baseline; gap: 5px; flex-wrap: wrap;}
+        .plan-price span { font-size: 0.9rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase;}
+        .plan-desc { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.5; min-height: 50px;}
+
+        .plan-divider { height: 1px; background: var(--card-border); margin: 0 -2rem 2rem -2rem; }
+
+        .features-list { list-style: none; margin-bottom: 2.5rem; flex-grow: 1; }
+        .features-list li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 0.95rem; font-weight: 500;}
+        .features-list li i { color: var(--accent-color); font-size: 1.2rem; margin-top: 2px; flex-shrink: 0;}
+        
+        .delivery-time { background: var(--pricing-bg); padding: 12px; border-radius: 12px; font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 1.5rem; color: var(--text-primary);}
+        .delivery-time i { color: var(--accent-color); font-size: 1.2rem; }
+
+        /* =========================================
+           7. READY-TO-DEPLOY SOFTWARE
+           ========================================= */
+        .ready-deploy-section { margin-bottom: 6rem; }
+        .section-banner-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: var(--radius-lg); margin-bottom: 3rem; box-shadow: var(--shadow-glow); }
+        
+        .micro-pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+        
+        .micro-card {
+            background: var(--surface-color); border: 1px solid var(--card-border); border-radius: var(--radius-md);
+            padding: 1.75rem 1.5rem; display: flex; flex-direction: column; transition: all var(--transition-smooth);
+        }
+        .micro-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); border-color: var(--accent-color); }
+        
+        .micro-icon { width: 50px; height: 50px; border-radius: 14px; background: var(--btn-bg); color: var(--accent-color); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 1rem;}
+        .micro-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.25rem; color: var(--text-primary); }
+        .micro-price { font-size: 1.2rem; font-weight: 800; color: var(--accent-color); margin-bottom: 1.5rem; }
+        .micro-price span { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase;}
+        
+        .micro-features { list-style: none; margin-bottom: 1.5rem; flex-grow: 1; }
+        .micro-features li { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); }
+        .micro-features li i { color: var(--text-tertiary); font-size: 1rem; }
+
+        /* =========================================
+           8. WHY CHOOSE US & BANNER
+           ========================================= */
+        .why-section { margin-bottom: 6rem; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+        .feature-card { background: var(--pricing-bg); border-radius: var(--radius-md); padding: 1.5rem; display: flex; align-items: center; gap: 15px; border: 1px solid var(--card-border); transition: transform var(--transition-fast); }
+        .feature-card:hover { transform: translateY(-5px); border-color: rgba(255, 107, 0, 0.2); box-shadow: 0 10px 20px rgba(0,0,0,0.03); }
+        .feature-icon { width: 45px; height: 45px; border-radius: 12px; background: rgba(255, 107, 0, 0.1); color: var(--accent-color); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+        .feature-text { font-weight: 700; font-size: 1rem; color: var(--text-primary); }
+
+        .offer-banner { background: var(--accent-gradient); border-radius: var(--radius-lg); padding: 3rem; color: white; box-shadow: var(--shadow-glow); display: flex; flex-direction: column; align-items: center; gap: 2rem; position: relative; overflow: hidden;}
+        @media (min-width: 768px) { .offer-banner { flex-direction: row; text-align: left; justify-content: space-between;} .offer-text { flex: 1; } .offer-image-box { width: 35%; } }
+        
+        .offer-banner::after { content: ''; position: absolute; top: -50%; right: -20%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%); border-radius: 50%; }
+        .offer-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.02em; }
+        .offer-desc { font-size: 1.15rem; font-weight: 500; margin-bottom: 2rem; opacity: 0.95; max-width: 700px; margin-left: auto; margin-right: auto;}
+        
+        .offer-image-box img { width: 100%; border-radius: var(--radius-md); transform: rotate(2deg); transition: transform var(--transition-fast); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .offer-image-box img:hover { transform: rotate(0deg) scale(1.05); }
+
+        /* =========================================
+           9. MODALS (ENQUIRY)
+           ========================================= */
+        .enquiry-modal-overlay { position: fixed; inset: 0; background: var(--overlay-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity var(--transition-smooth); padding: 1rem; }
+        .enquiry-modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .enquiry-modal { background: var(--surface-color); width: 100%; max-width: 550px; border-radius: var(--radius-lg); box-shadow: var(--shadow-glow); transform: translateY(40px) scale(0.95); opacity: 0; transition: all var(--transition-smooth); display: flex; flex-direction: column; max-height: 90vh; border: 1px solid var(--accent-color); }
+        .enquiry-modal-overlay.active .enquiry-modal { transform: translateY(0) scale(1); opacity: 1; }
+        
+        .modal-header { padding: 1.5rem 2rem; border-bottom: 1px solid var(--input-border); display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h3 { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; color: var(--accent-color); }
+        .modal-close { background: var(--btn-bg); border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-primary); font-size: 1.2rem; transition: all var(--transition-fast); }
+        .modal-close:hover { transform: rotate(90deg); background: var(--accent-color); color: white; }
+        
+        .modal-body { padding: 2rem; overflow-y: auto; flex-grow: 1; }
+        .modal-footer { padding: 1.5rem 2rem; border-top: 1px solid var(--input-border); }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            :root { --header-height: 70px; --container-padding: 0 1rem; }
+            .hero-text h1 { font-size: 2.2rem; }
+            .section-title { font-size: 1.8rem; }
+            
+            .custom-quote-card { padding: 1.5rem; }
+            .cq-info h3 { font-size: 1.6rem; }
+            
+            .pricing-card.highlight { transform: none; }
+            .pricing-card.highlight:hover { transform: translateY(-5px); }
+            
+            .offer-banner { text-align: center; }
+            .offer-image-box { width: 80%; margin-top: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header" id="header">
+        <div class="container header-inner">
+            <a href="#" class="brand" aria-label="Flexigigs Software Portfolio">
+                <div class="brand-logo-wrapper">
+                    <img src="https://i.postimg.cc/Vv19gBFx/IMG-20250924-155058.jpg" alt="Flexigigs Logo" class="brand-logo">
+                </div>
+                <span>Flexigigs Software</span>
+            </a>
+            <div class="header-controls">
+                <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme">
+                    <i class="ph-bold ph-sun icon-light"></i>
+                    <i class="ph-bold ph-moon icon-dark"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="container">
+            <div class="hero-wrapper fade-in-up">
+                <div class="hero-text">
+                    <h1>Software Development <span>Solutions</span></h1>
+                    <p>Explore our robust software architectures. We engineer custom enterprise solutions, CRMs, and comprehensive business automation systems designed to scale.</p>
+                </div>
+                <div class="hero-image-box">
+                    <img src="https://i.postimg.cc/W1HkT8NK/file-00000000752c720899b7b7758c325c1b.png" alt="Software Dashboard Interface">
+                </div>
+            </div>
+        </section>
+
+        <!-- CUSTOM QUOTE / INDUSTRIES SECTION -->
+        <section class="container custom-quote-section fade-in-up">
+            <div class="custom-quote-card">
+                <div class="cq-layout">
+                    <div class="cq-info">
+                        <h3>Need Something <span>Unique?</span></h3>
+                        <p>We build software tailored to your exact business requirements. Review our target capabilities and propose your custom project below.</p>
+                        
+                        <div class="industry-tags">
+                            <span class="industry-tag">Hospital & Clinic Management</span>
+                            <span class="industry-tag">School & College ERP</span>
+                            <span class="industry-tag">Restaurant & Hotel</span>
+                            <span class="industry-tag">Retail & Wholesale Billing</span>
+                            <span class="industry-tag">Inventory & Warehouse</span>
+                            <span class="industry-tag">Taxi & Cab Booking</span>
+                            <span class="industry-tag">HRMS & Payroll</span>
+                            <span class="industry-tag">Manufacturing Solutions</span>
+                            <span class="industry-tag">Logistics & Delivery</span>
+                            <span class="industry-tag">Real Estate Management</span>
+                            <span class="industry-tag">AI-Powered Systems</span>
+                        </div>
+                        
+                        <div class="cq-image-box">
+                            <img src="https://i.postimg.cc/gJ9L606W/file-00000000eb0072088c40d9cff0d28c58.png" alt="Custom Development Solutions">
+                        </div>
+                    </div>
+                    
+                    <div class="cq-form-wrapper">
+                        <form id="custom-quote-form">
+                            <div class="cq-form-grid">
+                                <div class="form-group cq-full-width">
+                                    <label>Full Name *</label>
+                                    <input type="text" id="cq-name" class="form-control" placeholder="Your Name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number *</label>
+                                    <input type="tel" id="cq-phone" class="form-control" placeholder="+91 xxxxxxxxxx" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Email ID *</label>
+                                    <input type="email" id="cq-email" class="form-control" placeholder="mail@example.com" required>
+                                </div>
+                                <div class="form-group cq-full-width">
+                                    <label>Describe Your Custom Software Requirements *</label>
+                                    <textarea id="cq-desc" class="form-control" placeholder="Tell us about the modules, features, and scale of your software..." required></textarea>
+                                </div>
+                                <div class="form-group cq-full-width">
+                                    <label>Estimated Budget (₹) *</label>
+                                    <input type="number" id="cq-budget" class="form-control" placeholder="e.g. 50000" style="font-size: 1.1rem; color: var(--accent-color);" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 5px;">
+                                <i class="ph-bold ph-paper-plane-right" style="font-size: 1.2rem;"></i> Request Free Consultation
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CORE SOFTWARE PRICING PACKAGES -->
+        <section class="container pricing-section">
+            <h2 class="section-title fade-in-up">Enterprise Software Plans</h2>
+            
+            <div class="pricing-grid">
+                <!-- PROFESSIONAL PLAN -->
+                <div class="pricing-card fade-in-up">
+                    <i class="ph-fill ph-rocket plan-icon bronze"></i>
+                    <h3 class="plan-name">Professional Software Plan</h3>
+                    <div class="plan-price">₹99,999 <span>Starting</span></div>
+                    <p class="plan-desc">Perfect for startups and growing businesses looking for a fully customized software solution.</p>
+                    
+                    <div class="plan-divider"></div>
+                    
+                    <ul class="features-list">
+                        <li><i class="ph-bold ph-check-circle"></i> Custom Business Software</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Up to 10 Modules</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Secure Login & Auth</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Admin Dashboard</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Database Integration</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Reports & Analytics</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Email & SMS Notifications</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Basic API Integration</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Testing & QA</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Source Code Handover</li>
+                        <li><i class="ph-bold ph-check-circle"></i> 3 Months Free Support</li>
+                    </ul>
+                    
+                    <div class="delivery-time">
+                        <i class="ph-bold ph-clock"></i> 30–45 Working Days
+                    </div>
+                    <button class="btn btn-primary btn-buy btn-enquire" data-pkg="Professional Software Plan (₹99,999+)">
+                        <i class="ph-bold ph-terminal-window"></i> Enquire Now
+                    </button>
+                </div>
+
+                <!-- ENTERPRISE PLAN -->
+                <div class="pricing-card highlight fade-in-up" style="transition-delay: 0.1s;">
+                    <div class="popular-badge">Scalable Automation</div>
+                    <i class="ph-fill ph-buildings plan-icon silver"></i>
+                    <h3 class="plan-name">Enterprise Software Plan</h3>
+                    <div class="plan-price">₹2,49,999 <span>Starting</span></div>
+                    <p class="plan-desc">Ideal for medium and large businesses requiring robust business automation & scaling.</p>
+                    
+                    <div class="plan-divider"></div>
+                    
+                    <ul class="features-list">
+                        <li><i class="ph-bold ph-check-circle"></i> Unlimited Modules</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Role-Based User Management</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Advanced Admin Dashboard</li>
+                        <li><i class="ph-bold ph-check-circle"></i> CRM / ERP Features</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Inventory & Billing Management</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Payment Gateway Integration</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Cloud Database Setup</li>
+                        <li><i class="ph-bold ph-check-circle"></i> REST API Development</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Analytics Dashboard</li>
+                        <li><i class="ph-bold ph-check-circle"></i> High-Level Security</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Source Code Handover</li>
+                        <li><i class="ph-bold ph-check-circle"></i> 6 Months Free Support</li>
+                    </ul>
+                    
+                    <div class="delivery-time">
+                        <i class="ph-bold ph-clock"></i> 60–90 Working Days
+                    </div>
+                    <button class="btn btn-primary btn-buy btn-enquire" data-pkg="Enterprise Software Plan (₹2,49,999+)">
+                        <i class="ph-bold ph-terminal-window"></i> Build Enterprise
+                    </button>
+                </div>
+
+                <!-- ELITE PLAN -->
+                <div class="pricing-card fade-in-up" style="transition-delay: 0.2s;">
+                    <i class="ph-fill ph-crown plan-icon gold"></i>
+                    <h3 class="plan-name">Enterprise Elite Solution</h3>
+                    <div class="plan-price">₹5,99,999 <span>Starting</span></div>
+                    <p class="plan-desc">Designed for large hospitals, institutions, logistics, fintech, and government orgs.</p>
+                    
+                    <div class="plan-divider"></div>
+                    
+                    <ul class="features-list">
+                        <li><i class="ph-bold ph-check-circle"></i> Fully Custom Enterprise Software</li>
+                        <li><i class="ph-bold ph-check-circle"></i> AI Automation (Optional)</li>
+                        <li><i class="ph-bold ph-check-circle"></i> ERP/CRM/HRMS/MIS Development</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Multi-Branch Management</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Business Intelligence Dashboard</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Secure Cloud Infrastructure</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Third-Party API Integration</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Disaster Recovery Setup</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Dedicated Project Manager</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Source Code Ownership</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Deployment & Staff Training</li>
+                        <li><i class="ph-bold ph-check-circle"></i> 12 Months Premium Support</li>
+                    </ul>
+                    
+                    <div class="delivery-time">
+                        <i class="ph-bold ph-clock"></i> 90–180 Working Days
+                    </div>
+                    <button class="btn btn-outline btn-buy btn-enquire" data-pkg="Enterprise Elite Solution (₹5,99,999+)">
+                        <i class="ph-bold ph-terminal-window"></i> Discuss Elite
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- READY-TO-DEPLOY SOFTWARE SECTION -->
+        <section class="container ready-deploy-section fade-in-up">
+            <h2 class="section-title">Ready-to-Deploy Business Software</h2>
+            
+            <img src="https://i.postimg.cc/k4rRt5tv/file-00000000d31c7208b1f99f4b4fada525.png" class="section-banner-img fade-in-up" alt="Ready to Deploy CRM Banners">
+            
+            <div class="micro-pricing-grid">
+                <!-- Medicine CRM -->
+                <div class="micro-card fade-in-up">
+                    <div class="micro-icon"><i class="ph-bold ph-pill"></i></div>
+                    <h4 class="micro-title">Medicine Shop CRM</h4>
+                    <div class="micro-price">₹2,999 <span>Start</span></div>
+                    <ul class="micro-features">
+                        <li><i class="ph-bold ph-caret-right"></i> Medicine Inventory</li>
+                        <li><i class="ph-bold ph-caret-right"></i> Stock & Expiry Alerts</li>
+                        <li><i class="ph-bold ph-caret-right"></i> Sales & Purchase Mgt.</li>
+                        <li><i class="ph-bold ph-caret-right"></i> Customer Records</li>
+                        <li><i class="ph-bold ph-caret-right"></i> Invoice Generation</li>
+                    </ul>
+                    <button class="btn btn-outline btn-buy btn-enquire" data-pkg="Medicine Shop CRM (₹2,999)" style="padding: 0.7rem; font-size: 0.9rem; margin-top: auto;">Enquire Now</button>
+                </div>
+
+                <!-- Catering CRM -->
+                <div class="micro-card fade-in-up" style="transition-delay: 0.1s;">
+                    <div class="micro-icon"><i class="ph-bold ph-fork-knife"></i></div>
+                    <h4 class="micro-title">Catering CRM</h4>
+                    <div class="micro-price">₹2,099 <span>Start</span></div>
+                    <ul class="micro-features">
+                        <li><i class="ph-bold ph-caret-right"></i> Customer & Events</li>
+                        <li><i class="ph-bold ph-caret-right"></i> Menu & Packages</li>
+                        <li><i class="ph-bold ph-caret-right"></i> Booking Calendar</li>
+                        <li><i class="ph-bold ph-caret-right"></i> Payment Tracking</li>
+                        <li><i class="ph-bold ph-caret-right"></i> Staff Management</li>
+                    </ul>
+                    <button class="btn btn-outline btn-buy btn-enquire" data-pkg="Catering CRM (₹2,099)" style="padding: 0.7rem; font-size: 0.9rem; margin-top: auto;">Enquire Now</button>
+                </div>
+
+                <!-- Electronic Shop -->
+                <div class="micro-card fade-in-up" style="transition-delay: 0.2s;">
+                    <div class="micro-icon"><i class="ph-bold ph-desktop"></i></div>
+                    <h4 class="micro-title">Electronic Shop CRM</h4>
+                    <div class="micro-price">₹2,999 <span>Start</span></div>
+                    <ul class="micro-features">
+                        <li><i class="ph-bold ph-caret-right"></i> Product Inventory</li>
+                        <li><i class="ph-bold ph-caret-right"></i> Customer Database</li>
+                        <li><i class="ph-bold ph-caret-right"></i> Sales & Billing</li>
+                        <li><i class="ph-bold ph-caret-right"></i> Warranty Tracking</li>
+                        <li><i class="ph-bold ph-caret-right"></i> Business Reports</li>
+                    </ul>
+                    <button class="btn btn-outline btn-buy btn-enquire" data-pkg="Electronic Shop CRM (₹2,999)" style="padding: 0.7rem; font-size: 0.9rem; margin-top: auto;">Enquire Now</button>
+                </div>
+
+                <!-- Admin Panel -->
+                <div class="micro-card fade-in-up" style="transition-delay: 0.3s;">
+                    <div class="micro-icon"><i class="ph-bold ph-kanban"></i></div>
+                    <h4 class="micro-title">Custom Admin Panel</h4>
+                    <div class="micro-price">₹1,999 <span>Start</span></div>
+                    <ul class="micro-features">
+                        <li><i class="ph-bold ph-caret-right"></i> Secure Admin Login</li>
+                        <li><i class="ph-bold ph-caret-right"></i> User Management</li>
+                        <li><i class="ph-bold ph-caret-right"></i> Dashboard Analytics</li>
+                        <li><i class="ph-bold ph-caret-right"></i> Content Management</li>
+                        <li><i class="ph-bold ph-caret-right"></i> Role-Based Access</li>
+                    </ul>
+                    <button class="btn btn-outline btn-buy btn-enquire" data-pkg="Admin Panel Development (₹1,999)" style="padding: 0.7rem; font-size: 0.9rem; margin-top: auto;">Enquire Now</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- WHY CHOOSE US & BANNER -->
+        <section class="container why-section fade-in-up">
+            <h2 class="section-title">Why Choose FLEXIGIGS.in?</h2>
+            
+            <div class="features-grid" style="margin-bottom: 4rem;">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-bold ph-currency-inr"></i></div>
+                    <div class="feature-text">Startup-Friendly Pricing</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-bold ph-terminal-window"></i></div>
+                    <div class="feature-text">Custom Software Development</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-bold ph-shield-check"></i></div>
+                    <div class="feature-text">Secure & Scalable Solutions</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-bold ph-paint-brush"></i></div>
+                    <div class="feature-text">Modern UI/UX Design</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-bold ph-code"></i></div>
+                    <div class="feature-text">Source Code Ownership</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-bold ph-headset"></i></div>
+                    <div class="feature-text">Long-Term Technical Support</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-bold ph-trend-up"></i></div>
+                    <div class="feature-text">Business Growth-Focused</div>
+                </div>
+            </div>
+
+            <!-- OFFER BANNER WITH 4TH IMAGE -->
+            <div class="offer-banner fade-in-up">
+                <div class="offer-text">
+                    <h3 class="offer-title">Digitize Your Business 🚀</h3>
+                    <p class="offer-desc">From simple CRM systems to enterprise-grade software, FLEXIGIGS.in delivers reliable digital solutions tailored to your business operations.</p>
+                    <button class="btn btn-offer btn-enquire" data-pkg="General Software Consultation">
+                        <i class="ph-bold ph-rocket-launch"></i> Talk to an Expert
+                    </button>
+                </div>
+                <div class="offer-image-box">
+                    <img src="https://i.postimg.cc/W3MFmPM6/file-00000000359472089e3e18c54f441361.png" alt="Business Growth">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- UNIVERSAL ENQUIRY MODAL -->
+    <div class="enquiry-modal-overlay" id="enquiry-modal">
+        <div class="enquiry-modal">
+            <div class="modal-header">
+                <h3>Software Enquiry</h3>
+                <button class="modal-close" id="close-modal"><i class="ph-bold ph-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="modal-enquiry-form">
+                    <input type="hidden" id="modal-pkg-name" value="">
+                    
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" id="mod-name" class="form-control" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number *</label>
+                        <input type="tel" id="mod-phone" class="form-control" placeholder="+91 xxxxxxxxxx" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email ID *</label>
+                        <input type="email" id="mod-email" class="form-control" placeholder="mail@company.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Company / Address *</label>
+                        <input type="text" id="mod-address" class="form-control" placeholder="City, State" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Describe Your Software Needs *</label>
+                        <textarea id="mod-desc" class="form-control" placeholder="Briefly describe what your business requires..." required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="submit-modal-enquiry" style="width: 100%;">
+                    <i class="ph-fill ph-whatsapp-logo" style="font-size: 1.2rem;"></i> Submit Request to WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Theme Management ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const htmlElement = document.documentElement;
+            const header = document.getElementById('header');
+            
+            if (localStorage.getItem('theme')) {
+                htmlElement.setAttribute('data-theme', localStorage.getItem('theme'));
+            } else {
+                htmlElement.setAttribute('data-theme', 'light');
+            }
+
+            themeToggle.addEventListener('click', () => {
+                const targetTheme = htmlElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                htmlElement.setAttribute('data-theme', targetTheme);
+                localStorage.setItem('theme', targetTheme);
+            });
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 10) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
+            });
+
+            // --- Scroll Reveal Animations ---
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+            document.querySelectorAll('.fade-in-up').forEach(el => revealObserver.observe(el));
+
+            // --- Form & Submission Logic ---
+            const waNumber = '917450985883';
+
+            // Custom Quotation Form Submission
+            const customQuoteForm = document.getElementById('custom-quote-form');
+            customQuoteForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const name = document.getElementById('cq-name').value;
+                const phone = document.getElementById('cq-phone').value;
+                const email = document.getElementById('cq-email').value;
+                const desc = document.getElementById('cq-desc').value;
+                const budget = document.getElementById('cq-budget').value;
+
+                const message = `*NEW CUSTOM SOFTWARE PROPOSAL* 💻\n\n*Name:* ${name}\n*Phone:* ${phone}\n*Email:* ${email}\n*Estimated Budget:* ₹${budget}\n\n*Software Requirements:*\n${desc}`;
+                
+                window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`, '_blank');
+                customQuoteForm.reset();
+            });
+
+            // Universal Package Enquiry Modal Logic
+            const modalOverlay = document.getElementById('enquiry-modal');
+            const closeModalBtn = document.getElementById('close-modal');
+            const submitModalBtn = document.getElementById('submit-modal-enquiry');
+            const hiddenPkgName = document.getElementById('modal-pkg-name');
+            const modalForm = document.getElementById('modal-enquiry-form');
+
+            document.querySelectorAll('.btn-enquire').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const pkgName = e.currentTarget.getAttribute('data-pkg');
+                    hiddenPkgName.value = pkgName;
+                    modalForm.reset();
+                    modalOverlay.classList.add('active');
+                    document.body.classList.add('no-scroll');
+                });
+            });
+
+            function closeEnquiryModal() {
+                modalOverlay.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+            }
+            closeModalBtn.addEventListener('click', closeEnquiryModal);
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) closeEnquiryModal();
+            });
+
+            submitModalBtn.addEventListener('click', () => {
+                if (!modalForm.checkValidity()) {
+                    modalForm.reportValidity();
+                    return;
+                }
+
+                const pkg = hiddenPkgName.value;
+                const name = document.getElementById('mod-name').value;
+                const phone = document.getElementById('mod-phone').value;
+                const email = document.getElementById('mod-email').value;
+                const address = document.getElementById('mod-address').value;
+                const desc = document.getElementById('mod-desc').value;
+
+                const message = `*NEW SOFTWARE PACKAGE ORDER* 💻\n\n*Selected Package:* ${pkg}\n*Name:* ${name}\n*Phone:* ${phone}\n*Email:* ${email}\n*Company/Address:* ${address}\n\n*Requirements:*\n${desc}`;
+                
+                window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`, '_blank');
+                closeEnquiryModal();
+            });
+        });
+    </script>
+</body>
+</html>

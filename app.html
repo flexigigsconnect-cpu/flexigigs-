@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Flexigigs - Mobile Application Portfolio & Packages">
+    <title>Flexigigs | App Portfolio & Packages</title>
+    
+    <link rel="icon" href="https://i.postimg.cc/Vv19gBFx/IMG-20250924-155058.jpg" type="image/jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        /* =========================================
+           1. CSS Variables & Theme Configuration
+           ========================================= */
+        :root {
+            --font-primary: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            --header-height: 80px;
+            --container-max: 1000px; 
+            --container-padding: 0 1.2rem;
+            
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-app-icon: 22%; 
+            --radius-full: 9999px;
+            
+            --transition-fast: 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+            --transition-smooth: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+
+            /* The Orange Theme */
+            --accent-color: #ff6b00; 
+            --accent-gradient: linear-gradient(135deg, #ff8a00, #ff3d00);
+            --shadow-header: 0 4px 20px rgba(0, 0, 0, 0.04);
+            --shadow-card: 0 8px 30px rgba(0,0,0,0.03);
+            --shadow-glow: 0 10px 30px -5px rgba(255, 107, 0, 0.3);
+        }
+
+        [data-theme="light"] {
+            --bg-color: #fcfcfd;
+            --surface-color: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --text-tertiary: #94a3b8;
+            --header-bg: rgba(255, 255, 255, 0.85);
+            --header-border: rgba(255, 107, 0, 0.1);
+            --card-border: rgba(0, 0, 0, 0.05);
+            --btn-bg: rgba(255, 107, 0, 0.05);
+            --btn-text: #0f172a;
+            --screenshot-bg: #f8fafc;
+            --pricing-bg: #f8fafc;
+            --input-bg: #ffffff;
+            --input-border: rgba(255, 107, 0, 0.2);
+            --overlay-bg: rgba(15, 23, 42, 0.6);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0d0704;
+            --surface-color: #1a0f08;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --header-bg: rgba(13, 7, 4, 0.85);
+            --header-border: rgba(255, 107, 0, 0.15);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --btn-bg: rgba(255, 107, 0, 0.1);
+            --btn-text: #f8fafc;
+            --screenshot-bg: #2a1a12;
+            --pricing-bg: #1f110a;
+            --input-bg: #1a0f08;
+            --input-border: rgba(255, 107, 0, 0.25);
+            --overlay-bg: rgba(0, 0, 0, 0.8);
+        }
+
+        /* =========================================
+           2. Base Reset & Animations
+           ========================================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: var(--font-primary); background-color: var(--bg-color); color: var(--text-primary); 
+            line-height: 1.6; transition: background-color var(--transition-smooth), color var(--transition-smooth); 
+            -webkit-font-smoothing: antialiased; padding-bottom: 60px; overflow-x: hidden;
+            background-image: radial-gradient(circle at 15% 10%, rgba(255, 107, 0, 0.05) 0%, transparent 40%), radial-gradient(circle at 85% 90%, rgba(255, 107, 0, 0.04) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        .container { max-width: var(--container-max); margin: 0 auto; padding: var(--container-padding); }
+        html { scroll-behavior: smooth; }
+        body.no-scroll { overflow: hidden; }
+
+        /* Scroll Reveal Animation Classes */
+        .fade-in-up { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+        .fade-in-up.is-visible { opacity: 1; transform: translateY(0); }
+
+        /* Section Title Styling */
+        .section-title {
+            text-align: center; font-size: 2.2rem; font-weight: 800; margin-bottom: 3rem;
+            color: var(--text-primary); letter-spacing: -0.02em; display: flex; align-items: center; justify-content: center; gap: 15px;
+        }
+        .section-title::before, .section-title::after {
+            content: ''; display: block; width: 50px; height: 4px; background: var(--accent-gradient); border-radius: var(--radius-full); box-shadow: var(--shadow-glow);
+        }
+
+        /* =========================================
+           3. HEADER
+           ========================================= */
+        .site-header { 
+            position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height); 
+            background: var(--header-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+            border-bottom: 1px solid var(--header-border); z-index: 1000; transition: all var(--transition-smooth); 
+        }
+        .site-header.scrolled { box-shadow: var(--shadow-header); }
+        .header-inner { display: flex; align-items: center; justify-content: space-between; height: 100%; }
+        
+        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-primary); font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em; transition: transform var(--transition-fast);}
+        .brand:hover { transform: scale(1.03); }
+        .brand-logo-wrapper { width: 38px; height: 38px; border-radius: 10px; overflow: hidden; border: 1px solid var(--header-border); box-shadow: 0 4px 10px rgba(255,107,0,0.1);}
+        .brand-logo { width: 100%; height: 100%; object-fit: cover; }
+
+        .icon-btn { background: transparent; border: none; color: var(--text-primary); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.4rem; transition: all var(--transition-fast); }
+        .icon-btn:hover { background: var(--btn-bg); color: var(--accent-color); transform: scale(1.05); }
+        
+        .icon-light, .icon-dark { display: none; }
+        [data-theme="dark"] .icon-light { display: block; }
+        [data-theme="light"] .icon-dark { display: block; }
+
+        /* General Buttons */
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 1rem 2rem; border-radius: var(--radius-full); font-size: 1rem; font-weight: 700; text-decoration: none; cursor: pointer; border: none; transition: all var(--transition-smooth); font-family: inherit;}
+        .btn-primary { background: var(--accent-gradient); color: #ffffff; box-shadow: var(--shadow-glow); }
+        .btn-primary:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 15px 30px -5px rgba(255, 107, 0, 0.4); }
+
+        /* Forms */
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; color: var(--text-secondary); letter-spacing: 0.5px;}
+        .form-control { width: 100%; padding: 1rem 1.25rem; border-radius: 14px; border: 2px solid var(--input-border); background: var(--input-bg); color: var(--text-primary); font-family: inherit; font-size: 0.95rem; font-weight: 600; outline: none; transition: border-color var(--transition-fast), box-shadow var(--transition-fast); }
+        .form-control:focus { border-color: var(--accent-color); box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.15); background: var(--surface-color); }
+        textarea.form-control { resize: vertical; min-height: 100px; }
+
+        /* =========================================
+           4. HERO SECTION
+           ========================================= */
+        main { padding-top: calc(var(--header-height) + 4rem); } 
+        
+        .hero-section { margin-bottom: 4rem; text-align: center; }
+        .hero-section h1 { font-size: 2.8rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1rem; }
+        .hero-section h1 span { background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-section p { font-size: 1.1rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto; }
+
+        .spinner-wrapper { text-align: center; padding: 4rem 0; color: var(--accent-color); }
+        .spinner { animation: spin 1s linear infinite; font-size: 2.5rem; margin-bottom: 0.5rem; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* =========================================
+           5. APP SHOWCASE (ANIMATED BORDER CARDS)
+           ========================================= */
+        .apps-container { display: flex; flex-direction: column; gap: 3rem; margin-bottom: 6rem; }
+        
+        .app-card {
+            position: relative; background: transparent; border-radius: var(--radius-lg); padding: 3px;
+            overflow: hidden; box-shadow: var(--shadow-card); z-index: 1;
+            opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .app-card.is-visible { opacity: 1; transform: translateY(0); }
+
+        /* Animated Rotating Border */
+        .app-card::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(from 0deg, transparent 70%, var(--accent-color) 85%, transparent 100%);
+            animation: spin-border 4s linear infinite; z-index: -1; opacity: 0.6; transition: opacity var(--transition-fast), animation-duration var(--transition-fast);
+        }
+        @keyframes spin-border { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .app-card:hover { transform: translateY(-10px); }
+        .app-card:hover::before { opacity: 1; animation-duration: 2s; }
+
+        .app-card-inner {
+            background: var(--surface-color); border-radius: calc(var(--radius-lg) - 2px);
+            padding: 2rem; display: flex; flex-direction: column; height: 100%;
+        }
+
+        .app-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+        
+        .app-icon-wrapper { 
+            width: 64px; height: 64px; border-radius: var(--radius-app-icon); 
+            overflow: hidden; flex-shrink: 0; background: var(--screenshot-bg);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06); border: 1px solid var(--card-border);
+        }
+        .app-icon { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        .app-identity { display: flex; flex-direction: column; justify-content: center; }
+        .app-name { font-size: 1.35rem; font-weight: 800; line-height: 1.2; margin-bottom: 2px; color: var(--text-primary); letter-spacing: -0.01em;}
+        .app-developer { font-size: 0.85rem; font-weight: 600; color: var(--accent-color); }
+
+        .app-description { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem; }
+
+        .screenshot-gallery-container { margin: 0 -2rem; padding: 0 2rem; position: relative; }
+        .screenshot-gallery { display: flex; gap: 12px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding-bottom: 1rem; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+        .screenshot-gallery::-webkit-scrollbar { display: none; }
+
+        .screenshot-item {
+            flex: 0 0 auto; width: 140px; aspect-ratio: 9 / 19; background: var(--screenshot-bg); border-radius: 12px; overflow: hidden;
+            scroll-snap-align: center; border: 1px solid var(--card-border); cursor: pointer; position: relative;
+        }
+        .screenshot-item::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0); transition: background var(--transition-fast); }
+        .screenshot-item:hover::after { background: rgba(0,0,0,0.05); }
+        .screenshot-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        /* =========================================
+           NEW: CUSTOM QUOTATION SECTION
+           ========================================= */
+        .custom-quote-section { margin-bottom: 6rem; }
+        .custom-quote-card {
+            background: var(--surface-color); border: 1px solid var(--accent-color); border-radius: var(--radius-lg);
+            padding: 3rem; box-shadow: var(--shadow-glow); display: flex; flex-direction: column; gap: 2rem;
+            position: relative; overflow: hidden;
+        }
+        .custom-quote-card::before {
+            content: ''; position: absolute; top: 0; right: 0; width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(255,107,0,0.1) 0%, transparent 70%); border-radius: 50%; pointer-events: none;
+        }
+        .cq-header h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--accent-color); }
+        .cq-header p { font-size: 1rem; color: var(--text-secondary); }
+        
+        .cq-form-grid { display: grid; grid-template-columns: 1fr; gap: 0 1.5rem; }
+        @media (min-width: 768px) { .cq-form-grid { grid-template-columns: 1fr 1fr; } .cq-full-width { grid-column: 1 / -1; } }
+
+        /* =========================================
+           6. PRICING & PACKAGES SECTION
+           ========================================= */
+        .pricing-section { margin-bottom: 6rem; }
+        .pricing-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: stretch; margin-bottom: 4rem;}
+        @media (min-width: 992px) { .pricing-grid { grid-template-columns: repeat(3, 1fr); } }
+
+        .pricing-card {
+            background: var(--surface-color); border: 1px solid var(--card-border); border-radius: var(--radius-lg);
+            padding: 2.5rem 2rem; display: flex; flex-direction: column; position: relative; z-index: 1;
+            transition: all var(--transition-smooth); box-shadow: var(--shadow-card);
+        }
+        .pricing-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-glow); border-color: rgba(255, 107, 0, 0.3); }
+        
+        .pricing-card.highlight { border: 2px solid var(--accent-color); box-shadow: 0 15px 40px rgba(255, 107, 0, 0.15); transform: scale(1.02); }
+        .pricing-card.highlight:hover { transform: scale(1.02) translateY(-10px); }
+        .popular-badge {
+            position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent-gradient);
+            color: white; padding: 4px 16px; border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1px; box-shadow: var(--shadow-glow);
+        }
+
+        .plan-icon { font-size: 3rem; margin-bottom: 1rem; display: inline-block;}
+        .plan-icon.bronze { color: #cd7f32; }
+        .plan-icon.silver { color: #c0c0c0; }
+        .plan-icon.gold { color: #ffd700; }
+
+        .plan-name { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px;}
+        .plan-price { font-size: 2.2rem; font-weight: 800; color: var(--accent-color); margin-bottom: 0.5rem; display: flex; align-items: baseline; gap: 5px;}
+        .plan-price span { font-size: 0.9rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase;}
+        .plan-desc { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.5; min-height: 70px;}
+
+        .plan-divider { height: 1px; background: var(--card-border); margin: 0 -2rem 2rem -2rem; }
+
+        .features-list { list-style: none; margin-bottom: 2.5rem; flex-grow: 1; }
+        .features-list li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 0.95rem; font-weight: 500;}
+        .features-list li i { color: var(--accent-color); font-size: 1.2rem; margin-top: 2px; flex-shrink: 0;}
+        
+        .delivery-time { background: var(--pricing-bg); padding: 12px; border-radius: 12px; font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 1.5rem; color: var(--text-primary);}
+        .delivery-time i { color: var(--accent-color); font-size: 1.2rem; }
+
+        .btn-buy { width: 100%; border-radius: var(--radius-md); }
+
+        /* =========================================
+           7. WHY CHOOSE US & BANNER
+           ========================================= */
+        .why-section { margin-bottom: 6rem; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+        .feature-card { background: var(--pricing-bg); border-radius: var(--radius-md); padding: 1.5rem; display: flex; align-items: center; gap: 15px; border: 1px solid var(--card-border); transition: transform var(--transition-fast); }
+        .feature-card:hover { transform: translateY(-5px); border-color: rgba(255, 107, 0, 0.2); box-shadow: 0 10px 20px rgba(0,0,0,0.03); }
+        .feature-icon { width: 45px; height: 45px; border-radius: 12px; background: rgba(255, 107, 0, 0.1); color: var(--accent-color); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+        .feature-text { font-weight: 700; font-size: 1rem; color: var(--text-primary); }
+
+        .offer-banner { background: var(--accent-gradient); border-radius: var(--radius-lg); padding: 3rem 2rem; text-align: center; color: white; box-shadow: var(--shadow-glow); position: relative; overflow: hidden;}
+        .offer-banner::after { content: ''; position: absolute; top: -50%; right: -20%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%); border-radius: 50%; }
+        .offer-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.02em; }
+        .offer-desc { font-size: 1.15rem; font-weight: 500; margin-bottom: 2rem; opacity: 0.95; max-width: 600px; margin-left: auto; margin-right: auto;}
+        .btn-offer { background: white; color: var(--accent-color); font-size: 1.1rem; padding: 1rem 2.5rem; border-radius: var(--radius-full); transition: transform var(--transition-fast); box-shadow: 0 10px 20px rgba(0,0,0,0.1);}
+        .btn-offer:hover { transform: scale(1.05); }
+
+        /* =========================================
+           8. MODALS (ENQUIRY & LIGHTBOX)
+           ========================================= */
+        /* Lightbox */
+        .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity var(--transition-fast); }
+        .lightbox.active { opacity: 1; pointer-events: auto; }
+        .lightbox-content { max-width: 90%; max-height: 85vh; border-radius: var(--radius-md); overflow: hidden; position: relative; }
+        .lightbox-img { width: 100%; height: 100%; object-fit: contain; }
+        .lightbox-close { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.2); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; transition: background var(--transition-fast); }
+        .lightbox-close:hover { background: var(--accent-color); }
+
+        /* Universal Order Enquiry Modal */
+        .enquiry-modal-overlay { position: fixed; inset: 0; background: var(--overlay-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity var(--transition-smooth); padding: 1rem; }
+        .enquiry-modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .enquiry-modal { background: var(--surface-color); width: 100%; max-width: 550px; border-radius: var(--radius-lg); box-shadow: var(--shadow-glow); transform: translateY(40px) scale(0.95); opacity: 0; transition: all var(--transition-smooth); display: flex; flex-direction: column; max-height: 90vh; border: 1px solid var(--accent-color); }
+        .enquiry-modal-overlay.active .enquiry-modal { transform: translateY(0) scale(1); opacity: 1; }
+        
+        .modal-header { padding: 1.5rem 2rem; border-bottom: 1px solid var(--input-border); display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h3 { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; color: var(--accent-color); }
+        .modal-close { background: var(--btn-bg); border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-primary); font-size: 1.2rem; transition: all var(--transition-fast); }
+        .modal-close:hover { transform: rotate(90deg); background: var(--accent-color); color: white; }
+        
+        .modal-body { padding: 2rem; overflow-y: auto; flex-grow: 1; }
+        .modal-footer { padding: 1.5rem 2rem; border-top: 1px solid var(--input-border); }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            :root { --header-height: 70px; --container-padding: 0 1rem; }
+            .hero-section h1 { font-size: 2rem; }
+            .section-title { font-size: 1.8rem; }
+            
+            .app-card-inner { padding: 1.25rem; }
+            .app-icon-wrapper { width: 56px; height: 56px; } 
+            .app-name { font-size: 1.2rem; }
+            .screenshot-gallery-container { margin: 0 -1.25rem; padding: 0 1.25rem; }
+            .screenshot-item { width: 120px; }
+
+            .custom-quote-card { padding: 1.5rem; }
+            .pricing-card.highlight { transform: none; }
+            .pricing-card.highlight:hover { transform: translateY(-5px); }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header" id="header">
+        <div class="container header-inner">
+            <a href="#" class="brand" aria-label="Flexigigs App Portfolio">
+                <div class="brand-logo-wrapper">
+                    <img src="https://i.postimg.cc/Vv19gBFx/IMG-20250924-155058.jpg" alt="Flexigigs Logo" class="brand-logo">
+                </div>
+                <span>Flexigigs Apps</span>
+            </a>
+            <div class="header-controls">
+                <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme">
+                    <i class="ph-bold ph-sun icon-light"></i>
+                    <i class="ph-bold ph-moon icon-dark"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="container">
+            <div class="hero-section fade-in-up">
+                <h1>Crafting Digital <span>Masterpieces</span></h1>
+                <p>Discover our suite of custom-engineered mobile applications, built for high performance and seamless user experiences.</p>
+            </div>
+
+            <h2 class="section-title fade-in-up">Our Creatives</h2>
+
+            <div id="portfolio-loader" class="spinner-wrapper">
+                <i class="ph-bold ph-spinner-gap spinner"></i>
+                <p style="font-weight: 600; font-size: 0.9rem;">Synchronizing applications...</p>
+            </div>
+
+            <div class="apps-container" id="apps-container"></div>
+        </section>
+
+        <section class="container custom-quote-section fade-in-up">
+            <h2 class="section-title">Custom App Quotation</h2>
+            
+            <div class="custom-quote-card">
+                <div class="cq-header">
+                    <h3>Have a Unique Idea? Propose Your Budget!</h3>
+                    <p>Describe your app requirements and tell us your budget. We'll review your details and get back to you immediately.</p>
+                </div>
+                
+                <form id="custom-quote-form">
+                    <div class="cq-form-grid">
+                        <div class="form-group">
+                            <label>Full Name *</label>
+                            <input type="text" id="cq-name" class="form-control" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number *</label>
+                            <input type="tel" id="cq-phone" class="form-control" placeholder="+91 xxxxxxxxxx" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email ID *</label>
+                            <input type="email" id="cq-email" class="form-control" placeholder="mail@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Your Address *</label>
+                            <input type="text" id="cq-address" class="form-control" placeholder="City, State" required>
+                        </div>
+                        <div class="form-group cq-full-width">
+                            <label>Describe Your App / Project Requirements *</label>
+                            <textarea id="cq-desc" class="form-control" placeholder="Tell us about the features, screens, and purpose of your app..." required></textarea>
+                        </div>
+                        <div class="form-group cq-full-width">
+                            <label>Your Proposed Budget (₹) *</label>
+                            <input type="number" id="cq-budget" class="form-control" placeholder="e.g. 15000" style="font-size: 1.2rem; color: var(--accent-color);" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
+                        <i class="ph-bold ph-paper-plane-right" style="font-size: 1.2rem;"></i> Send Proposal to WhatsApp
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <section class="container pricing-section">
+            <h2 class="section-title fade-in-up">App Development Packages</h2>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card fade-in-up">
+                    <i class="ph-fill ph-medal plan-icon bronze"></i>
+                    <h3 class="plan-name">Basic App Plan</h3>
+                    <div class="plan-price">₹9,999 <span>Only</span></div>
+                    <p class="plan-desc">Perfect for startups, local businesses, and MVP (Minimum Viable Product) development.</p>
+                    
+                    <div class="plan-divider"></div>
+                    
+                    <ul class="features-list">
+                        <li><i class="ph-bold ph-check-circle"></i> Android App (Single Platform)</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Up to 5 Screens</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Modern & User-Friendly UI</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Contact Form</li>
+                        <li><i class="ph-bold ph-check-circle"></i> WhatsApp Integration</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Google Maps Integration (Optional)</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Push Notification Setup (Basic)</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Firebase Database Integration</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Basic Testing & APK Delivery</li>
+                        <li><i class="ph-bold ph-check-circle"></i> 15 Days Free Support</li>
+                    </ul>
+                    
+                    <div class="delivery-time">
+                        <i class="ph-bold ph-clock"></i> 7–10 Working Days
+                    </div>
+                    <button class="btn btn-primary btn-buy btn-enquire" data-pkg="Basic App Plan (₹9,999)">
+                        <i class="ph-bold ph-shopping-cart"></i> Choose Basic
+                    </button>
+                </div>
+
+                <div class="pricing-card highlight fade-in-up" style="transition-delay: 0.1s;">
+                    <div class="popular-badge">Best For Business</div>
+                    <i class="ph-fill ph-medal plan-icon silver"></i>
+                    <h3 class="plan-name">Gold Business Plan</h3>
+                    <div class="plan-price">₹29,999 <span>Only</span></div>
+                    <p class="plan-desc">Ideal for growing businesses that need a professional mobile application.</p>
+                    
+                    <div class="plan-divider"></div>
+                    
+                    <ul class="features-list">
+                        <li><i class="ph-bold ph-check-circle"></i> Android App</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Up to 15 Screens</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Custom UI/UX Design</li>
+                        <li><i class="ph-bold ph-check-circle"></i> User Registration & Login</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Firebase Database Integration</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Push Notifications</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Admin Panel (Basic)</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Payment Gateway Integration</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Live Chat / WhatsApp Integration</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Analytics & Optimization</li>
+                        <li><i class="ph-bold ph-check-circle"></i> App Store Publishing Assistance</li>
+                        <li><i class="ph-bold ph-check-circle"></i> 3 Months Free Support</li>
+                    </ul>
+                    
+                    <div class="delivery-time">
+                        <i class="ph-bold ph-clock"></i> 15–25 Working Days
+                    </div>
+                    <button class="btn btn-primary btn-buy btn-enquire" data-pkg="Gold Business Plan (₹29,999)">
+                        <i class="ph-bold ph-shopping-cart"></i> Choose Gold
+                    </button>
+                </div>
+
+                <div class="pricing-card fade-in-up" style="transition-delay: 0.2s;">
+                    <i class="ph-fill ph-medal plan-icon gold"></i>
+                    <h3 class="plan-name">Enterprise Plan</h3>
+                    <div class="plan-price">₹79,999 <span>Starting</span></div>
+                    <p class="plan-desc">Perfect for marketplaces, booking platforms, and custom business solutions.</p>
+                    
+                    <div class="plan-divider"></div>
+                    
+                    <ul class="features-list">
+                        <li><i class="ph-bold ph-check-circle"></i> Android & iOS App</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Unlimited Screens & Custom UI/UX</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Advanced Admin Dashboard</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Secure Authentication & Multi-User Roles</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Firebase or Custom Backend</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Payment Gateway & Live GPS Tracking</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Real-Time Notifications & API Integration</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Analytics, Security & Optimization</li>
+                        <li><i class="ph-bold ph-check-circle"></i> App Store Publishing Assistance</li>
+                        <li><i class="ph-bold ph-check-circle"></i> Source Code Handover</li>
+                        <li><i class="ph-bold ph-check-circle"></i> 6 Months Free Support</li>
+                    </ul>
+                    
+                    <div class="delivery-time">
+                        <i class="ph-bold ph-clock"></i> 30–60 Working Days
+                    </div>
+                    <button class="btn btn-primary btn-buy btn-enquire" data-pkg="Enterprise App Plan (₹79,999+)">
+                        <i class="ph-bold ph-shopping-cart"></i> Choose Premium
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="container why-section fade-in-up">
+            <h2 class="section-title">Why Choose FLEXIGIGS.in?</h2>
+            
+            <div class="features-grid" style="margin-bottom: 4rem;">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-bold ph-currency-inr"></i></div>
+                    <div class="feature-text">Startup-Friendly Pricing</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-bold ph-device-mobile"></i></div>
+                    <div class="feature-text">Modern & Scalable Apps</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-bold ph-shield-check"></i></div>
+                    <div class="feature-text">Secure Firebase & API Integration</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-bold ph-paint-brush"></i></div>
+                    <div class="feature-text">Clean UI/UX Design</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-bold ph-rocket-launch"></i></div>
+                    <div class="feature-text">Fast Development Process</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-bold ph-headset"></i></div>
+                    <div class="feature-text">Dedicated Technical Support</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-bold ph-code"></i></div>
+                    <div class="feature-text">Source Code Ownership</div>
+                </div>
+            </div>
+
+            <div class="offer-banner fade-in-up">
+                <h3 class="offer-title">Startup Special 🎉</h3>
+                <p class="offer-desc">Launch your business app starting at just ₹9,999 and turn your idea into a powerful mobile application with FLEXIGIGS.in.</p>
+                <button class="btn btn-offer btn-enquire" data-pkg="Startup Special Offer (₹9,999)">
+                    <i class="ph-bold ph-rocket-launch"></i> Claim Offer Now
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <div class="enquiry-modal-overlay" id="enquiry-modal">
+        <div class="enquiry-modal">
+            <div class="modal-header">
+                <h3>Package Enquiry</h3>
+                <button class="modal-close" id="close-modal"><i class="ph-bold ph-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="modal-enquiry-form">
+                    <input type="hidden" id="modal-pkg-name" value="">
+                    
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" id="mod-name" class="form-control" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number *</label>
+                        <input type="tel" id="mod-phone" class="form-control" placeholder="+91 xxxxxxxxxx" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email ID *</label>
+                        <input type="email" id="mod-email" class="form-control" placeholder="mail@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Your Address *</label>
+                        <input type="text" id="mod-address" class="form-control" placeholder="City, State" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Describe Your App Requirements *</label>
+                        <textarea id="mod-desc" class="form-control" placeholder="Briefly describe what you need..." required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="submit-modal-enquiry" style="width: 100%;">
+                    <i class="ph-fill ph-whatsapp-logo" style="font-size: 1.2rem;"></i> Submit Order via WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightbox-close" aria-label="Close preview"><i class="ph-bold ph-x"></i></button>
+        <div class="lightbox-content">
+            <img src="" alt="Screenshot Full View" class="lightbox-img" id="lightbox-img">
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Theme Management ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const htmlElement = document.documentElement;
+            const header = document.getElementById('header');
+            
+            if (localStorage.getItem('theme')) {
+                htmlElement.setAttribute('data-theme', localStorage.getItem('theme'));
+            } else {
+                htmlElement.setAttribute('data-theme', 'light');
+            }
+
+            themeToggle.addEventListener('click', () => {
+                const targetTheme = htmlElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                htmlElement.setAttribute('data-theme', targetTheme);
+                localStorage.setItem('theme', targetTheme);
+            });
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 10) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
+            });
+
+            // --- Scroll Reveal Animations ---
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+            document.querySelectorAll('.fade-in-up').forEach(el => revealObserver.observe(el));
+
+            // --- Form & Submission Logic ---
+            const waNumber = '917450985883';
+
+            // 1. Custom Quotation Form Submission
+            const customQuoteForm = document.getElementById('custom-quote-form');
+            customQuoteForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const name = document.getElementById('cq-name').value;
+                const phone = document.getElementById('cq-phone').value;
+                const email = document.getElementById('cq-email').value;
+                const address = document.getElementById('cq-address').value;
+                const desc = document.getElementById('cq-desc').value;
+                const budget = document.getElementById('cq-budget').value;
+
+                const message = `*NEW CUSTOM APP PROPOSAL* 🚀\n\n*Name:* ${name}\n*Phone:* ${phone}\n*Email:* ${email}\n*Address:* ${address}\n*Proposed Budget:* ₹${budget}\n\n*App Requirements:*\n${desc}`;
+                
+                window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`, '_blank');
+                customQuoteForm.reset();
+            });
+
+            // 2. Universal Package Enquiry Modal Logic
+            const modalOverlay = document.getElementById('enquiry-modal');
+            const closeModalBtn = document.getElementById('close-modal');
+            const submitModalBtn = document.getElementById('submit-modal-enquiry');
+            const hiddenPkgName = document.getElementById('modal-pkg-name');
+            const modalForm = document.getElementById('modal-enquiry-form');
+
+            // Open Modal when any 'btn-enquire' is clicked
+            document.querySelectorAll('.btn-enquire').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const pkgName = e.currentTarget.getAttribute('data-pkg');
+                    hiddenPkgName.value = pkgName;
+                    modalForm.reset();
+                    modalOverlay.classList.add('active');
+                    document.body.classList.add('no-scroll');
+                });
+            });
+
+            // Close Modal
+            function closeEnquiryModal() {
+                modalOverlay.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+            }
+            closeModalBtn.addEventListener('click', closeEnquiryModal);
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) closeEnquiryModal();
+            });
+
+            // Submit Modal Form
+            submitModalBtn.addEventListener('click', () => {
+                if (!modalForm.checkValidity()) {
+                    modalForm.reportValidity();
+                    return;
+                }
+
+                const pkg = hiddenPkgName.value;
+                const name = document.getElementById('mod-name').value;
+                const phone = document.getElementById('mod-phone').value;
+                const email = document.getElementById('mod-email').value;
+                const address = document.getElementById('mod-address').value;
+                const desc = document.getElementById('mod-desc').value;
+
+                const message = `*NEW APP PACKAGE ORDER* 🚀\n\n*Selected Package:* ${pkg}\n*Name:* ${name}\n*Phone:* ${phone}\n*Email:* ${email}\n*Address:* ${address}\n\n*App Requirements:*\n${desc}`;
+                
+                window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`, '_blank');
+                closeEnquiryModal();
+            });
+
+
+            // --- Google Drive Image Parser ---
+            function parseDriveImage(rawUrl) {
+                if (!rawUrl || typeof rawUrl !== 'string') return null;
+                const idMatch = rawUrl.match(/(?:\/file\/d\/|\/open\?id=|id=)([-_a-zA-Z0-9]{25,})/);
+                if (idMatch && idMatch[1]) {
+                    return `https://drive.google.com/thumbnail?id=${idMatch[1]}&sz=w1000`;
+                }
+                return rawUrl.startsWith('http') ? rawUrl : null;
+            }
+
+            // --- Dynamic Fetch Portfolio Logic ---
+            const ENGINE_SHEET_URL = `https://docs.google.com/spreadsheets/d/1PJVOQaoVWjrFSbhpsmIWAMVZr4RGt_yHOyWkA5BvGPg/gviz/tq?tqx=out:json`;
+            const appsContainer = document.getElementById('apps-container');
+            const systemLoader = document.getElementById('portfolio-loader');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxClose = document.getElementById('lightbox-close');
+
+            async function pullApplicationDatabase() {
+                try {
+                    const response = await fetch(ENGINE_SHEET_URL);
+                    const systemText = await response.text();
+                    
+                    const jsonPayload = systemText.substring(systemText.indexOf('{'), systemText.lastIndexOf('}') + 1);
+                    const dataMatrix = JSON.parse(jsonPayload);
+                    const rows = dataMatrix.table.rows;
+
+                    systemLoader.style.display = 'none';
+
+                    if (!rows || rows.length === 0) {
+                        appsContainer.innerHTML = `<p style="text-align: center; color: var(--text-secondary);">No applications found in the database.</p>`;
+                        return;
+                    }
+
+                    rows.forEach((rowData, index) => {
+                        if (!rowData || !rowData.c) return;
+
+                        const rawIcon = (rowData.c[1] && rowData.c[1].v) ? rowData.c[1].v : null;           
+                        const appName = (rowData.c[2] && rowData.c[2].v) ? rowData.c[2].v : 'Untitled App'; 
+                        const appDesc = (rowData.c[3] && rowData.c[3].v) ? rowData.c[3].v : 'No description provided.'; 
+                        
+                        const processedIconUrl = parseDriveImage(rawIcon) || 'https://via.placeholder.com/150?text=Icon';
+
+                        const screenshotList = [];
+                        for (let colIdx = 4; colIdx <= 9; colIdx++) {
+                            if (rowData.c[colIdx] && rowData.c[colIdx].v) {
+                                const parsedImg = parseDriveImage(rowData.c[colIdx].v);
+                                if (parsedImg) screenshotList.push(parsedImg);
+                            }
+                        }
+
+                        const appCard = document.createElement('article');
+                        appCard.className = 'app-card';
+                        
+                        let screenshotHTML = '';
+                        if (screenshotList.length > 0) {
+                            screenshotHTML = `
+                                <div class="screenshot-gallery-container">
+                                    <div class="screenshot-gallery">
+                                        ${screenshotList.map(imgUrl => `
+                                            <div class="screenshot-item">
+                                                <img src="${imgUrl}" class="screenshot-img" alt="${appName} Screen" loading="lazy" referrerpolicy="no-referrer">
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            `;
+                        }
+
+                        appCard.innerHTML = `
+                            <div class="app-card-inner">
+                                <div class="app-header">
+                                    <div class="app-icon-wrapper">
+                                        <img src="${processedIconUrl}" class="app-icon" alt="${appName}" referrerpolicy="no-referrer">
+                                    </div>
+                                    <div class="app-identity">
+                                        <h3 class="app-name">${appName}</h3>
+                                        <div class="app-developer">Flexigigs Development</div>
+                                    </div>
+                                </div>
+                                <p class="app-description">${appDesc}</p>
+                                ${screenshotHTML}
+                            </div>
+                        `;
+
+                        appsContainer.appendChild(appCard);
+                        revealObserver.observe(appCard);
+                    });
+
+                    setupLightbox();
+
+                } catch (error) {
+                    console.error("Fetch Error: ", error);
+                    systemLoader.innerHTML = `<p style="color: #ef4444;">Failed to load data. Please check your network connection.</p>`;
+                }
+            }
+
+            // --- Lightbox Functionality ---
+            function setupLightbox() {
+                document.querySelectorAll('.screenshot-img').forEach(img => {
+                    img.addEventListener('click', (e) => {
+                        lightboxImg.src = e.target.src;
+                        lightbox.classList.add('active');
+                    });
+                });
+
+                lightboxClose.addEventListener('click', () => lightbox.classList.remove('active'));
+                lightbox.addEventListener('click', (e) => {
+                    if (e.target === lightbox) lightbox.classList.remove('active');
+                });
+            }
+
+            // Init
+            pullApplicationDatabase();
+        });
+    </script>
+</body>
+</html>

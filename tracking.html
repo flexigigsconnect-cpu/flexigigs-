@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexigigs | Project Status Tracker</title>
+    
+    <link rel="icon" href="https://i.postimg.cc/Vv19gBFx/IMG-20250924-155058.jpg" type="image/jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* =========================================
+           1. CSS Variables & Theme Configuration
+           ========================================= */
+        :root {
+            --font-primary: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            --header-height: 80px;
+            --container-max: 1000px; 
+            --container-padding: 0 1.2rem;
+            --radius-md: 16px;
+            --radius-full: 9999px;
+            --transition-fast: 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+            --transition-smooth: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+
+            /* The Orange Theme */
+            --accent-color: #ea580c; 
+            --accent-gradient: linear-gradient(135deg, #f97316, #ea580c);
+            --shadow-header: 0 4px 20px rgba(0, 0, 0, 0.04);
+            --shadow-glow: 0 10px 30px -5px rgba(234, 88, 12, 0.3);
+        }
+
+        [data-theme="light"] {
+            --bg-color: #fcfcfd;
+            --surface-color: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --header-bg: rgba(255, 255, 255, 0.85);
+            --header-border: rgba(255, 107, 0, 0.1);
+            --card-border: rgba(0, 0, 0, 0.05);
+            --btn-bg: rgba(234, 88, 12, 0.05);
+            --input-bg: #ffffff;
+            --input-border: #d1d5db;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0d0704;
+            --surface-color: #1a0f08;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --header-bg: rgba(13, 7, 4, 0.85);
+            --header-border: rgba(255, 107, 0, 0.15);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --btn-bg: rgba(234, 88, 12, 0.1);
+            --input-bg: #140b06;
+            --input-border: rgba(255, 107, 0, 0.25);
+        }
+
+        /* =========================================
+           2. Unified Base & Header Styles
+           ========================================= */
+        body { 
+            font-family: var(--font-primary); 
+            background-color: var(--bg-color); 
+            color: var(--text-primary); 
+            transition: background-color var(--transition-smooth), color var(--transition-smooth); 
+            -webkit-font-smoothing: antialiased;
+            /* Prevents header overlap */
+            padding-top: calc(var(--header-height) + 2rem); 
+        }
+
+        /* Header CSS */
+        .site-header { 
+            position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height); 
+            background: var(--header-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+            border-bottom: 1px solid var(--header-border); z-index: 1000; transition: all var(--transition-smooth); 
+        }
+        .site-header.scrolled { box-shadow: var(--shadow-header); }
+        .header-inner { display: flex; align-items: center; justify-content: space-between; height: 100%; max-width: var(--container-max); margin: 0 auto; padding: var(--container-padding);}
+        
+        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-primary); font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em; transition: transform var(--transition-fast);}
+        .brand:hover { transform: scale(1.03); }
+        .brand-logo-wrapper { width: 38px; height: 38px; border-radius: 10px; overflow: hidden; border: 1px solid var(--header-border); box-shadow: 0 4px 10px rgba(255,107,0,0.1);}
+        .brand-logo { width: 100%; height: 100%; object-fit: cover; }
+
+        .icon-btn { background: transparent; border: none; color: var(--text-primary); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.4rem; transition: all var(--transition-fast); }
+        .icon-btn:hover { background: var(--btn-bg); color: var(--accent-color); transform: scale(1.05); }
+        
+        .icon-light, .icon-dark { display: none; }
+        [data-theme="dark"] .icon-light { display: block; }
+        [data-theme="light"] .icon-dark { display: block; }
+
+        /* =========================================
+           3. Dark Mode Tailwind Overrides
+           ========================================= */
+        [data-theme="dark"] .bg-white { background-color: var(--surface-color); border-color: var(--card-border); }
+        [data-theme="dark"] .bg-gray-50 { background-color: var(--bg-color); }
+        [data-theme="dark"] .text-gray-900, [data-theme="dark"] .text-gray-800, [data-theme="dark"] .text-gray-700 { color: var(--text-primary); }
+        [data-theme="dark"] .text-gray-600, [data-theme="dark"] .text-gray-500 { color: var(--text-secondary); }
+        [data-theme="dark"] .border-gray-100, [data-theme="dark"] .border-gray-200, [data-theme="dark"] .border-gray-300 { border-color: var(--card-border); }
+        [data-theme="dark"] input { background-color: var(--input-bg); color: var(--text-primary); border-color: var(--input-border); }
+        [data-theme="dark"] .bg-gray-100 { background-color: var(--btn-bg); color: var(--text-primary); }
+
+        /* =========================================
+           4. Tracker Specific Styles
+           ========================================= */
+        .status-box { transition: all 0.3s ease-in-out; animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .modal-overlay { background-color: rgba(15, 23, 42, 0.8); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; transition: opacity 0.3s ease; }
+        
+        .timeline-item { position: relative; padding-left: 2.5rem; }
+        .timeline-circle { position: absolute; left: 0; top: 0; height: 1.5rem; width: 1.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; z-index: 10; transition: all 0.3s ease; }
+        .timeline-line { position: absolute; left: 0.7rem; top: 1.5rem; bottom: 0; width: 3px; background-color: var(--card-border); }
+        
+        .timeline-completed .timeline-circle { background-color: #10b981; color: white; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2); }
+        .timeline-completed .timeline-line { background-color: #10b981; }
+        .timeline-current .timeline-circle { background-color: var(--accent-color); color: white; box-shadow: 0 0 0 4px rgba(234, 88, 12, 0.2); }
+        
+        #payment-button { display: none; }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <header class="site-header" id="header">
+        <div class="header-inner">
+            <a href="#" class="brand" aria-label="Flexigigs Tracker">
+                <div class="brand-logo-wrapper">
+                    <img src="https://i.postimg.cc/Vv19gBFx/IMG-20250924-155058.jpg" alt="Flexigigs Logo" class="brand-logo">
+                </div>
+                <span>Tracker</span>
+            </a>
+            <div class="header-controls">
+                <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme">
+                    <i class="ph-bold ph-sun icon-light"></i>
+                    <i class="ph-bold ph-moon icon-dark"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto p-4 md:p-8 max-w-4xl">
+        
+        <div class="text-center mb-10 mt-4">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Secure Project Tracking</h1>
+            <p class="text-gray-500 mt-2 font-medium">Live status updates based on your project stage.</p>
+        </div>
+
+        <div id="loading-indicator" class="bg-orange-500 text-white p-4 rounded-lg text-center font-semibold mb-6 shadow-md">
+            Synchronizing data with secure servers...
+        </div>
+
+        <div id="auth-section" class="bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-gray-100 hidden">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 border-b pb-4">Client Portal Login</h2>
+            <form id="auth-form" class="space-y-5">
+                <div>
+                    <label for="project-id" class="block text-sm font-bold text-gray-700 mb-1">Project ID</label>
+                    <input type="text" id="project-id" name="project-id" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-150 ease-in-out" placeholder="Enter your Project ID">
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-bold text-gray-700 mb-1">Password</label>
+                    <input type="password" id="password" name="password" required class="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-150 ease-in-out" placeholder="Enter your password">
+                </div>
+                <div id="error-message" class="text-red-500 text-sm font-medium hidden"></div>
+                <button type="submit" class="w-full flex justify-center items-center gap-2 py-3.5 px-4 border border-transparent rounded-xl shadow-md text-base font-bold text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-150 ease-in-out">
+                    Access Dashboard <i class="ph-bold ph-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+
+        <div id="tracking-section" class="hidden">
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-gray-100">
+                <div class="mb-8 pb-5 border-b border-gray-200">
+                    <h2 class="text-2xl font-bold text-gray-800">Tracking Project: <span id="project-id-display" class="font-mono bg-orange-50 text-orange-700 px-3 py-1 rounded-md text-xl border border-orange-100 tracking-wider ml-2"></span></h2>
+                    <div class="mt-3 flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600">
+                        <p class="flex items-center gap-1"><i class="ph-bold ph-clock"></i> Last updated: <span id="timestamp" class="font-medium text-gray-900"></span></p>
+                    </div>
+                </div>
+
+                <div class="mt-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6">Development Timeline</h3>
+                    <div id="timeline-container" class="space-y-6">
+                        </div>
+                </div>
+
+                <div class="mt-10 pt-6 border-t border-gray-200 flex flex-col sm:flex-row gap-4">
+                    <button id="payment-button" class="w-full sm:w-auto flex justify-center items-center gap-2 py-3 px-6 border border-transparent rounded-xl shadow-lg text-base font-bold text-white bg-green-600 hover:bg-green-700 transition duration-150 transform hover:-translate-y-1">
+                        <i class="ph-bold ph-currency-inr text-xl"></i> Pay Remaining Balance
+                    </button>
+                    <button id="logout-button" class="w-full sm:w-auto flex justify-center items-center gap-2 py-3 px-6 rounded-xl text-base font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 transition duration-150">
+                        <i class="ph-bold ph-sign-out text-xl"></i> Secure Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="message-box" class="hidden fixed inset-0 modal-overlay p-4 z-50">
+            <div class="bg-white p-6 rounded-2xl shadow-2xl max-w-sm w-full text-center">
+                <p id="message-content" class="text-lg font-bold text-gray-800"></p>
+                <button id="message-close" class="mt-6 w-full py-3 bg-orange-600 text-white rounded-xl hover:bg-orange-700 font-bold transition">
+                    Acknowledge
+                </button>
+            </div>
+        </div>
+
+        <div id="qr-payment-modal" class="hidden fixed inset-0 modal-overlay p-4 z-50">
+            <div class="bg-white p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center relative transform transition-all duration-300 scale-95 opacity-0" id="qr-modal-content">
+                <button id="close-qr-modal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800 transition bg-gray-100 rounded-full p-1">
+                    <i class="ph-bold ph-x text-xl"></i>
+                </button>
+                
+                <h3 class="text-2xl font-extrabold text-gray-900 mb-2">Final Settlement</h3>
+                <p class="text-gray-500 text-sm mb-6 font-medium">Scan this secure QR code using your UPI app to complete the transaction.</p>
+                
+                <div class="border-2 border-orange-100 rounded-2xl p-4 mb-6 inline-block bg-white shadow-sm transition-opacity duration-300" id="qr-image-container">
+                    <img src="https://i.postimg.cc/ncYsyrtR/IMG-20260627-WA0011.jpg" alt="Payment QR Code" class="w-48 h-48 object-contain rounded-xl">
+                </div>
+
+                <div class="bg-red-50 text-red-600 rounded-xl p-4 font-mono text-3xl font-bold border border-red-100 shadow-inner flex items-center justify-center gap-3">
+                    <i class="ph-bold ph-timer"></i>
+                    <span id="payment-timer">05:00</span>
+                </div>
+                <p id="timeout-message" class="text-red-500 text-sm mt-4 hidden font-bold">Session expired. Please refresh the portal.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Theme Management & Header Logic ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const htmlElement = document.documentElement;
+            const header = document.getElementById('header');
+            
+            if (localStorage.getItem('theme')) {
+                htmlElement.setAttribute('data-theme', localStorage.getItem('theme'));
+            }
+
+            themeToggle.addEventListener('click', () => {
+                const targetTheme = htmlElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                htmlElement.setAttribute('data-theme', targetTheme);
+                localStorage.setItem('theme', targetTheme);
+            });
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 10) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
+            });
+
+            // --- CONFIGURATION ---
+            const SHEET_ID = '1EiDGxj_gRfTpkCdm8G1LHjVf9CE72MLHAZGgMgxroA4';
+            const GID = '0';
+            const BASE_SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID}`;
+
+            const COL_TIMESTAMP = 0;
+            const COL_PROJECT_ID = 1;
+            const COL_PASSWORD = 2;
+            const COL_CURRENT_STAGE_NUM = 3;
+
+            const PROJECT_TIMELINE_STEPS = [
+                "Order Placed & Verified",
+                "Requirements in Review",
+                "Development in Progress",
+                "Testing & Final Polish",
+                "Project Completed"
+            ];
+
+            const DEFAULT_PROJECT_DATA = [
+                { id: 'A101', password: 'testpassword1', currentStage: 4, timestamp: '2026-06-28 09:00 AM' },
+                { id: 'B202', password: 'testpassword2', currentStage: 5, timestamp: '2026-06-27 03:30 PM' }
+            ];
+
+            let projectData = [];
+
+            // --- DOM Elements ---
+            const loadingIndicator = document.getElementById('loading-indicator');
+            const authForm = document.getElementById('auth-form');
+            const authSection = document.getElementById('auth-section');
+            const trackingSection = document.getElementById('tracking-section');
+            const errorMessage = document.getElementById('error-message');
+            const logoutButton = document.getElementById('logout-button');
+            const paymentButton = document.getElementById('payment-button');
+            const timelineContainer = document.getElementById('timeline-container');
+            const messageBox = document.getElementById('message-box');
+            const messageContent = document.getElementById('message-content');
+            const messageClose = document.getElementById('message-close');
+
+            // QR Modal Elements
+            const qrPaymentModal = document.getElementById('qr-payment-modal');
+            const qrModalContent = document.getElementById('qr-modal-content');
+            const closeQrModalBtn = document.getElementById('close-qr-modal');
+            const paymentTimer = document.getElementById('payment-timer');
+            const timeoutMessage = document.getElementById('timeout-message');
+            const qrImageContainer = document.getElementById('qr-image-container');
+            
+            let timerInterval;
+
+            function showMessage(message) {
+                messageContent.textContent = message;
+                messageBox.classList.remove('hidden');
+            }
+
+            messageClose.addEventListener('click', () => {
+                messageBox.classList.add('hidden');
+            });
+
+            function getCellVal(cell) {
+                return cell?.v !== undefined ? String(cell.v) : (cell?.f || '');
+            }
+
+            function renderTimeline(currentStage) {
+                timelineContainer.innerHTML = '';
+                PROJECT_TIMELINE_STEPS.forEach((step, index) => {
+                    const stageNum = index + 1;
+                    const isCompleted = stageNum < currentStage;
+                    const isCurrent = stageNum === currentStage;
+
+                    let stateClass = '';
+                    if (isCompleted) stateClass = 'timeline-completed text-gray-500';
+                    else if (isCurrent) stateClass = 'timeline-current text-orange-600 font-bold';
+                    else stateClass = 'text-gray-400';
+
+                    const html = `
+                        <div class="timeline-item ${stateClass}">
+                            <div class="timeline-circle ${isCompleted ? 'bg-emerald-500' : isCurrent ? 'bg-orange-600' : 'bg-gray-300'}">
+                                ${isCompleted ? '<i class="ph-bold ph-check text-white"></i>' : stageNum}
+                            </div>
+                            ${stageNum < PROJECT_TIMELINE_STEPS.length ? '<div class="timeline-line"></div>' : ''}
+                            <div class="pb-6 pt-1">
+                                <p class="text-base">${step}</p>
+                                ${isCurrent ? '<p class="text-xs text-orange-500 font-bold mt-1 tracking-wide uppercase">Active Phase</p>' : ''}
+                            </div>
+                        </div>
+                    `;
+                    timelineContainer.insertAdjacentHTML('beforeend', html);
+                });
+            }
+
+            async function fetchSheetData(forceRefresh = false) {
+                if (!forceRefresh) {
+                    loadingIndicator.textContent = 'Authenticating database connection...';
+                }
+                let sheetUrl = BASE_SHEET_URL;
+                if (forceRefresh) {
+                    sheetUrl += `&_=${new Date().getTime()}`;
+                    loadingIndicator.textContent = 'Refreshing tracking data...';
+                }
+
+                try {
+                    const response = await fetch(sheetUrl);
+                    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}.`);
+                    
+                    const text = await response.text();
+                    const jsonTextMatch = text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\);/);
+                    
+                    if (!jsonTextMatch || jsonTextMatch.length < 2) {
+                        throw new Error('Response format error.');
+                    }
+
+                    const data = JSON.parse(jsonTextMatch[1]);
+                    const rows = data.table.rows.slice(1);
+                    
+                    const parsedProjects = rows.map(row => {
+                        const cells = row.c;
+                        const stageCell = cells[COL_CURRENT_STAGE_NUM];
+                        
+                        let stageValue = 1;
+                        if (stageCell) {
+                            if (typeof stageCell.v === 'number') stageValue = stageCell.v;
+                            else if (stageCell.v !== undefined) {
+                                const parsed = parseInt(String(stageCell.v).trim());
+                                if (!isNaN(parsed)) stageValue = parsed;
+                            }
+                        }
+                        if (stageValue < 1 || stageValue > PROJECT_TIMELINE_STEPS.length) stageValue = 1;
+
+                        return {
+                            timestamp: getCellVal(cells[COL_TIMESTAMP]),
+                            id: getCellVal(cells[COL_PROJECT_ID]).trim(),
+                            password: getCellVal(cells[COL_PASSWORD]).trim(),
+                            currentStage: stageValue,
+                        };
+                    }).filter(p => p.id && p.password);
+
+                    if (parsedProjects.length === 0) {
+                        projectData = DEFAULT_PROJECT_DATA;
+                        loadingIndicator.textContent = 'Warning: Using test logins (A101/testpassword1).';
+                        loadingIndicator.classList.replace('bg-orange-500', 'bg-yellow-500');
+                    } else {
+                        projectData = parsedProjects;
+                        loadingIndicator.classList.add('hidden');
+                    }
+                    authSection.classList.remove('hidden');
+                } catch (error) {
+                    console.error('CRITICAL ERROR:', error);
+                    projectData = DEFAULT_PROJECT_DATA;
+                    loadingIndicator.classList.replace('bg-orange-500', 'bg-red-600');
+                    loadingIndicator.textContent = `CRITICAL DATA ERROR. Using test logins (A101/testpassword1).`;
+                    authSection.classList.remove('hidden');
+                }
+            }
+
+            function displayTracking(project) {
+                document.getElementById('project-id-display').textContent = project.id;
+                document.getElementById('timestamp').textContent = project.timestamp || 'N/A';
+                renderTimeline(project.currentStage);
+
+                if (project.currentStage === 5) {
+                    paymentButton.style.display = 'flex';
+                } else {
+                    paymentButton.style.display = 'none';
+                }
+
+                authSection.classList.add('hidden');
+                trackingSection.classList.remove('hidden');
+            }
+
+            // --- Timer & QR Modal Logic ---
+            function startTimer(duration) {
+                clearInterval(timerInterval);
+                let timeRemaining = duration;
+                
+                timeoutMessage.classList.add('hidden');
+                qrImageContainer.style.opacity = '1';
+                
+                timerInterval = setInterval(() => {
+                    let minutes = Math.floor(timeRemaining / 60);
+                    let seconds = timeRemaining % 60;
+                    
+                    minutes = minutes < 10 ? '0' + minutes : minutes;
+                    seconds = seconds < 10 ? '0' + seconds : seconds;
+                    
+                    paymentTimer.textContent = `${minutes}:${seconds}`;
+                    
+                    if (timeRemaining <= 0) {
+                        clearInterval(timerInterval);
+                        paymentTimer.textContent = "00:00";
+                        timeoutMessage.classList.remove('hidden');
+                        qrImageContainer.style.opacity = '0.2'; 
+                    }
+                    timeRemaining--;
+                }, 1000);
+            }
+
+            paymentButton.addEventListener('click', () => {
+                qrPaymentModal.classList.remove('hidden');
+                setTimeout(() => {
+                    qrModalContent.classList.remove('scale-95', 'opacity-0');
+                    qrModalContent.classList.add('scale-100', 'opacity-100');
+                }, 10);
+                startTimer(300); // 5 minutes
+            });
+
+            function closePaymentModal() {
+                qrModalContent.classList.remove('scale-100', 'opacity-100');
+                qrModalContent.classList.add('scale-95', 'opacity-0');
+                
+                setTimeout(() => {
+                    qrPaymentModal.classList.add('hidden');
+                    clearInterval(timerInterval);
+                }, 300); 
+            }
+
+            closeQrModalBtn.addEventListener('click', closePaymentModal);
+            
+            qrPaymentModal.addEventListener('click', (e) => {
+                if(e.target === qrPaymentModal) {
+                    closePaymentModal();
+                }
+            });
+
+            // --- Auth & Init ---
+            authForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                await fetchSheetData(true);
+                const projectId = document.getElementById('project-id').value.trim();
+                const password = document.getElementById('password').value.trim();
+                errorMessage.classList.add('hidden');
+
+                const foundProject = projectData.find(p => p.id.toLowerCase() === projectId.toLowerCase() && p.password === password);
+
+                if (foundProject) {
+                    sessionStorage.setItem('authenticatedProjectId', foundProject.id);
+                    displayTracking(foundProject);
+                } else {
+                    errorMessage.textContent = 'Invalid Project ID or Password. Please check your credentials.';
+                    errorMessage.classList.remove('hidden');
+                    showMessage('Access Denied: Invalid Credentials.');
+                }
+            });
+
+            logoutButton.addEventListener('click', function() {
+                sessionStorage.removeItem('authenticatedProjectId');
+                trackingSection.classList.add('hidden');
+                authSection.classList.remove('hidden');
+                authForm.reset();
+                errorMessage.classList.add('hidden');
+                showMessage('Session securely terminated.');
+            });
+
+            // Auto-init
+            fetchSheetData(false).then(() => {
+                const authenticatedProjectId = sessionStorage.getItem('authenticatedProjectId');
+                if (authenticatedProjectId) {
+                    const foundProject = projectData.find(p => p.id === authenticatedProjectId);
+                    if (foundProject) {
+                        displayTracking(foundProject);
+                    } else {
+                        sessionStorage.removeItem('authenticatedProjectId');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

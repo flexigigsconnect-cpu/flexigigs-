@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="description" content="Flexigigs Community Feed">
+    <title>Flexigigs | Community</title>
+    
+    <link rel="icon" href="https://i.postimg.cc/Vv19gBFx/IMG-20250924-155058.jpg" type="image/jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        /* =========================================
+           1. CSS Variables & Reset (Premium Palette)
+           ========================================= */
+        :root {
+            --font-primary: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            --header-height: 76px;
+            
+            /* Premium Accent Gradients & Colors */
+            --accent-color: #ff6b00; 
+            --accent-gradient: linear-gradient(135deg, #ff7e1d 0%, #e65c00 100%);
+            --accent-glow: rgba(255, 107, 0, 0.35);
+            --accent-light: rgba(255, 107, 0, 0.1);
+            
+            --danger-color: #ef4444;
+            --danger-light: rgba(239, 68, 68, 0.1);
+            --success-color: #10b981;
+            
+            --transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f8fafc; 
+            --surface-color: #ffffff;
+            --surface-glass: rgba(255, 255, 255, 0.85);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border-color: #e2e8f0;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            --card-shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.08);
+            --modal-overlay: rgba(15, 23, 42, 0.6);
+            --input-bg: #f1f5f9;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a; 
+            --surface-color: #1e293b;
+            --surface-glass: rgba(30, 41, 59, 0.85);
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --border-color: #334155;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            --card-shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.4);
+            --modal-overlay: rgba(0, 0, 0, 0.75);
+            --input-bg: #0f172a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: var(--font-primary); 
+            background-color: var(--bg-color); 
+            color: var(--text-primary); 
+            line-height: 1.6; 
+            overflow-x: hidden; 
+            padding-top: var(--header-height);
+            padding-bottom: 100px;
+            transition: background-color var(--transition), color var(--transition);
+        }
+
+        .container { max-width: 640px; margin: 0 auto; padding: 0 1.25rem; }
+
+        /* =========================================
+           2. Premium Glassmorphism Header
+           ========================================= */
+        .site-header { 
+            position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height); 
+            background: var(--surface-glass); 
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color); 
+            z-index: 1000; 
+            display: flex; align-items: center;
+        }
+        .header-inner { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+        
+        .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--text-primary); font-weight: 800; font-size: 1.3rem; letter-spacing: -0.03em; }
+        .brand img { width: 44px; height: 44px; border-radius: 14px; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        
+        .theme-btn { background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 50%; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--text-primary); cursor: pointer; transition: var(--transition); }
+        .theme-btn:hover { background: var(--border-color); transform: rotate(15deg); }
+        [data-theme="dark"] .icon-light { display: block; }
+        [data-theme="light"] .icon-dark { display: block; }
+        [data-theme="dark"] .icon-dark, [data-theme="light"] .icon-light { display: none; }
+
+        /* =========================================
+           3. Refined Feed Filters
+           ========================================= */
+        .filter-wrapper { position: sticky; top: var(--header-height); z-index: 900; background: var(--surface-glass); backdrop-filter: blur(12px); padding: 14px 0; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); }
+        .filter-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+        .filter-scroll::-webkit-scrollbar { display: none; }
+        .filter-chip { white-space: nowrap; padding: 10px 20px; background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 30px; font-size: 0.9rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: var(--transition); box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        
+        /* Active Filter gets the gradient */
+        .filter-chip.active { background: var(--accent-gradient); color: white; border-color: transparent; box-shadow: 0 4px 12px var(--accent-glow); }
+
+        /* =========================================
+           4. Premium Post Cards & Animations
+           ========================================= */
+        .feed-list { display: flex; flex-direction: column; gap: 1.25rem; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .post-card { 
+            background: var(--surface-color); 
+            border-radius: 20px; 
+            border: 1px solid var(--border-color); 
+            padding: 1.5rem; 
+            box-shadow: var(--card-shadow); 
+            transition: var(--transition);
+            opacity: 0; 
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .post-card:hover { transform: translateY(-3px); box-shadow: var(--card-shadow-hover); }
+        
+        .post-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.2rem; }
+        .post-user { display: flex; gap: 14px; align-items: center; }
+        .post-avatar { width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 800; color: #fff; box-shadow: inset 0 -2px 5px rgba(0,0,0,0.1); }
+        
+        .post-meta { display: flex; flex-direction: column; }
+        .post-name { font-size: 1.05rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.01em; }
+        .post-company { font-size: 0.85rem; color: var(--text-secondary); margin-top: 1px; font-weight: 500; }
+        .post-time { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; font-weight: 500; display: flex; align-items: center; gap: 4px; }
+        
+        /* Options Menu */
+        .post-options { position: relative; }
+        .opt-btn { background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--text-secondary); cursor: pointer; transition: var(--transition); }
+        .opt-btn:hover { background: var(--border-color); color: var(--text-primary); }
+        
+        .opt-menu { position: absolute; right: 0; top: calc(100% + 8px); background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 6px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: none; min-width: 170px; z-index: 10; transform-origin: top right; animation: menuIn 0.2s ease forwards; }
+        @keyframes menuIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .opt-menu.active { display: block; }
+        
+        .del-btn { width: 100%; text-align: left; padding: 12px 14px; border: none; background: none; font-size: 0.9rem; font-weight: 600; color: var(--danger-color); cursor: pointer; display: flex; align-items: center; gap: 10px; border-radius: 8px; transition: var(--transition); }
+        .del-btn:hover, .del-btn:active { background: var(--danger-light); }
+
+        .post-cat { display: inline-flex; align-items: center; padding: 6px 14px; background: var(--accent-light); color: var(--accent-color); font-size: 0.8rem; font-weight: 700; border-radius: 20px; margin-bottom: 14px; }
+        .post-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 10px; line-height: 1.4; color: var(--text-primary); letter-spacing: -0.02em; }
+        .post-content { font-size: 1rem; color: var(--text-secondary); line-height: 1.7; white-space: pre-wrap; }
+
+        .loader { text-align: center; padding: 4rem 2rem; color: var(--text-muted); font-weight: 600; }
+        .ph-spinner { animation: spin 1s linear infinite; font-size: 2.5rem; color: var(--accent-color); margin-bottom: 14px; display: inline-block; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* =========================================
+           5. Glowing Floating Action Button (FAB)
+           ========================================= */
+        .fab { position: fixed; bottom: 30px; right: 30px; width: 64px; height: 64px; border-radius: 50%; background: var(--accent-gradient); color: white; border: none; font-size: 2rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px var(--accent-glow); cursor: pointer; z-index: 990; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .fab:hover { transform: scale(1.05) translateY(-5px); box-shadow: 0 15px 35px var(--accent-glow); }
+        .fab:active { transform: scale(0.95); }
+
+        /* =========================================
+           6. Modern Native-Style Bottom Sheet
+           ========================================= */
+        .modal-bg { position: fixed; inset: 0; background: var(--modal-overlay); backdrop-filter: blur(4px); z-index: 2000; opacity: 0; pointer-events: none; transition: opacity var(--transition); display: flex; align-items: flex-end; justify-content: center; }
+        .modal-bg.active { opacity: 1; pointer-events: auto; }
+        
+        .modal-content { background: var(--bg-color); width: 100%; max-width: 640px; max-height: 90vh; border-radius: 28px 28px 0 0; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); display: flex; flex-direction: column; box-shadow: 0 -10px 40px rgba(0,0,0,0.1); }
+        .modal-bg.active .modal-content { transform: translateY(0); }
+        
+        /* Drag Handle Indicator */
+        .modal-drag-handle { width: 44px; height: 5px; background: var(--border-color); border-radius: 10px; margin: 12px auto 0; }
+        
+        .modal-header { padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
+        .modal-header h3 { font-size: 1.3rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em; }
+        .close-btn { background: var(--input-bg); border: none; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--text-secondary); cursor: pointer; transition: var(--transition); }
+        .close-btn:hover { background: var(--border-color); color: var(--text-primary); transform: rotate(90deg); }
+        
+        #post-form { display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; }
+        .modal-body { padding: 1.5rem; overflow-y: auto; flex-grow: 1; -webkit-overflow-scrolling: touch; }
+        
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; font-size: 0.9rem; font-weight: 700; margin-bottom: 8px; color: var(--text-primary); }
+        .form-control { width: 100%; padding: 14px 16px; border-radius: 14px; border: 2px solid transparent; background: var(--input-bg); color: var(--text-primary); font-family: inherit; font-size: 1.05rem; outline: none; transition: var(--transition); }
+        .form-control::placeholder { color: var(--text-muted); }
+        .form-control:focus { border-color: var(--accent-color); background: var(--surface-color); box-shadow: 0 0 0 4px var(--accent-light); }
+        textarea.form-control { resize: vertical; min-height: 120px; line-height: 1.6; }
+
+        /* Premium Grid */
+        .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .cat-label { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 16px 10px; background: var(--input-bg); border: 2px solid transparent; border-radius: 16px; font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); cursor: pointer; transition: var(--transition); }
+        .cat-label:hover { background: var(--border-color); }
+        .cat-input { display: none; }
+        .cat-input:checked + .cat-label { border-color: var(--accent-color); background: var(--accent-light); color: var(--accent-color); box-shadow: 0 4px 12px var(--accent-glow); }
+        .cat-label span { font-size: 1.8rem; margin-bottom: 6px; }
+        .full-width-cat { grid-column: 1 / -1; }
+
+        .modal-footer { padding: 1.25rem 1.5rem calc(1.25rem + env(safe-area-inset-bottom)); background: var(--surface-color); border-top: 1px solid var(--border-color); flex-shrink: 0; }
+        .submit-btn { width: 100%; background: var(--accent-gradient); color: white; border: none; padding: 16px; border-radius: 14px; font-size: 1.1rem; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: var(--transition); box-shadow: 0 6px 15px var(--accent-glow); }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px var(--accent-glow); }
+        .submit-btn:disabled { opacity: 0.7; transform: none; cursor: not-allowed; }
+        .submit-btn.success { background: var(--success-color); box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4); }
+        
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="/" class="brand">
+                <img src="https://i.postimg.cc/Vv19gBFx/IMG-20250924-155058.jpg" alt="Logo">
+                Flexigigs
+            </a>
+            <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
+                <i class="ph-bold ph-sun icon-light"></i>
+                <i class="ph-bold ph-moon icon-dark"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Scrollable Filters -->
+        <div class="filter-wrapper">
+            <div class="filter-scroll" id="filter-scroll">
+                <div class="filter-chip active" data-filter="All">All</div>
+                <div class="filter-chip" data-filter="💡 Startup ideas">💡 Ideas</div>
+                <div class="filter-chip" data-filter="🤝 Looking for co-founders">🤝 Co-founders</div>
+                <div class="filter-chip" data-filter="❓ Business questions">❓ Questions</div>
+                <div class="filter-chip" data-filter="🎉 Milestones">🎉 Milestones</div>
+                <div class="filter-chip" data-filter="📢 Product launches">📢 Launches</div>
+                <div class="filter-chip" data-filter="📚 Tips and resources">📚 Resources</div>
+                <div class="filter-chip" data-filter="💼 Hiring announcements">💼 Hiring</div>
+            </div>
+        </div>
+
+        <!-- Feed State -->
+        <div id="loader" class="loader">
+            <i class="ph-bold ph-spinner ph-spinner"></i>
+            <p>Curating the best posts for you...</p>
+        </div>
+        
+        <div id="feed-list" class="feed-list" style="display: none;"></div>
+    </main>
+
+    <!-- FAB -->
+    <button class="fab" id="open-modal">
+        <i class="ph-bold ph-pencil-simple"></i>
+    </button>
+
+    <!-- Bottom Sheet Modal -->
+    <div class="modal-bg" id="post-modal">
+        <div class="modal-content">
+            <div class="modal-drag-handle"></div>
+            <div class="modal-header">
+                <h3>Create a Post</h3>
+                <button class="close-btn" id="close-modal"><i class="ph-bold ph-x"></i></button>
+            </div>
+            
+            <form id="post-form">
+                <div class="modal-body">
+                    <!-- Identity (Hidden if saved) -->
+                    <div id="identity-sec">
+                        <div class="form-group">
+                            <label>Your Name</label>
+                            <input type="text" id="p-name" class="form-control" placeholder="E.g. Samyak" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Company & Designation</label>
+                            <input type="text" id="p-company" class="form-control" placeholder="E.g. Founder, Flexigigs" required>
+                        </div>
+                    </div>
+
+                    <!-- 7 Categories -->
+                    <div class="form-group">
+                        <label>Select Category</label>
+                        <div class="cat-grid">
+                            <label>
+                                <input type="radio" name="p-cat" value="💡 Startup ideas" class="cat-input" required>
+                                <div class="cat-label"><span>💡</span> Startup ideas</div>
+                            </label>
+                            <label>
+                                <input type="radio" name="p-cat" value="🤝 Looking for co-founders" class="cat-input">
+                                <div class="cat-label"><span>🤝</span> Co-founders</div>
+                            </label>
+                            <label>
+                                <input type="radio" name="p-cat" value="❓ Business questions" class="cat-input">
+                                <div class="cat-label"><span>❓</span> Questions</div>
+                            </label>
+                            <label>
+                                <input type="radio" name="p-cat" value="🎉 Milestones" class="cat-input">
+                                <div class="cat-label"><span>🎉</span> Milestones</div>
+                            </label>
+                            <label>
+                                <input type="radio" name="p-cat" value="📢 Product launches" class="cat-input">
+                                <div class="cat-label"><span>📢</span> Launches</div>
+                            </label>
+                            <label>
+                                <input type="radio" name="p-cat" value="📚 Tips and resources" class="cat-input">
+                                <div class="cat-label"><span>📚</span> Resources</div>
+                            </label>
+                            <label class="full-width-cat">
+                                <input type="radio" name="p-cat" value="💼 Hiring announcements" class="cat-input">
+                                <div class="cat-label"><span>💼</span> Hiring announcements</div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Post Title</label>
+                        <input type="text" id="p-title" class="form-control" placeholder="A catchy brief title..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>What's on your mind?</label>
+                        <textarea id="p-content" class="form-control" placeholder="Share your thoughts, questions, or ideas here..." required></textarea>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="submit" class="submit-btn" id="submit-btn">
+                        Publish Post <i class="ph-bold ph-paper-plane-right"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Theme setup
+            const html = document.documentElement;
+            const themeBtn = document.getElementById('theme-toggle');
+            html.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+
+            themeBtn.addEventListener('click', () => {
+                const theme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                html.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+            });
+
+            // API URLs
+            const SHEET_URL = `https://docs.google.com/spreadsheets/d/14hXpEgfiw5VwziEuyHhRkFfPuBRa3epqphqn_qYDNq4/gviz/tq?tqx=out:json`;
+            const FORM_URL = `https://docs.google.com/forms/d/e/1FAIpQLScG4KxBsLuYJ2ibwtocuOQTbjVu8MsOfg4LdbbWtijU_SbiVg/formResponse`;
+            
+            // State
+            let posts = [];
+            let currentFilter = 'All';
+
+            // Elements
+            const loader = document.getElementById('loader');
+            const feedList = document.getElementById('feed-list');
+            const filters = document.querySelectorAll('.filter-chip');
+
+            // Utils: Generates vibrant premium colors for avatars
+            function getAvatarColor(name) {
+                const colors = ['#f59e0b', '#ef4444', '#3b82f6', '#10b981', '#8b5cf6', '#ec4899', '#0ea5e9'];
+                let hash = 0;
+                for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+                return colors[Math.abs(hash) % colors.length];
+            }
+
+            function formatDate(str) {
+                if (!str) return 'Just now';
+                if (str.startsWith('Date(')) {
+                    const p = str.match(/\d+/g);
+                    if (p) {
+                        const dateObj = new Date(p[0], p[1], p[2], p[3]||0, p[4]||0, p[5]||0);
+                        return dateObj.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' });
+                    }
+                }
+                return str;
+            }
+
+            function render() {
+                feedList.innerHTML = '';
+                const filtered = currentFilter === 'All' ? posts : posts.filter(p => p.cat && p.cat.includes(currentFilter));
+                
+                if (filtered.length === 0) {
+                    feedList.innerHTML = `<div style="text-align:center; padding: 3rem; color: var(--text-muted); background: var(--surface-color); border-radius: 20px; border: 1px dashed var(--border-color);">No posts found in this category.</div>`;
+                    return;
+                }
+
+                filtered.forEach((p, i) => {
+                    const char = (p.name.charAt(0) || 'U').toUpperCase();
+                    const color = getAvatarColor(p.name);
+                    
+                    const el = document.createElement('div');
+                    el.className = 'post-card';
+                    // Applying inline animation delay based on index for smooth cascading effect
+                    el.style.animationDelay = `${i * 0.08}s`; 
+                    
+                    el.innerHTML = `
+                        <div class="post-header">
+                            <div class="post-user">
+                                <div class="post-avatar" style="background-color: ${color}">${char}</div>
+                                <div class="post-meta">
+                                    <div class="post-name">${p.name}</div>
+                                    <div class="post-company">${p.company}</div>
+                                    <div class="post-time"><i class="ph-bold ph-clock" style="font-size:0.85em"></i> ${p.time}</div>
+                                </div>
+                            </div>
+                            <div class="post-options">
+                                <button class="opt-btn" onclick="toggleMenu(event, ${i})"><i class="ph-bold ph-dots-three"></i></button>
+                                <div class="opt-menu" id="menu-${i}">
+                                    <button class="del-btn" onclick="reqDelete(${i})"><i class="ph-bold ph-trash"></i> Request Deletion</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="post-cat">${p.cat}</div>
+                        <div class="post-title">${p.title}</div>
+                        <div class="post-content">${p.content}</div>
+                    `;
+                    feedList.appendChild(el);
+                });
+            }
+
+            // Global functions for inline HTML calls
+            window.toggleMenu = function(e, i) {
+                e.stopPropagation();
+                document.querySelectorAll('.opt-menu').forEach(m => { if(m.id !== `menu-${i}`) m.classList.remove('active'); });
+                document.getElementById(`menu-${i}`).classList.toggle('active');
+            }
+
+            window.addEventListener('click', () => {
+                document.querySelectorAll('.opt-menu').forEach(m => m.classList.remove('active'));
+            });
+
+            // UPDATED DELETION FUNCTION: Formats message properly and includes time
+            window.reqDelete = function(i) {
+                const filtered = currentFilter === 'All' ? posts : posts.filter(p => p.cat && p.cat.includes(currentFilter));
+                const post = filtered[i];
+                if(!post) return;
+                
+                const msg = `Hello, I request the deletion of the following post. Please take immediate action:\n\n*Time Posted:* ${post.time}\n*Title:* ${post.title}\n*Post Content:* ${post.content}`;
+                window.open(`https://wa.me/917450985883?text=${encodeURIComponent(msg)}`, '_blank');
+            }
+
+            async function loadFeed() {
+                loader.style.display = 'block';
+                feedList.style.display = 'none';
+                
+                try {
+                    const res = await fetch(SHEET_URL + '&cb=' + Date.now());
+                    const txt = await res.text();
+                    const json = JSON.parse(txt.substring(txt.indexOf('{'), txt.lastIndexOf('}') + 1));
+                    
+                    posts = [];
+                    json.table.rows.forEach(r => {
+                        if (!r || !r.c || !r.c[1]) return; 
+                        posts.push({
+                            time: formatDate(r.c[0] ? (r.c[0].f || r.c[0].v) : ''),
+                            name: r.c[1] ? r.c[1].v : 'User',
+                            company: r.c[2] ? r.c[2].v : '',
+                            cat: r.c[3] ? r.c[3].v : '💬 General',
+                            title: r.c[4] ? r.c[4].v : '',
+                            content: r.c[5] ? r.c[5].v : ''
+                        });
+                    });
+
+                    posts.reverse();
+                    loader.style.display = 'none';
+                    feedList.style.display = 'flex';
+                    render();
+                } catch (err) {
+                    loader.innerHTML = 'An error occurred while curating the feed.';
+                }
+            }
+
+            // Filters
+            filters.forEach(f => {
+                f.addEventListener('click', (e) => {
+                    filters.forEach(btn => btn.classList.remove('active'));
+                    e.currentTarget.classList.add('active');
+                    currentFilter = e.currentTarget.dataset.filter;
+                    render();
+                });
+            });
+
+            // Modal & Form Handling
+            const modal = document.getElementById('post-modal');
+            const form = document.getElementById('post-form');
+            const idSec = document.getElementById('identity-sec');
+            const nameIn = document.getElementById('p-name');
+            const compIn = document.getElementById('p-company');
+            const submitBtn = document.getElementById('submit-btn');
+
+            document.getElementById('open-modal').addEventListener('click', () => {
+                const sName = localStorage.getItem('fx_name');
+                const sComp = localStorage.getItem('fx_comp');
+                
+                if (sName && sComp) {
+                    idSec.classList.add('hidden');
+                    nameIn.value = sName;
+                    compIn.value = sComp;
+                    nameIn.removeAttribute('required');
+                    compIn.removeAttribute('required');
+                } else {
+                    idSec.classList.remove('hidden');
+                    nameIn.setAttribute('required', 'true');
+                    compIn.setAttribute('required', 'true');
+                }
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+
+            function closeModal() {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+                setTimeout(() => {
+                    form.reset();
+                    submitBtn.classList.remove('success');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = `Publish Post <i class="ph-bold ph-paper-plane-right"></i>`;
+                }, 400); // Matches transition duration
+            }
+
+            document.getElementById('close-modal').addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = `<i class="ph-bold ph-spinner"></i> Publishing...`;
+
+                const data = new URLSearchParams();
+                data.append('entry.1409002356', nameIn.value);
+                data.append('entry.1280225842', compIn.value);
+                data.append('entry.1985410218', document.querySelector('input[name="p-cat"]:checked').value);
+                data.append('entry.73828556', document.getElementById('p-title').value);
+                data.append('entry.1658147966', document.getElementById('p-content').value);
+
+                try {
+                    await fetch(FORM_URL, { method: 'POST', mode: 'no-cors', body: data });
+                    
+                    localStorage.setItem('fx_name', nameIn.value);
+                    localStorage.setItem('fx_comp', compIn.value);
+
+                    submitBtn.classList.add('success');
+                    submitBtn.innerHTML = `Success!`;
+                    
+                    setTimeout(() => { closeModal(); loadFeed(); }, 1200);
+                } catch (err) {
+                    alert("Error posting. Please try again.");
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = `Publish Post <i class="ph-bold ph-paper-plane-right"></i>`;
+                }
+            });
+
+            // Init
+            loadFeed();
+        });
+    </script>
+</body>
+</html>
