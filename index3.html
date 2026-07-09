@@ -39,10 +39,6 @@
             --accent-gradient: linear-gradient(135deg, #ff8a00, #ff3d00);
             --badge-color: #ef4444; 
             
-            /* DigiLocker Style Colors mapping to Flexigigs Orange */
-            --dl-primary: linear-gradient(135deg, #ff8a00, #e65c00); 
-            --dl-primary-dark: linear-gradient(135deg, #cc5500, #993300);
-            
             --shadow-glow-orange: 0 8px 25px -5px rgba(255, 107, 0, 0.3);
             --shadow-glow-click: 0 0 0 4px rgba(255, 107, 0, 0.25), 0 0 25px rgba(255, 107, 0, 0.7);
             --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.05);
@@ -51,22 +47,22 @@
         }
 
         [data-theme="light"] {
-            --bg-color: #ffffff;
+            --bg-color: #fcfcfd;
             --surface-color: #ffffff;
             --text-primary: #0f172a;
             --text-secondary: #64748b;
             --text-nav-active: #ff6b00;
-            --header-bg: rgba(255, 255, 255, 0.95);
+            --header-bg: rgba(255, 255, 255, 0.85);
             --header-border: rgba(255, 107, 0, 0.1);
             --btn-hover-bg: rgba(255, 107, 0, 0.05);
-            --dl-card-bg: #f4f5f7; /* DigiLocker soft gray utility background */
             --overlay-bg: rgba(15, 23, 42, 0.6);
-            --cutout-border: #ffffff;
+            --cutout-border: #fcfcfd;
             
-            --card-border: rgba(0, 0, 0, 0.04); 
+            --card-border: rgba(255, 107, 0, 0.15);
+            --card-hover-border: #ff6b00;
             --hero-badge-bg: rgba(255, 107, 0, 0.05);
             --hero-badge-text: #e05e00;
-            --input-bg: #f8fafc;
+            --input-bg: #ffffff;
             --input-border: rgba(255, 107, 0, 0.2);
             --carousel-nav-bg: rgba(255, 255, 255, 0.95);
             --carousel-nav-color: #ff6b00;
@@ -93,14 +89,14 @@
             --text-primary: #ffffff;
             --text-secondary: #a89f98;
             --text-nav-active: #ff8a00;
-            --header-bg: rgba(13, 7, 4, 0.95);
+            --header-bg: rgba(13, 7, 4, 0.85);
             --header-border: rgba(255, 107, 0, 0.15);
             --btn-hover-bg: rgba(255, 107, 0, 0.1);
-            --dl-card-bg: #22150f; /* Dark mode gray mapping */
             --overlay-bg: rgba(0, 0, 0, 0.8);
             --cutout-border: #0d0704;
             
-            --card-border: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 107, 0, 0.2);
+            --card-hover-border: #ff8a00;
             --hero-badge-bg: rgba(255, 107, 0, 0.1);
             --hero-badge-text: #ff8a00;
             --input-bg: #1a0f08;
@@ -128,35 +124,52 @@
            2. Base Reset & Layout Constraints
            ========================================= */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Outfit', sans-serif; }
+        
         html, body { overflow-x: hidden; width: 100%; }
-        body { background-color: var(--bg-color); color: var(--text-primary); line-height: 1.5; transition: background-color var(--transition-smooth), color var(--transition-smooth); -webkit-font-smoothing: antialiased; padding-bottom: calc(var(--bottom-nav-height) + 40px); }
+
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-primary); 
+            line-height: 1.5; 
+            transition: background-color var(--transition-smooth), color var(--transition-smooth); 
+            -webkit-font-smoothing: antialiased; 
+            padding-bottom: calc(var(--bottom-nav-height) + 40px); 
+        }
+
         html { scroll-behavior: smooth; }
         body.no-scroll { overflow: hidden; }
         .container { max-width: var(--container-max); margin: 0 auto; padding: var(--container-padding); width: 100%; box-sizing: border-box; }
 
         /* =========================================
-           GLOBAL ANIMATIONS
+           GLOBAL ANIMATIONS (Images & Reveal)
            ========================================= */
         .fade-in-up { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
         .fade-in-up.is-visible { opacity: 1; transform: translateY(0); }
+
         .slide-in-right { opacity: 0; transform: translateX(50px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
         .slide-in-right.is-visible { opacity: 1; transform: translateX(0); }
-        @keyframes float-up-down { 0% { transform: translateY(0); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0); } }
-        @keyframes shimmer-blink { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
-        .blink-effect { animation: shimmer-blink 2.5s infinite ease-in-out; }
-        @keyframes pulse-glow { 0% { box-shadow: 0 0 0 0 rgba(255, 107, 0, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(255, 107, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 107, 0, 0); } }
-        @keyframes shimmerText { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
 
-        .text-gradient { background: linear-gradient(to right, #ff8a00, #e52e71, #ff8a00); background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: shimmerText 4s linear infinite; }
-        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0.8rem 1.8rem; border-radius: var(--radius-full); font-size: 0.95rem; font-weight: 700; text-decoration: none; cursor: pointer; border: none; transition: all var(--transition-fast); }
-        .btn-primary { background: var(--accent-gradient); color: #ffffff; box-shadow: var(--shadow-glow-orange); animation: pulse-glow 2.5s infinite; }
-        .btn-primary:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 20px 40px -5px rgba(255, 107, 0, 0.6); animation: none; }
-        .btn-primary:active { transform: scale(0.92); box-shadow: var(--shadow-glow-click) !important; }
-        .btn-secondary { background: var(--surface-color); color: var(--accent-color); border: 1px solid rgba(255,107,0,0.3); box-shadow: var(--shadow-card); }
-        .btn-secondary:hover { border-color: var(--accent-color); transform: translateY(-4px) scale(1.02); box-shadow: var(--shadow-glow-orange); }
+        @keyframes float-up-down {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0); }
+        }
 
-        .floating-img-wrapper { display: flex; justify-content: center; align-items: center; padding: 1rem; margin: 0 auto 2.5rem auto; width: 100%; box-sizing: border-box; }
-        .floating-img-wrapper img { width: 100%; max-width: 500px; height: auto; object-fit: contain; animation: float-up-down 4.5s ease-in-out infinite; filter: drop-shadow(0 10px 15px rgba(255, 107, 0, 0.15)); }
+        .floating-img-wrapper { 
+            display: flex; justify-content: center; align-items: center; 
+            padding: 1rem; margin: 0 auto 2.5rem auto; 
+            width: 100%; box-sizing: border-box; 
+        }
+        .floating-img-wrapper img { 
+            width: 100%; max-width: 500px; height: auto; object-fit: contain;
+            animation: float-up-down 4.5s ease-in-out infinite; 
+            filter: drop-shadow(0 10px 15px rgba(255, 107, 0, 0.15)); 
+        }
+
+        @keyframes popInCascade {
+            0% { opacity: 0; transform: scale(0.9) translateY(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
 
         /* =========================================
            HEADER
@@ -165,11 +178,13 @@
         .site-header.scrolled { box-shadow: var(--shadow-header); background: var(--surface-color); }
         [data-theme="dark"] .site-header.scrolled { background: rgba(26, 15, 8, 0.98); }
         .header-inner { display: flex; align-items: center; justify-content: space-between; height: 100%; }
+        
         .brand { display: flex; align-items: center; gap: 16px; text-decoration: none; color: var(--text-primary); transition: opacity var(--transition-fast); }
         .brand:hover { opacity: 0.8; }
         .brand-logo-wrapper { width: 56px; height: 56px; border-radius: var(--radius-md); overflow: hidden; display: flex; align-items: center; justify-content: center; background: var(--surface-color); border: 1px solid var(--header-border); box-shadow: 0 8px 16px rgba(255,107,0,0.08); transition: all var(--transition-fast); }
         .brand-logo { width: 100%; height: 100%; object-fit: cover; }
         .brand-name { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.02em; transition: all var(--transition-fast); }
+        
         .header-controls { display: flex; align-items: center; gap: 4px; }
         .icon-btn { background: transparent; border: none; color: var(--text-primary); width: 44px; height: 44px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.5rem; transition: background-color var(--transition-fast); }
         .icon-btn:hover { background-color: var(--btn-hover-bg); color: var(--accent-color); }
@@ -179,153 +194,10 @@
         [data-theme="light"] .icon-dark { display: block; }
 
         /* =========================================
-           DIGILOCKER UI: HERO SECTION
+           CAROUSEL & HERO
            ========================================= */
-        .dl-hero-bg {
-            background: var(--dl-primary);
-            /* Reduced bottom padding to perfectly close the gap between dots and the overlap card */
-            padding: calc(var(--header-height) + 2.5rem) 1.5rem 4.5rem 1.5rem;
-            position: relative;
-            border-bottom-right-radius: 60px; /* DigiLocker angled curve */
-            z-index: 1;
-        }
-        [data-theme="dark"] .dl-hero-bg { background: var(--dl-primary-dark); }
-        
-        .dl-welcome { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
-        .dl-welcome-text h1 { font-size: 1.5rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem; letter-spacing: 0.5px; line-height: 1.3; }
-        .dl-welcome-text p { font-size: 0.9rem; color: rgba(255,255,255,0.9); line-height: 1.4; max-width: 250px; font-weight: 500; }
-        .dl-avatar { width: 55px; height: 55px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.4); object-fit: cover; background: white; }
-
-        /* HERO AD CAROUSEL STYLES */
-        .hero-ad-dots {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
-            margin-top: 12px;
-        }
-        .hero-ad-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.4);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .hero-ad-dot.active {
-            width: 22px;
-            border-radius: 8px; /* Makes it look like the pill shape from the reference */
-            background-color: #ffffff;
-        }
-        
-        /* Overlapping Card */
-        .dl-overlap-container { margin-top: -3.5rem; padding: 0 1.25rem; position: relative; z-index: 2; margin-bottom: 2.5rem; }
-        .dl-main-card {
-            background: var(--surface-color);
-            border-radius: 16px;
-            padding: 2rem 1.5rem;
-            box-shadow: 0 10px 25px rgba(255,107,0,0.15);
-            border: 1px solid var(--card-border);
-            display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem;
-        }
-        .hero-tagline-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--hero-badge-bg); border: 1px solid var(--card-border); padding: 6px 16px; border-radius: var(--radius-full); color: var(--hero-badge-text); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
-        .pulse-dot { width: 6px; height: 6px; background-color: var(--accent-color); border-radius: 50%; box-shadow: 0 0 10px var(--accent-color); animation: pulse 2s infinite; }
-        .dl-main-card h2 { font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 800; line-height: 1.2; margin-bottom: 0.5rem; }
-        .dl-main-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; max-width: 600px; margin-bottom: 0.5rem;}
-        .hero-ctas { display: flex; gap: 0.75rem; align-items: center; justify-content: center; flex-wrap: wrap; width: 100%; margin-top: 10px; }
-
-        /* =========================================
-           DIGILOCKER UI: 3-COLUMN UTILITY GRIDS
-           ========================================= */
-        .dl-section { margin-bottom: 3.5rem; padding: 0 1.25rem; }
-        .dl-section-header { margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between; }
-        .dl-section-title { font-size: 1.2rem; font-weight: 800; color: var(--text-primary); }
-        .dl-section-subtitle { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; display: block;}
-        
-        .dl-grid-3 { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 12px; 
-        }
-        @media (min-width: 768px) { .dl-grid-3 { grid-template-columns: repeat(6, 1fr); gap: 1rem; } }
-        
-        .dl-item {
-            background-color: var(--dl-card-bg);
-            border-radius: 12px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: flex-start;
-            gap: 14px; 
-            text-decoration: none;
-            border: 1px solid transparent;
-            transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
-            cursor: pointer;
-            min-height: 100px;
-        }
-        .dl-item:hover { 
-            transform: translateY(-4px); 
-            border-color: rgba(255,107,0,0.2); 
-            box-shadow: 0 8px 15px rgba(255, 107, 0, 0.1); 
-            background: var(--surface-color);
-        }
-        .dl-item:active { transform: scale(0.95); }
-        
-        .dl-item-icon-wrap {
-            width: 38px;
-            height: 38px;
-            background-color: var(--surface-color);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent-color);
-            font-size: 1.5rem;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-            transition: all var(--transition-fast);
-        }
-        [data-theme="dark"] .dl-item-icon-wrap { box-shadow: 0 2px 6px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
-        .dl-item:hover .dl-item-icon-wrap { transform: scale(1.1); background: var(--accent-gradient); color: white; }
-
-        .dl-item-text {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            line-height: 1.25;
-            margin-top: auto;
-            text-align: left;
-        }
-
-        /* =========================================
-           DIGILOCKER UI: PROMO BANNER
-           ========================================= */
-        .dl-promo-banner {
-            background: var(--surface-color);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: var(--shadow-card);
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 3.5rem;
-            margin-left: 1.25rem;
-            margin-right: 1.25rem;
-        }
-        .dl-promo-content { max-width: 65%; z-index: 2; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
-        .dl-promo-content h3 { font-size: 1.1rem; color: var(--accent-color); font-weight: 800; line-height: 1.2;}
-        .dl-promo-content p { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 5px;}
-        .dl-promo-btn { background: var(--accent-gradient); color: white; border: none; padding: 8px 18px; border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 700; box-shadow: var(--shadow-glow-orange); cursor: pointer; animation: pulse-glow 2.5s infinite; }
-        .dl-promo-img { width: 120px; height: auto; position: absolute; right: 10px; bottom: -10px; z-index: 1; animation: float-up-down 4s ease-in-out infinite; }
-
-        /* =========================================
-           CAROUSEL
-           ========================================= */
-        .carousel-section { margin-bottom: 3.5rem; padding: 0 1.25rem; }
-        .carousel-wrapper { position: relative; width: 100%; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-card); aspect-ratio: 21 / 9; background-color: var(--surface-color); border: 1px solid var(--card-border); }
+        .carousel-section { padding-top: calc(var(--header-height) + 1rem); margin-bottom: 2rem; width: 100%; }
+        .carousel-wrapper { position: relative; width: 100%; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-card); aspect-ratio: 21 / 9; background-color: var(--surface-color); border: 1px solid var(--card-border); }
         .carousel-track { display: flex; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
         .carousel-slide { min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background-color: var(--bg-color); }
         .carousel-slide img { width: 100%; height: 100%; object-fit: cover; user-select: none; -webkit-user-drag: none; }
@@ -338,68 +210,148 @@
         .carousel-loader { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--surface-color); color: var(--accent-color); font-size: 1.5rem; z-index: 20; text-align: center; }
         .spinner { animation: spin 1s linear infinite; margin-bottom: 8px; }
 
+        .hero-text-section { text-align: center; display: flex; flex-direction: column; align-items: center; margin-bottom: 2.5rem; }
+        .hero-tagline-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--hero-badge-bg); border: 1px solid var(--card-border); padding: 6px 16px; border-radius: var(--radius-full); color: var(--hero-badge-text); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 1.25rem; text-transform: uppercase; }
+        .pulse-dot { width: 6px; height: 6px; background-color: var(--accent-color); border-radius: 50%; box-shadow: 0 0 10px var(--accent-color); animation: pulse 2s infinite; }
+        
+        .hero-text-section h1 { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 1rem; max-width: 800px; }
+        .text-gradient { background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero-text-section p { font-size: clamp(0.95rem, 1.8vw, 1.1rem); color: var(--text-secondary); max-width: 650px; margin-bottom: 2rem; }
+        
+        .hero-ctas { display: flex; gap: 0.75rem; align-items: center; justify-content: center; flex-wrap: wrap; width: 100%; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0.8rem 1.8rem; border-radius: var(--radius-full); font-size: 0.95rem; font-weight: 700; text-decoration: none; cursor: pointer; border: none; transition: all var(--transition-fast); }
+        .btn-primary { background: var(--accent-gradient); color: #ffffff; box-shadow: var(--shadow-glow-orange); }
+        .btn-primary:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 20px 40px -5px rgba(255, 107, 0, 0.5); }
+        .btn-primary:active { transform: scale(0.92); box-shadow: var(--shadow-glow-click) !important; }
+        
+        .btn-secondary { background: var(--surface-color); color: var(--accent-color); border: 1px solid var(--card-border); box-shadow: var(--shadow-card); }
+        .btn-secondary:hover { border-color: var(--accent-color); transform: translateY(-4px) scale(1.02); box-shadow: var(--shadow-glow-orange); }
+        .btn-secondary:active { transform: scale(0.92); box-shadow: var(--shadow-glow-click) !important; border-color: var(--accent-color); }
+
         /* =========================================
-           STARTUP SERVICES CUSTOM GRID
+           QUICK HIRE GRID (URBAN APP STYLE)
            ========================================= */
-        .startup-services-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
-        @media (min-width: 768px) { 
-            .startup-services-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; } 
-            .startup-services-grid .full-width { grid-column: 1 / -1; display: flex; flex-direction: row; align-items: center; padding: 1.5rem 2rem; }
-            .startup-services-grid .full-width .service-card-content { margin-left: 1rem; margin-right: 2rem; }
-            .startup-services-grid .full-width .service-card-cta { margin-top: 0; margin-left: auto; background: var(--hero-badge-bg); padding: 8px 20px; border-radius: var(--radius-full); border: 1px solid var(--card-border); white-space: nowrap; }
+        .hire-grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 1.5rem 0.5rem; 
+            margin-bottom: 3.5rem; 
         }
-        .service-card { background: var(--surface-color); border-radius: 16px; padding: 1.5rem; box-shadow: var(--shadow-card); border: 1px solid var(--card-border); display: flex; flex-direction: column; gap: 1rem; position: relative; overflow: hidden; text-decoration: none; transition: all var(--transition-fast); }
-        .service-card:hover { border-color: rgba(255,107,0,0.3); box-shadow: 0 10px 25px rgba(255, 107, 0, 0.1); transform: translateY(-3px); }
-        .service-card-icon { width: 48px; height: 48px; border-radius: 12px; background: var(--drawer-icon-bg); color: var(--accent-color); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
-        .service-card-content { display: flex; flex-direction: column; gap: 0.4rem; flex-grow: 1; }
-        .service-card-title { font-size: 1.15rem; font-weight: 800; color: var(--text-primary); line-height: 1.2; }
-        .service-card-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
-        .service-card-cta { font-size: 0.85rem; font-weight: 800; color: var(--accent-color); display: inline-flex; align-items: center; gap: 6px; margin-top: auto; }
-        .service-ribbon { position: absolute; top: 18px; right: -32px; background: var(--accent-gradient); color: white; font-size: 0.65rem; font-weight: 800; padding: 4px 35px; transform: rotate(45deg); z-index: 2; letter-spacing: 1px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .hire-card { 
+            background: transparent; 
+            border: none; 
+            padding: 0; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: flex-start; 
+            text-align: center; 
+            gap: 0.6rem; 
+            box-shadow: none; 
+            transition: all var(--transition-fast); 
+            cursor: pointer; 
+            text-decoration: none; 
+        }
+        .hire-icon-wrapper {
+            width: 64px; 
+            height: 64px; 
+            border-radius: 18px; 
+            background: var(--surface-color); 
+            border: 1px solid rgba(0,0,0,0.03);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.04);
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            transition: all var(--transition-fast);
+        }
+        [data-theme="dark"] .hire-icon-wrapper {
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        .hire-icon { 
+            font-size: 2rem; 
+            color: var(--accent-color); 
+            transition: transform var(--transition-fast); 
+        }
+        .hire-card:hover .hire-icon-wrapper { 
+            transform: translateY(-5px); 
+            box-shadow: 0 12px 20px rgba(255, 107, 0, 0.15); 
+            border-color: rgba(255, 107, 0, 0.2);
+        }
+        .hire-card:active .hire-icon-wrapper {
+            transform: scale(0.95);
+        }
+        .hire-card:hover .hire-icon { 
+            transform: scale(1.1); 
+        }
+        .hire-card h3 { 
+            font-size: 0.7rem; 
+            font-weight: 600; 
+            color: var(--text-primary); 
+            line-height: 1.25; 
+            letter-spacing: -0.01em;
+        }
+
+        @media (min-width: 768px) {
+            .hire-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 2.5rem 1.5rem; }
+            .hire-icon-wrapper { width: 80px; height: 80px; border-radius: 24px; }
+            .hire-icon { font-size: 2.5rem; }
+            .hire-card h3 { font-size: 0.9rem; }
+        }
 
         /* =========================================
-           ABOUT, MISSION, VISION (CARDS)
+           SERVICES GRID
            ========================================= */
-        .section-heading-center { text-align: center; margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 0 1.25rem;}
-        .section-heading-center h2 { font-size: 1.8rem; font-weight: 800; }
-        .section-heading-center p { font-size: 0.95rem; color: var(--text-secondary); max-width: 600px; }
+        .services-section { margin-bottom: 3.5rem; }
+        .services-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+        @media (min-width: 768px) { .services-grid { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; } .service-card.span-2 { grid-column: span 2; } }
+        
+        .service-card { position: relative; display: flex; flex-direction: column; justify-content: space-between; padding: 1.5rem; border-radius: var(--radius-md); text-decoration: none; overflow: hidden; background: var(--surface-color); border: 1px solid var(--card-border); transition: all var(--transition-fast); box-shadow: var(--shadow-card); }
+        .service-card:hover { transform: translateY(-8px) scale(1.01); border-color: var(--accent-color); box-shadow: var(--shadow-glow-orange); z-index: 2; }
+        .service-card:active { transform: scale(0.96); border-color: var(--accent-color); box-shadow: var(--shadow-glow-click); }
+        
+        .service-card.span-2 { flex-direction: row; align-items: center; }
+        .service-icon-box { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 1rem; background: var(--btn-hover-bg); color: var(--accent-color); transition: transform var(--transition-fast); }
+        
+        .service-card:hover .service-icon-box { transform: scale(1.15) rotate(5deg); background: var(--accent-gradient); color: white; }
+        .service-card.span-2 .service-icon-box { margin-bottom: 0; margin-right: 1.25rem; width: 56px; height: 56px; font-size: 1.8rem; }
+        .service-content { flex-grow: 1; display: flex; flex-direction: column; }
+        .service-card.span-2 .service-content { flex-direction: row; align-items: center; justify-content: space-between; width: 100%; }
+        
+        .service-text h3 { font-size: 1.15rem; font-weight: 800; margin-bottom: 0.35rem; color: var(--text-primary); }
+        .service-text p { font-size: 0.9rem; color: var(--text-secondary); max-width: 300px; }
+        .service-action-btn { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.9rem; color: var(--accent-color); margin-top: 1.25rem; transition: transform var(--transition-fast); }
+        .service-card:hover .service-action-btn { transform: translateX(8px); }
+        .service-card.span-2 .service-action-btn { margin-top: 0; padding: 0.6rem 1.25rem; background: var(--btn-hover-bg); border-radius: var(--radius-full); }
+        .service-card.span-2:hover .service-action-btn { background: var(--accent-gradient); color: white; }
 
-        .about-section { margin-bottom: 4rem; padding: 0 1.25rem;}
-        .about-card { display: flex; flex-direction: column; background: linear-gradient(145deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.4) 100%); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 107, 0, 0.3); border-radius: var(--radius-lg); padding: 2.5rem; box-shadow: 0 20px 50px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.5); position: relative; overflow: hidden; transition: all var(--transition-smooth); }
-        [data-theme="dark"] .about-card { background: linear-gradient(145deg, rgba(26,15,8,0.9) 0%, rgba(13,7,4,0.4) 100%); border: 1px solid rgba(255, 107, 0, 0.25); box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.05); }
-        .about-card::after { content: ''; position: absolute; top: -50px; right: -50px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(255,107,0,0.15) 0%, transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
-        .about-card:hover { transform: translateY(-5px); border-color: var(--accent-color); box-shadow: var(--shadow-glow-orange), inset 0 0 0 1px rgba(255,255,255,0.8); }
-        .about-badge { position: relative; z-index: 2; display: inline-block; padding: 6px 16px; background: rgba(255, 107, 0, 0.1); color: var(--accent-color); font-size: 0.75rem; font-weight: 800; border-radius: var(--radius-md); margin-bottom: 1.25rem; text-transform: uppercase; letter-spacing: 1px; border: 1px solid rgba(255, 107, 0, 0.2); }
-        .about-content { z-index: 2; position: relative; }
-        .about-content h2 { font-size: 2.2rem; font-weight: 800; margin-bottom: 1.25rem; color: var(--text-primary); letter-spacing: -0.02em; }
-        .about-content p { font-size: 1.05rem; color: var(--text-secondary); margin-bottom: 1.25rem; line-height: 1.7; }
-        .about-content strong { color: var(--text-primary); font-weight: 700; }
-        .about-slogan { font-size: 1.8rem; font-weight: 900; margin: 1.5rem 0 2rem 0; background: linear-gradient(to right, #ff8a00, #e52e71); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; letter-spacing: -0.01em; }
-        .about-visual { width: 100%; display: flex; justify-content: center; align-items: center; margin-top: 1.5rem; position: relative; }
-        .about-visual img { width: 100%; max-width: 350px; height: auto; object-fit: contain; animation: float-up-down 5s ease-in-out infinite; filter: drop-shadow(0 15px 25px rgba(255, 107, 0, 0.2)); z-index: 2; }
-        .about-visual::before { content: ''; position: absolute; width: 200px; height: 200px; background: var(--accent-color); border-radius: 50%; filter: blur(70px); opacity: 0.15; z-index: 1; animation: pulse 4s infinite alternate; }
+        @media (max-width: 767px) { 
+            .service-card.span-2 { flex-direction: column; align-items: flex-start; gap: 0; } 
+            .service-card.span-2 .service-icon-box { margin-bottom: 1rem; } 
+            .service-card.span-2 .service-content { flex-direction: column; align-items: flex-start; } 
+            .service-card.span-2 .service-action-btn { margin-top: 1rem; padding: 0; background: transparent; border-radius: 0; } 
+            .service-card.span-2:hover .service-action-btn { background: transparent; color: var(--accent-color); }
+        }
 
-        .mv-card { position: relative; background: var(--surface-color); border: 1px solid var(--card-border); border-radius: 16px; padding: 2rem; box-shadow: var(--shadow-card); display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; transition: all var(--transition-fast); cursor: pointer; margin: 0 1.25rem 2rem 1.25rem;}
-        .mv-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--accent-gradient); border-top-left-radius: 16px; border-top-right-radius: 16px;}
-        .mv-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-glow-orange); border-color: var(--accent-color); }
-        .mv-card:active { transform: scale(0.96); box-shadow: var(--shadow-glow-click); }
-        .mv-icon { font-size: 2.5rem; color: var(--accent-color); transition: transform var(--transition-fast); }
-        .mv-card:hover .mv-icon { transform: scale(1.1); }
-        .mv-card h3 { font-size: 1.6rem; font-weight: 800; color: var(--text-primary); }
-        .mv-card p { font-size: 0.95rem; color: var(--text-secondary); }
+        .card-badge { position: absolute; top: 0; right: 0; background: var(--accent-gradient); color: white; font-size: 0.6rem; font-weight: 800; padding: 4px 25px; transform: rotate(45deg) translate(20px, -10px); text-transform: uppercase; box-shadow: 0 2px 5px rgba(255, 107, 0, 0.4); letter-spacing: 1px; }
 
         /* =========================================
-           EXPERTISE & PARTNERS 
+           EXPERTISE & PARTNERS
            ========================================= */
-        .expertise-grid-wrapper { background: var(--surface-color); border: 1px solid var(--card-border); border-radius: 16px; padding: 1.5rem; box-shadow: var(--shadow-card); margin: 0 1.25rem;}
+        .expertise-section, .partners-section { margin-bottom: 3.5rem; }
+        .expertise-header, .partners-header { text-align: center; margin-bottom: 2rem; }
+        .expertise-header h2, .partners-header h2 { font-size: 1.6rem; font-weight: 800; display: inline-flex; align-items: center; gap: 10px; }
+        .expertise-header h2::before, .expertise-header h2::after, .partners-header h2::before, .partners-header h2::after { content: ''; display: block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent-color); }
+        
+        .expertise-grid-wrapper { background: var(--surface-color); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 1.5rem; box-shadow: var(--shadow-card); }
         .expertise-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; align-items: center; justify-items: center; }
         @media (min-width: 768px) { .expertise-grid-wrapper { padding: 2.5rem; } .expertise-grid { grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 2rem; } }
         .expertise-item { width: 100%; max-width: 60px; aspect-ratio: 1/1; display: flex; justify-content: center; align-items: center; transition: transform var(--transition-fast); }
         .expertise-item:hover { transform: scale(1.15) translateY(-5px); }
         .expertise-item img { width: 100%; height: 100%; object-fit: contain; opacity: 0.9; }
         
-        .partners-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; padding: 0 1.25rem;}
-        .partner-card { background: var(--surface-color); border: 1px solid var(--card-border); border-radius: 12px; padding: 1rem 1.5rem; display: flex; justify-content: center; align-items: center; height: 80px; min-width: 140px; box-shadow: var(--shadow-card); transition: all var(--transition-fast); cursor: pointer; }
+        .partners-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
+        .partner-card { background: var(--surface-color); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 1rem 1.5rem; display: flex; justify-content: center; align-items: center; height: 80px; min-width: 140px; box-shadow: var(--shadow-card); transition: all var(--transition-fast); cursor: pointer; }
         .partner-card:hover { transform: translateY(-6px); border-color: var(--accent-color); box-shadow: var(--shadow-glow-orange); }
         .partner-card:active { transform: scale(0.95); box-shadow: var(--shadow-glow-click); }
         .partner-card img { max-height: 45px; max-width: 100px; object-fit: contain; transition: transform var(--transition-fast); }
@@ -409,20 +361,109 @@
         .extra-partner.revealed { opacity: 0; animation: popInCascade 0.5s forwards; }
 
         /* =========================================
-           PROCESS & COMMUNITY
+           PREMIUM ABOUT US SECTION
            ========================================= */
-        .process-wrapper { display: flex; flex-direction: column; gap: 1.5rem; position: relative; margin-bottom: 4rem; padding: 1rem 1.25rem; }
-        @media (min-width: 992px) { .process-wrapper { flex-direction: row; justify-content: space-between; align-items: flex-start; } .process-wrapper::before { content: ''; position: absolute; top: 40px; left: 5%; width: 90%; height: 2px; background: var(--card-border); z-index: 1; } }
+        .about-section { margin-bottom: 4rem; }
+        .about-card { 
+            display: flex; flex-direction: column; 
+            background: linear-gradient(145deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.4) 100%); 
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255, 107, 0, 0.3); 
+            border-radius: var(--radius-lg); 
+            padding: 2.5rem; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.5); 
+            position: relative; overflow: hidden; transition: all var(--transition-smooth); 
+        }
+        [data-theme="dark"] .about-card { 
+            background: linear-gradient(145deg, rgba(26,15,8,0.9) 0%, rgba(13,7,4,0.4) 100%); 
+            border: 1px solid rgba(255, 107, 0, 0.25); 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.05); 
+        }
+        
+        .about-card::after {
+            content: ''; position: absolute; top: -50px; right: -50px; width: 250px; height: 250px;
+            background: radial-gradient(circle, rgba(255,107,0,0.15) 0%, transparent 70%);
+            border-radius: 50%; pointer-events: none; z-index: 0;
+        }
+
+        .about-card:hover { transform: translateY(-5px); border-color: var(--accent-color); box-shadow: var(--shadow-glow-orange), inset 0 0 0 1px rgba(255,255,255,0.8); }
+        [data-theme="dark"] .about-card:hover { box-shadow: var(--shadow-glow-orange), inset 0 0 0 1px rgba(255,255,255,0.1); }
+
+        .about-badge { position: relative; z-index: 2; display: inline-block; padding: 6px 16px; background: rgba(255, 107, 0, 0.1); color: var(--accent-color); font-size: 0.75rem; font-weight: 800; border-radius: var(--radius-md); margin-bottom: 1.25rem; text-transform: uppercase; letter-spacing: 1px; border: 1px solid rgba(255, 107, 0, 0.2); }
+        .about-content { z-index: 2; position: relative; }
+        .about-content h2 { font-size: 2.2rem; font-weight: 800; margin-bottom: 1.25rem; color: var(--text-primary); letter-spacing: -0.02em; }
+        .about-content p { font-size: 1.05rem; color: var(--text-secondary); margin-bottom: 1.25rem; line-height: 1.7; }
+        .about-content strong { color: var(--text-primary); font-weight: 700; }
+        .about-slogan { font-size: 1.8rem; font-weight: 900; margin: 1.5rem 0 2rem 0; background: linear-gradient(to right, #ff8a00, #e52e71); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; letter-spacing: -0.01em; }
+        
+        .about-visual { width: 100%; display: flex; justify-content: center; align-items: center; margin-top: 1.5rem; position: relative; }
+        .about-visual img { width: 100%; max-width: 350px; height: auto; object-fit: contain; animation: float-up-down 5s ease-in-out infinite; filter: drop-shadow(0 15px 25px rgba(255, 107, 0, 0.2)); z-index: 2; }
+        
+        .about-visual::before { content: ''; position: absolute; width: 200px; height: 200px; background: var(--accent-color); border-radius: 50%; filter: blur(70px); opacity: 0.15; z-index: 1; animation: pulse 4s infinite alternate; }
+
+        @media (min-width: 992px) {
+            .about-card { flex-direction: row; align-items: center; justify-content: space-between; padding: 4rem; }
+            .about-content { max-width: 55%; }
+            .about-visual { width: 40%; margin-top: 0; }
+        }
+
+        /* =========================================
+           PREMIUM GRID CARDS (Offer & Why)
+           ========================================= */
+        .section-heading-center { text-align: center; margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .section-heading-center h2 { font-size: 1.8rem; font-weight: 800; }
+        .section-heading-center p { font-size: 0.95rem; color: var(--text-secondary); max-width: 600px; }
+        
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 2.5rem; }
+        .feature-card { background: var(--surface-color); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; box-shadow: var(--shadow-card); transition: all var(--transition-fast); cursor: pointer; }
+        .feature-icon { width: 48px; height: 48px; background: var(--btn-hover-bg); color: var(--accent-color); border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; transition: transform var(--transition-fast), background var(--transition-fast), color var(--transition-fast); }
+        .feature-card h3 { font-size: 1.1rem; font-weight: 800; color: var(--text-primary); transition: color var(--transition-fast); }
+        
+        .feature-card:hover { transform: translateY(-8px); border-color: var(--accent-color); box-shadow: var(--shadow-glow-orange); }
+        .feature-card:active { transform: scale(0.95); box-shadow: var(--shadow-glow-click); border-color: var(--accent-color); }
+        .feature-card:hover .feature-icon { background: var(--accent-gradient); color: white; transform: scale(1.1) rotate(5deg); box-shadow: 0 8px 20px rgba(255,107,0,0.3); }
+        
+        .features-grid.alt-style .feature-card { flex-direction: row; align-items: center; gap: 1rem; }
+        .features-grid.alt-style .feature-icon { flex-shrink: 0; }
+
+        /* =========================================
+           MISSION & VISION
+           ========================================= */
+        .mv-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 4rem; }
+        @media (min-width: 992px) { .mv-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } }
+        .mv-card { position: relative; background: var(--surface-color); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 2rem; box-shadow: var(--shadow-card); display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; transition: all var(--transition-fast); cursor: pointer; }
+        .mv-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--accent-gradient); }
+        .mv-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-glow-orange); border-color: var(--accent-color); }
+        .mv-card:active { transform: scale(0.96); box-shadow: var(--shadow-glow-click); }
+        .mv-icon { font-size: 2.5rem; color: var(--accent-color); transition: transform var(--transition-fast); }
+        .mv-card:hover .mv-icon { transform: scale(1.1); }
+        .mv-card h3 { font-size: 1.6rem; font-weight: 800; color: var(--text-primary); }
+        .mv-card p { font-size: 0.95rem; color: var(--text-secondary); }
+
+        /* =========================================
+           HOW IT WORKS
+           ========================================= */
+        .process-wrapper { display: flex; flex-direction: column; gap: 1.5rem; position: relative; margin-bottom: 4rem; padding: 1rem 0; }
+        @media (min-width: 992px) { 
+            .process-wrapper { flex-direction: row; justify-content: space-between; align-items: flex-start; } 
+            .process-wrapper::before { content: ''; position: absolute; top: 40px; left: 5%; width: 90%; height: 2px; background: var(--card-border); z-index: 1; }
+        }
         .step-item { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem; position: relative; z-index: 2; cursor: pointer; }
         .step-icon-wrap { width: 56px; height: 56px; border-radius: 50%; background: var(--surface-color); border: 2px solid var(--card-border); display: flex; justify-content: center; align-items: center; font-size: 1.5rem; color: var(--accent-color); box-shadow: var(--shadow-card); position: relative; transition: all var(--transition-fast); }
         .step-number { position: absolute; top: -8px; right: -8px; width: 24px; height: 24px; border-radius: 50%; background: var(--accent-gradient); color: white; display: flex; justify-content: center; align-items: center; font-weight: 800; font-size: 0.75rem; border: 2px solid var(--bg-color); transition: transform var(--transition-fast); }
+        
         .step-item:hover .step-icon-wrap { transform: scale(1.15); border-color: var(--accent-color); box-shadow: var(--shadow-glow-orange); background: var(--accent-gradient); color: white; }
         .step-item:hover .step-number { transform: scale(1.2); border-color: var(--surface-color); }
         .step-item:active .step-icon-wrap { transform: scale(0.95); box-shadow: var(--shadow-glow-click); }
+        
         .step-item h3 { font-size: 1rem; font-weight: 800; color: var(--text-primary); }
 
-        .community-stats-wrapper { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 4rem; padding: 0 1.25rem;}
+        /* =========================================
+           COMMUNITY & STATS
+           ========================================= */
+        .community-stats-wrapper { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 4rem; }
         @media (min-width: 992px) { .community-stats-wrapper { grid-template-columns: 1fr 1fr; } }
+        
         .community-banner { background: var(--accent-gradient); border-radius: var(--radius-md); padding: 2rem; color: white; box-shadow: var(--shadow-glow-orange); transition: transform var(--transition-fast); }
         .community-banner:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(255,107,0,0.4); }
         .community-banner h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 1.25rem; }
@@ -438,7 +479,7 @@
         .stat-label { font-size: 0.75rem; font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.5px; }
 
         /* =========================================
-           DRAWER & BOTTOM NAV & FOOTER
+           DRAWER & BOTTOM NAV
            ========================================= */
         .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--overlay-bg); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); opacity: 0; pointer-events: none; z-index: 1001; transition: opacity var(--transition-smooth); }
         .menu-overlay.active { opacity: 1; pointer-events: auto; }
@@ -482,7 +523,7 @@
         
         .bnav-floating-wrapper { position: relative; width: 20%; display: flex; justify-content: center; }
         
-        /* 🔥 STATIC GLOW EFFECT IMPLEMENTATION */
+        /* 🔥 LAUNCH BUTTON - NO SOLID ORANGE BORDER */
         .bnav-floating { 
             position: absolute; 
             top: -46px; 
@@ -500,19 +541,25 @@
             transition: all var(--transition-fast); 
             z-index: 1000; 
             cursor: pointer; 
-            /* Multi-layered static drop shadow mirroring reference image */
-            box-shadow: 0 0 35px 2px rgba(255, 107, 0, 0.55), 0 0 15px rgba(255, 107, 0, 0.4);
+            
+            /* Continuous animated glow matching background */
+            animation: bnav-pulse-glow 2s infinite ease-in-out; 
         }
         
-        .bnav-floating:hover { 
-            transform: translateY(-4px); 
-            box-shadow: 0 0 45px 5px rgba(255, 107, 0, 0.7), 0 0 20px rgba(255, 107, 0, 0.5); 
-        }
-        .bnav-floating:active { 
-            transform: scale(0.9); 
-            box-shadow: var(--shadow-glow-click) !important; 
+        @keyframes bnav-pulse-glow { 
+            0% { 
+                box-shadow: 0 0 15px rgba(255, 107, 0, 0.4), var(--shadow-floating); 
+            } 
+            50% { 
+                box-shadow: 0 0 35px rgba(255, 107, 0, 0.8), var(--shadow-floating); 
+            } 
+            100% { 
+                box-shadow: 0 0 15px rgba(255, 107, 0, 0.4), var(--shadow-floating); 
+            } 
         }
         
+        .bnav-floating:hover { transform: translateY(-4px); }
+        .bnav-floating:active { transform: scale(0.9); box-shadow: var(--shadow-glow-click) !important; animation: none; }
         .bnav-floating .bnav-floating-icon { font-size: 1.8rem; color: #ffffff; margin-bottom: 2px; }
         .bnav-floating-text { display: block; font-size: 0.55rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.2; text-align: center; }
         
@@ -527,34 +574,42 @@
         .copyright { color: var(--text-secondary); font-size: 0.8rem; font-weight: 600; opacity: 0.7; margin-top: 0.5rem;}
 
         /* =========================================
-           REGISTRATION & HIRE OVERLAYS 
+           REGISTRATION OVERLAY
            ========================================= */
         .registration-overlay, .hire-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             z-index: 99999; display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: opacity var(--transition-smooth); padding: 1.5rem;
+            opacity: 0; pointer-events: none; transition: opacity var(--transition-smooth);
+            padding: 1.5rem;
         }
         .registration-overlay.active, .hire-overlay.active { opacity: 1; pointer-events: auto; }
         .registration-modal {
-            background: var(--surface-color); width: 100%; max-width: 450px; border-radius: var(--radius-lg); padding: 2.5rem;
+            background: var(--surface-color); width: 100%; max-width: 450px;
+            border-radius: var(--radius-lg); padding: 2.5rem;
             box-shadow: 0 25px 50px rgba(255, 107, 0, 0.15), inset 0 0 0 1px rgba(255,107,0,0.3);
-            transform: scale(0.95) translateY(20px); transition: all var(--transition-smooth); border: 1px solid var(--accent-color);
+            transform: scale(0.95) translateY(20px); transition: all var(--transition-smooth);
+            border: 1px solid var(--accent-color);
             position: relative; overflow: hidden;
         }
+        
         .hire-modal { max-width: 650px; max-height: 90vh; overflow-y: auto; }
+        
         .registration-overlay.active .registration-modal, .hire-overlay.active .registration-modal { transform: scale(1) translateY(0); }
         .registration-modal::before {
             content: ''; position: absolute; top: -50px; right: -50px; width: 150px; height: 150px;
             background: var(--accent-color); border-radius: 50%; filter: blur(60px); opacity: 0.15; z-index: 0;
         }
+        
         .close-modal-btn { position: absolute; top: 1.25rem; right: 1.25rem; width: 36px; height: 36px; border-radius: 50%; background: var(--btn-hover-bg); border: none; color: var(--text-primary); font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all var(--transition-fast); z-index: 10; }
         .close-modal-btn:hover { background: var(--badge-color); color: white; transform: rotate(90deg); }
+        
         .reg-header { position: relative; z-index: 1; margin-bottom: 2rem; text-align: center; }
         .reg-header h2 { font-size: 1.8rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem; }
         .reg-header p { font-size: 0.95rem; color: var(--text-secondary); }
         #flexigigs-reg-form, #quick-hire-form { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 1rem; }
         .form-row { display: grid; grid-template-columns: 1fr; gap: 1rem; }
         @media (min-width: 768px) { .form-row { grid-template-columns: 1fr 1fr; } }
+        
         .reg-form-group label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; color: var(--text-secondary); letter-spacing: 0.5px;}
         .reg-form-control { width: 100%; padding: 0.9rem 1.25rem; border-radius: 12px; border: 2px solid var(--input-border); background: var(--input-bg); color: var(--text-primary); font-family: inherit; font-size: 1rem; font-weight: 600; outline: none; transition: border-color var(--transition-fast), box-shadow var(--transition-fast); }
         .reg-form-control:focus { border-color: var(--accent-color); box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.15); background: var(--surface-color); }
@@ -565,7 +620,9 @@
             .brand-logo-wrapper { width: 48px; height: 48px; }
             .brand-name { font-size: 1.5rem; }
             .icon-btn { width: 40px; height: 40px; font-size: 1.4rem; }
-            .carousel-wrapper { aspect-ratio: 16 / 9; border-radius: 12px; }
+            .carousel-wrapper { aspect-ratio: 16 / 9; border-radius: var(--radius-md); }
+            .hero-ctas { flex-direction: column; width: 100%; }
+            .btn { width: 100%; }
             .registration-modal { padding: 1.5rem; }
             .reg-header h2 { font-size: 1.5rem; }
         }
@@ -630,126 +687,11 @@
     </nav>
 
     <main>
-        
-        <div class="dl-hero-bg fade-in-up">
-            <div class="container">
-                <div class="dl-welcome">
-                    <div class="dl-welcome-text">
-                        <h1 class="blink-effect" id="user-greeting">Welcome!</h1>
-                        <p>India's startup growth ecosystem 'Premium Packages' are at par with top startup standards.</p>
-                    </div>
-                    <img src="https://ui-avatars.com/api/?name=User&background=ffffff&color=ff6b00&size=100&bold=true" alt="Profile Avatar" class="dl-avatar" id="user-avatar">
-                </div>
-
-                <div style="margin-top: 1.5rem;">
-                    <div class="carousel-wrapper" id="hero-ad-wrapper" style="border-color: rgba(255,255,255,0.2); background-color: rgba(255,255,255,0.1); border-radius: 20px;">
-                        <div class="carousel-loader" id="hero-ad-loader" style="background: transparent; color: white;">
-                            <i class="ph ph-spinner-gap spinner"></i>
-                            <span style="font-size: 0.85rem; margin-top: 10px; font-weight: 600;">Loading Ads...</span>
-                        </div>
-                        <div class="carousel-track" id="hero-ad-track"></div>
-                    </div>
-                    <div class="hero-ad-dots" id="hero-ad-dots"></div>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="dl-overlap-container container fade-in-up" style="animation-delay: 0.1s;">
-            <div class="dl-main-card">
-                <div class="hero-tagline-badge">
-                    <span class="pulse-dot"></span>
-                    India's Most Trusted Startup Ecosystem
-                </div>
-                <h2>Build, Scale & Thrive with <span class="text-gradient">Flexigigs</span></h2>
-                <p class="dl-main-desc">Flexigigs is India's startup growth ecosystem that helps entrepreneurs build, launch, market, and grow their businesses through a single platform. From branding, packaging, and websites to business products, community networking, and growth services, Flexigigs brings everything a business needs under one roof.</p>
-                
-                <div class="hero-ctas">
-                    <a href="package.html" class="btn btn-primary" id="hero-explore-btn">
-                        Explore Packages <i class="ph-bold ph-rocket-launch"></i>
-                    </a>
-                    <a href="store.html" class="btn btn-secondary">
-                        Visit Store
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <section class="dl-section container fade-in-up" style="animation-delay: 0.2s;">
-            <div class="dl-section-header">
-                <div>
-                    <h2 class="dl-section-title">Quick Hire Professionals</h2>
-                    <span class="dl-section-subtitle">Instantly connect with top-tier experts.</span>
-                </div>
-            </div>
-            <div class="dl-grid-3">
-                <div class="dl-item hire-card" data-service="Hire a Website Developer">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-desktop"></i></div>
-                    <h3 class="dl-item-text">Website<br>Developer</h3>
-                </div>
-                <div class="dl-item hire-card" data-service="Hire a App Developer">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-device-mobile"></i></div>
-                    <h3 class="dl-item-text">App<br>Developer</h3>
-                </div>
-                <div class="dl-item hire-card" data-service="Strategy Builder Team">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-trend-up"></i></div>
-                    <h3 class="dl-item-text">Strategy<br>Team</h3>
-                </div>
-                <div class="dl-item hire-card" data-service="Business Management Assistant">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-briefcase"></i></div>
-                    <h3 class="dl-item-text">Management<br>Assistant</h3>
-                </div>
-                <div class="dl-item hire-card" data-service="AI Automation Developer">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-robot"></i></div>
-                    <h3 class="dl-item-text">AI<br>Automation</h3>
-                </div>
-                <div class="dl-item hire-card" data-service="Software Developer">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-code"></i></div>
-                    <h3 class="dl-item-text">Software<br>Developer</h3>
-                </div>
-                <div class="dl-item hire-card" data-service="Marketing Agency">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-megaphone"></i></div>
-                    <h3 class="dl-item-text">Marketing<br>Agency</h3>
-                </div>
-                <div class="dl-item hire-card" data-service="Lawyer">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-scales"></i></div>
-                    <h3 class="dl-item-text">Startup<br>Lawyer</h3>
-                </div>
-                <div class="dl-item hire-card" data-service="Calling Executive">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-headset"></i></div>
-                    <h3 class="dl-item-text">Calling<br>Executive</h3>
-                </div>
-                <div class="dl-item hire-card" data-service="Finance Manager">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-chart-line-up"></i></div>
-                    <h3 class="dl-item-text">Finance<br>Manager</h3>
-                </div>
-                <div class="dl-item hire-card" data-service="Business Advisor">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-users-three"></i></div>
-                    <h3 class="dl-item-text">Business<br>Advisor</h3>
-                </div>
-                <div class="dl-item hire-card" data-service="Graphic Designer">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-paint-brush"></i></div>
-                    <h3 class="dl-item-text">Graphic<br>Designer</h3>
-                </div>
-            </div>
-        </section>
-
-        <div class="container fade-in-up">
-            <div class="dl-promo-banner">
-                <div class="dl-promo-content">
-                    <h3 class="blink-effect">Launch Your Startup</h3>
-                    <p>Your one-stop destination for all business scaling solutions.</p>
-                    <button class="dl-promo-btn" onclick="window.location.href='launch.html'">Access Now</button>
-                </div>
-                <img src="https://i.postimg.cc/TYff12H0/1000030996-removebg-preview.png" alt="Promo Image" class="dl-promo-img">
-            </div>
-        </div>
-
         <section class="carousel-section container fade-in-up">
             <div class="carousel-wrapper" id="carousel-wrapper">
                 <div class="carousel-loader" id="carousel-loader">
                     <i class="ph ph-spinner-gap spinner"></i>
-                    <span style="font-size: 1rem; margin-top: 10px; font-weight: 700;">Loading Offers...</span>
+                    <span style="font-size: 1rem; margin-top: 10px; font-weight: 700;">Initializing...</span>
                 </div>
                 <div class="carousel-track" id="carousel-track"></div>
                 <button class="carousel-nav-btn carousel-prev" id="carousel-prev" aria-label="Previous Slide"><i class="ph-bold ph-caret-left"></i></button>
@@ -757,88 +699,239 @@
             </div>
         </section>
 
-        <section class="dl-section container fade-in-up">
-            <div class="dl-section-header">
-                <div>
-                    <h2 class="dl-section-title">Startup Services</h2>
-                    <span class="dl-section-subtitle">Premium solutions built for scale.</span>
+        <section class="hero-text-section container fade-in-up">
+            <div class="hero-tagline-badge">
+                <span class="pulse-dot"></span>
+                India's Most Trusted Startup Ecosystem
+            </div>
+            <h1>Build, Scale & Thrive with <span class="text-gradient">Flexigigs</span></h1>
+            <p>Flexigigs is India's startup growth ecosystem that helps entrepreneurs build, launch, market, and grow their businesses through a single platform. From branding, packaging, and websites to business products, community networking, and growth services, Flexigigs brings everything a business needs under one roof.</p>
+            
+            <div class="hero-ctas">
+                <a href="package.html" class="btn btn-primary" id="hero-explore-btn">
+                    Explore Packages <i class="ph-bold ph-rocket-launch"></i>
+                </a>
+                <a href="store.html" class="btn btn-secondary">
+                    Visit Store
+                </a>
+            </div>
+        </section>
+
+        <div class="floating-img-wrapper slide-in-right">
+            <img src="https://i.postimg.cc/TYff12H0/1000030996-removebg-preview.png" alt="Hero Illustration">
+        </div>
+
+        <!-- QUICK HIRE PRODUCT GRID SECTION (URBAN APP STYLE) -->
+        <section class="container fade-in-up" id="quick-hire-section">
+            <div class="section-heading-center">
+                <h2>Quick Hire Professionals</h2>
+                <p>Instantly connect with top-tier experts tailored for your startup's needs.</p>
+            </div>
+            <div class="hire-grid">
+                <div class="hire-card" data-service="Hire a Website Developer">
+                    <div class="hire-icon-wrapper">
+                        <i class="ph-bold ph-desktop hire-icon"></i>
+                    </div>
+                    <h3>Website<br>Developer</h3>
+                </div>
+                <div class="hire-card" data-service="Hire a App Developer">
+                    <div class="hire-icon-wrapper">
+                        <i class="ph-bold ph-device-mobile hire-icon"></i>
+                    </div>
+                    <h3>App<br>Developer</h3>
+                </div>
+                <div class="hire-card" data-service="Strategy Builder Team">
+                    <div class="hire-icon-wrapper">
+                        <i class="ph-bold ph-trend-up hire-icon"></i>
+                    </div>
+                    <h3>Strategy<br>Team</h3>
+                </div>
+                <div class="hire-card" data-service="Business Management Assistant">
+                    <div class="hire-icon-wrapper">
+                        <i class="ph-bold ph-briefcase hire-icon"></i>
+                    </div>
+                    <h3>Management<br>Assistant</h3>
+                </div>
+                <div class="hire-card" data-service="AI Automation Developer">
+                    <div class="hire-icon-wrapper">
+                        <i class="ph-bold ph-robot hire-icon"></i>
+                    </div>
+                    <h3>AI<br>Automation</h3>
+                </div>
+                <div class="hire-card" data-service="Software Developer">
+                    <div class="hire-icon-wrapper">
+                        <i class="ph-bold ph-code hire-icon"></i>
+                    </div>
+                    <h3>Software<br>Developer</h3>
+                </div>
+                <div class="hire-card" data-service="Marketing Agency">
+                    <div class="hire-icon-wrapper">
+                        <i class="ph-bold ph-megaphone hire-icon"></i>
+                    </div>
+                    <h3>Marketing<br>Agency</h3>
+                </div>
+                <div class="hire-card" data-service="Lawyer">
+                    <div class="hire-icon-wrapper">
+                        <i class="ph-bold ph-scales hire-icon"></i>
+                    </div>
+                    <h3>Startup<br>Lawyer</h3>
+                </div>
+                <div class="hire-card" data-service="Calling Executive">
+                    <div class="hire-icon-wrapper">
+                        <i class="ph-bold ph-headset hire-icon"></i>
+                    </div>
+                    <h3>Calling<br>Executive</h3>
+                </div>
+                <div class="hire-card" data-service="Finance Manager">
+                    <div class="hire-icon-wrapper">
+                        <i class="ph-bold ph-chart-line-up hire-icon"></i>
+                    </div>
+                    <h3>Finance<br>Manager</h3>
+                </div>
+                <div class="hire-card" data-service="Business Advisor">
+                    <div class="hire-icon-wrapper">
+                        <i class="ph-bold ph-users-three hire-icon"></i>
+                    </div>
+                    <h3>Business<br>Advisor</h3>
+                </div>
+                <div class="hire-card" data-service="Graphic Designer">
+                    <div class="hire-icon-wrapper">
+                        <i class="ph-bold ph-paint-brush hire-icon"></i>
+                    </div>
+                    <h3>Graphic<br>Designer</h3>
                 </div>
             </div>
-            <div class="startup-services-grid">
-                
-                <a href="website.html" class="service-card full-width">
-                    <div class="service-card-icon"><i class="ph-bold ph-desktop"></i></div>
-                    <div class="service-card-content">
-                        <h3 class="service-card-title">Professional Website</h3>
-                        <p class="service-card-desc">High-end, responsive web platforms built for scale. Upload & build instantly.</p>
+        </section>
+
+        <section class="services-section container fade-in-up" style="animation-delay: 0.1s;">
+            <div class="services-grid">
+                <a href="website.html" class="service-card span-2">
+                    <div class="service-icon-box"><i class="ph-bold ph-desktop"></i></div>
+                    <div class="service-content">
+                        <div class="service-text">
+                            <h3>Professional Website</h3>
+                            <p>High-end, responsive web platforms built for scale. Upload & build instantly.</p>
+                        </div>
+                        <div class="service-action-btn">Order Website <i class="ph-bold ph-arrow-right"></i></div>
                     </div>
-                    <div class="service-card-cta">Order Website <i class="ph-bold ph-arrow-right"></i></div>
                 </a>
-                
                 <a href="app.html" class="service-card">
-                    <div class="service-card-icon"><i class="ph-bold ph-device-mobile"></i></div>
-                    <div class="service-card-content">
-                        <h3 class="service-card-title">App Development</h3>
-                        <p class="service-card-desc">Request native & cross-platform mobile app experiences.</p>
+                    <div>
+                        <div class="service-icon-box"><i class="ph-bold ph-device-mobile"></i></div>
+                        <div class="service-text">
+                            <h3>App Development</h3>
+                            <p>Request native & cross-platform mobile app experiences.</p>
+                        </div>
                     </div>
-                    <div class="service-card-cta">Request App <i class="ph-bold ph-arrow-right"></i></div>
+                    <div class="service-action-btn">Request App <i class="ph-bold ph-arrow-right"></i></div>
                 </a>
-                
                 <a href="design.html" class="service-card">
-                    <div class="service-ribbon">NEW</div>
-                    <div class="service-card-icon"><i class="ph-bold ph-paint-roller"></i></div>
-                    <div class="service-card-content">
-                        <h3 class="service-card-title">Creative Design</h3>
-                        <p class="service-card-desc">Buy exclusive poster, logo, and UI/UX branding materials.</p>
+                    <div class="card-badge">New</div>
+                    <div>
+                        <div class="service-icon-box"><i class="ph-bold ph-paint-brush-broad"></i></div>
+                        <div class="service-text">
+                            <h3>Creative Design</h3>
+                            <p>Buy exclusive poster, logo, and UI/UX branding materials.</p>
+                        </div>
                     </div>
-                    <div class="service-card-cta">Get Designs <i class="ph-bold ph-arrow-right"></i></div>
+                    <div class="service-action-btn">Get Designs <i class="ph-bold ph-arrow-right"></i></div>
                 </a>
-                
-                <a href="strategy.html" class="service-card full-width">
-                    <div class="service-card-icon"><i class="ph-bold ph-trend-up"></i></div>
-                    <div class="service-card-content">
-                        <h3 class="service-card-title">Business Strategy</h3>
-                        <p class="service-card-desc">Data-driven insights to position your startup for maximum growth and tracking.</p>
+                <a href="strategy.html" class="service-card span-2">
+                    <div class="service-icon-box"><i class="ph-bold ph-trend-up"></i></div>
+                    <div class="service-content">
+                        <div class="service-text">
+                            <h3>Business Strategy</h3>
+                            <p>Data-driven insights to position your startup for maximum growth and tracking.</p>
+                        </div>
+                        <div class="service-action-btn">Plan Strategy <i class="ph-bold ph-arrow-right"></i></div>
                     </div>
-                    <div class="service-card-cta">Plan Strategy <i class="ph-bold ph-arrow-right"></i></div>
                 </a>
-                
                 <a href="automation.html" class="service-card">
-                    <div class="service-card-icon"><i class="ph-bold ph-robot"></i></div>
-                    <div class="service-card-content">
-                        <h3 class="service-card-title">AI Automation</h3>
-                        <p class="service-card-desc">Automate workflows and scale operations intelligently.</p>
+                    <div>
+                        <div class="service-icon-box"><i class="ph-bold ph-robot"></i></div>
+                        <div class="service-text">
+                            <h3>AI Automation</h3>
+                            <p>Automate workflows and scale operations intelligently.</p>
+                        </div>
                     </div>
-                    <div class="service-card-cta">Automate <i class="ph-bold ph-arrow-right"></i></div>
+                    <div class="service-action-btn">Automate <i class="ph-bold ph-arrow-right"></i></div>
                 </a>
-                
                 <a href="video.html" class="service-card">
-                    <div class="service-card-icon"><i class="ph-bold ph-video-camera"></i></div>
-                    <div class="service-card-content">
-                        <h3 class="service-card-title">Video Editing</h3>
-                        <p class="service-card-desc">Premium cinematic editing and motion graphics.</p>
+                    <div>
+                        <div class="service-icon-box"><i class="ph-bold ph-video-camera"></i></div>
+                        <div class="service-text">
+                            <h3>Video Editing</h3>
+                            <p>Premium cinematic editing and motion graphics.</p>
+                        </div>
                     </div>
-                    <div class="service-card-cta">Edit Video <i class="ph-bold ph-arrow-right"></i></div>
+                    <div class="service-action-btn">Edit Video <i class="ph-bold ph-arrow-right"></i></div>
                 </a>
-                
-                <a href="software.html" class="service-card full-width">
-                    <div class="service-card-icon"><i class="ph-bold ph-code"></i></div>
-                    <div class="service-card-content">
-                        <h3 class="service-card-title">Software Development</h3>
-                        <p class="service-card-desc">Custom business software, CRM, ERP, and scalable enterprise solutions.</p>
+                <a href="software.html" class="service-card span-2">
+                    <div class="service-icon-box"><i class="ph-bold ph-code"></i></div>
+                    <div class="service-content">
+                        <div class="service-text">
+                            <h3>Software Development</h3>
+                            <p>Custom business software, CRM, ERP, and scalable enterprise solutions.</p>
+                        </div>
+                        <div class="service-action-btn">Build Software <i class="ph-bold ph-arrow-right"></i></div>
                     </div>
-                    <div class="service-card-cta">Build Software <i class="ph-bold ph-arrow-right"></i></div>
                 </a>
-                
                 <a href="marketing.html" class="service-card">
-                    <div class="service-ribbon" style="background: var(--accent-gradient);">HOT</div>
-                    <div class="service-card-icon"><i class="ph-bold ph-megaphone"></i></div>
-                    <div class="service-card-content">
-                        <h3 class="service-card-title">Marketing</h3>
-                        <p class="service-card-desc">Including ads run, social media marketing, campaigns, and more.</p>
+                    <div class="card-badge">Hot</div>
+                    <div>
+                        <div class="service-icon-box"><i class="ph-bold ph-megaphone"></i></div>
+                        <div class="service-text">
+                            <h3>Marketing</h3>
+                            <p>Including ads run, social media marketing, campaigns, and more.</p>
+                        </div>
                     </div>
-                    <div class="service-card-cta">Start Marketing <i class="ph-bold ph-arrow-right"></i></div>
+                    <div class="service-action-btn">Start Marketing <i class="ph-bold ph-arrow-right"></i></div>
                 </a>
+            </div>
+        </section>
+
+        <div class="floating-img-wrapper slide-in-right">
+            <img src="https://i.postimg.cc/pLdvQGvT/1000030997-removebg-preview.png" alt="Services Illustration">
+        </div>
+
+        <section id="expertise-section" class="expertise-section container fade-in-up">
+            <div class="expertise-header">
+                <h2>Our Expertise</h2>
+            </div>
+            <div class="expertise-grid-wrapper">
+                <div id="expertise-loader" style="text-align: center; color: var(--accent-color); padding: 1rem;">
+                    <i class="ph ph-spinner-gap spinner" style="font-size: 2rem;"></i>
+                </div>
+                <div class="expertise-grid" id="expertise-grid">
+                    </div>
+            </div>
+        </section>
+        
+        <div class="floating-img-wrapper slide-in-right">
+            <img src="https://i.postimg.cc/d0jvNxsC/1000031409-removebg-preview.png" alt="Expertise Illustration">
+        </div>
+
+        <section id="partners-section" class="partners-section container fade-in-up">
+            <div class="partners-header">
+                <h2>Our Partners & Companies</h2>
+                <div style="margin-top: 1rem;">
+                    <button id="see-less-partners-btn" class="btn btn-secondary" style="display: none; border-radius: var(--radius-full); padding: 0.5rem 1.5rem; font-size: 0.85rem;">
+                        See Less <i class="ph-bold ph-caret-up"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="partners-loader" style="text-align: center; color: var(--accent-color); padding: 1rem;">
+                <i class="ph ph-spinner-gap spinner" style="font-size: 2rem;"></i>
+            </div>
+            
+            <div class="partners-grid" id="partners-grid">
+                </div>
+            
+            <div id="partners-btn-wrapper" style="display: none; text-align: center; margin-top: 2rem;">
+                <button id="see-more-partners-btn" class="btn btn-secondary" style="border-radius: var(--radius-full);">
+                    See More Partners <i class="ph-bold ph-caret-down"></i>
+                </button>
             </div>
         </section>
 
@@ -855,43 +948,46 @@
                         <a href="aboutus.html" class="btn btn-primary about-btn">See more <i class="ph-bold ph-arrow-right"></i></a>
                     </div>
                 </div>
+                
                 <div class="about-visual">
                     <img src="https://i.postimg.cc/5y0c5jcn/1000031000-removebg-preview.png" alt="About Us Illustration">
                 </div>
             </div>
         </section>
 
-        <section class="dl-section container fade-in-up">
-            <div class="dl-section-header">
-                <div>
-                    <h2 class="dl-section-title">What We Offer</h2>
-                    <span class="dl-section-subtitle">Everything you need to scale.</span>
-                </div>
+        <section class="container fade-in-up">
+            <div class="section-heading-center">
+                <h2>What We Offer</h2>
+                <p>Everything you need to build, launch, market, and scale your business.</p>
             </div>
-            <div class="dl-grid-3">
-                <div class="dl-item">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-rocket-launch"></i></div>
-                    <span class="dl-item-text">Startup<br>Launch</span>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-fill ph-rocket-launch"></i></div>
+                    <h3>Startup Launch Solutions</h3>
                 </div>
-                <div class="dl-item">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-swatches"></i></div>
-                    <span class="dl-item-text">Business<br>Branding</span>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-fill ph-swatches"></i></div>
+                    <h3>Business Branding</h3>
                 </div>
-                <div class="dl-item">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-package"></i></div>
-                    <span class="dl-item-text">Packaging<br>Solutions</span>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-fill ph-package"></i></div>
+                    <h3>Packaging Solutions</h3>
                 </div>
-                <div class="dl-item">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-megaphone"></i></div>
-                    <span class="dl-item-text">Marketing &<br>Promotion</span>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-fill ph-megaphone"></i></div>
+                    <h3>Marketing & Promotion</h3>
                 </div>
-                <div class="dl-item">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-t-shirt"></i></div>
-                    <span class="dl-item-text">Business<br>Merchandise</span>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-fill ph-t-shirt"></i></div>
+                    <h3>Business Merchandise</h3>
                 </div>
-                <div class="dl-item">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-users-three"></i></div>
-                    <span class="dl-item-text">Founder<br>Community</span>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-fill ph-users-three"></i></div>
+                    <h3>Founder Community</h3>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-fill ph-storefront"></i></div>
+                    <h3>Marketplace for Businesses</h3>
                 </div>
             </div>
         </section>
@@ -900,37 +996,34 @@
             <img src="https://i.postimg.cc/hPNFxS2m/1000031019-removebg-preview.png" alt="What We Offer Illustration">
         </div>
 
-        <section class="dl-section container fade-in-up">
-            <div class="dl-section-header">
-                <div>
-                    <h2 class="dl-section-title">Why Choose Us?</h2>
-                    <span class="dl-section-subtitle">The Flexigigs advantage.</span>
-                </div>
+        <section class="container fade-in-up">
+            <div class="section-heading-center">
+                <h2>Why Choose FLEXIGIGS?</h2>
             </div>
-            <div class="dl-grid-3">
-                <div class="dl-item">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-cube"></i></div>
-                    <span class="dl-item-text">One<br>Platform</span>
+            <div class="features-grid alt-style">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-fill ph-cube"></i></div>
+                    <h3>One Platform for Business Growth</h3>
                 </div>
-                <div class="dl-item">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-handshake"></i></div>
-                    <span class="dl-item-text">Trusted<br>Network</span>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-fill ph-handshake"></i></div>
+                    <h3>Trusted Vendor Network</h3>
                 </div>
-                <div class="dl-item">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-lightbulb"></i></div>
-                    <span class="dl-item-text">Startup<br>Focus</span>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-fill ph-lightbulb"></i></div>
+                    <h3>Startup-Focused Solutions</h3>
                 </div>
-                <div class="dl-item">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-tag"></i></div>
-                    <span class="dl-item-text">Affordable<br>Pricing</span>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-fill ph-tag"></i></div>
+                    <h3>Affordable Pricing</h3>
                 </div>
-                <div class="dl-item">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-globe"></i></div>
-                    <span class="dl-item-text">Community<br>Driven</span>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-fill ph-globe"></i></div>
+                    <h3>Community-Driven Ecosystem</h3>
                 </div>
-                <div class="dl-item">
-                    <div class="dl-item-icon-wrap"><i class="ph-bold ph-headset"></i></div>
-                    <span class="dl-item-text">End-to-End<br>Support</span>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-fill ph-headset"></i></div>
+                    <h3>End-to-End Business Support</h3>
                 </div>
             </div>
         </section>
@@ -959,65 +1052,44 @@
             </div>
         </section>
 
-        <section id="expertise-section" class="expertise-section container fade-in-up">
-            <div class="section-heading-center">
-                <h2>Our Expertise</h2>
-            </div>
-            <div class="expertise-grid-wrapper">
-                <div id="expertise-loader" style="text-align: center; color: var(--accent-color); padding: 1rem;">
-                    <i class="ph ph-spinner-gap spinner" style="font-size: 2rem;"></i>
-                </div>
-                <div class="expertise-grid" id="expertise-grid"></div>
-            </div>
-        </section>
-        
-        <div class="floating-img-wrapper slide-in-right">
-            <img src="https://i.postimg.cc/d0jvNxsC/1000031409-removebg-preview.png" alt="Expertise Illustration">
-        </div>
-
-        <section id="partners-section" class="partners-section container fade-in-up">
-            <div class="section-heading-center">
-                <h2>Our Partners & Companies</h2>
-                <div style="margin-top: 1rem;">
-                    <button id="see-less-partners-btn" class="btn btn-secondary" style="display: none; border-radius: var(--radius-full); padding: 0.5rem 1.5rem; font-size: 0.85rem;">
-                        See Less <i class="ph-bold ph-caret-up"></i>
-                    </button>
-                </div>
-            </div>
-            <div id="partners-loader" style="text-align: center; color: var(--accent-color); padding: 1rem;">
-                <i class="ph ph-spinner-gap spinner" style="font-size: 2rem;"></i>
-            </div>
-            <div class="partners-grid" id="partners-grid"></div>
-            <div id="partners-btn-wrapper" style="display: none; text-align: center; margin-top: 2rem;">
-                <button id="see-more-partners-btn" class="btn btn-secondary" style="border-radius: var(--radius-full);">
-                    See More Partners <i class="ph-bold ph-caret-down"></i>
-                </button>
-            </div>
-        </section>
-
         <section class="container fade-in-up">
             <div class="section-heading-center">
                 <h2>How FLEXIGIGS Works</h2>
             </div>
             <div class="process-wrapper">
                 <div class="step-item">
-                    <div class="step-icon-wrap"><i class="ph-bold ph-cursor-click"></i><div class="step-number">1</div></div>
+                    <div class="step-icon-wrap">
+                        <i class="ph-bold ph-cursor-click"></i>
+                        <div class="step-number">1</div>
+                    </div>
                     <h3>Choose Products</h3>
                 </div>
                 <div class="step-item">
-                    <div class="step-icon-wrap"><i class="ph-bold ph-shopping-cart"></i><div class="step-number">2</div></div>
+                    <div class="step-icon-wrap">
+                        <i class="ph-bold ph-shopping-cart"></i>
+                        <div class="step-number">2</div>
+                    </div>
                     <h3>Place Your Order</h3>
                 </div>
                 <div class="step-item">
-                    <div class="step-icon-wrap"><i class="ph-bold ph-handshake"></i><div class="step-number">3</div></div>
+                    <div class="step-icon-wrap">
+                        <i class="ph-bold ph-handshake"></i>
+                        <div class="step-number">3</div>
+                    </div>
                     <h3>Partners Fulfill It</h3>
                 </div>
                 <div class="step-item">
-                    <div class="step-icon-wrap"><i class="ph-bold ph-package"></i><div class="step-number">4</div></div>
+                    <div class="step-icon-wrap">
+                        <i class="ph-bold ph-package"></i>
+                        <div class="step-number">4</div>
+                    </div>
                     <h3>Receive Solution</h3>
                 </div>
                 <div class="step-item">
-                    <div class="step-icon-wrap"><i class="ph-bold ph-trend-up"></i><div class="step-number">5</div></div>
+                    <div class="step-icon-wrap">
+                        <i class="ph-bold ph-trend-up"></i>
+                        <div class="step-number">5</div>
+                    </div>
                     <h3>Grow Business</h3>
                 </div>
             </div>
@@ -1025,6 +1097,7 @@
 
         <section class="container fade-in-up">
             <div class="community-stats-wrapper">
+                
                 <div class="community-banner">
                     <h2>Join the Community</h2>
                     <ul class="community-list">
@@ -1035,6 +1108,7 @@
                         <li><i class="ph-bold ph-book-open"></i> Learn from entrepreneurs</li>
                     </ul>
                 </div>
+                
                 <div style="display: flex; flex-direction: column;">
                     <div class="section-heading-center" style="align-items: flex-start; text-align: left; margin-bottom: 1.5rem;">
                         <h2>By the Numbers</h2>
@@ -1059,6 +1133,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </section>
 
@@ -1093,6 +1168,7 @@
         <a href="social.html" class="bnav-item"><div class="icon-badge-wrapper"><i class="ph-fill ph-chats-circle bnav-icon"></i><span class="badge">3</span></div><span>Social</span></a>
     </nav>
 
+    <!-- HIRE MODAL -->
     <div class="hire-overlay" id="hire-overlay">
         <div class="registration-modal hire-modal">
             <button class="close-modal-btn" id="hire-close-btn" aria-label="Close form"><i class="ph-bold ph-x"></i></button>
@@ -1152,6 +1228,7 @@
         </div>
     </div>
 
+    <!-- ORIGINAL REGISTRATION MODAL -->
     <div class="registration-overlay" id="registration-overlay">
         <div class="registration-modal">
             <div class="reg-header">
@@ -1181,24 +1258,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            // --- 0. Dynamic Username logic for Hero Section ---
-            const savedName = localStorage.getItem('flexigigs_user_name');
-            const greetingEl = document.getElementById('user-greeting');
-            const avatarEl = document.getElementById('user-avatar');
-
-            function updateUserUI(name) {
-                if(name) {
-                    const firstName = name.split(' ')[0];
-                    greetingEl.textContent = `Welcome, ${firstName.toUpperCase()}!`;
-                    avatarEl.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=ffffff&color=ff6b00&size=100&bold=true`;
-                } else {
-                    greetingEl.textContent = `Welcome!`;
-                    avatarEl.src = `https://ui-avatars.com/api/?name=User&background=ffffff&color=ff6b00&size=100&bold=true`;
-                }
-            }
-            updateUserUI(savedName);
-
-
             // --- 1. Theme Management ---
             const themeToggle = document.getElementById('theme-toggle');
             const htmlElement = document.documentElement;
@@ -1288,106 +1347,7 @@
                 else header.classList.remove('scrolled');
             });
 
-
-            // --- NEW: Hero Advertisement Carousel Logic (WITH PILL DOTS) ---
-            const heroAdTrack = document.getElementById('hero-ad-track');
-            const heroAdLoader = document.getElementById('hero-ad-loader');
-            const heroAdDotsContainer = document.getElementById('hero-ad-dots');
-            const HERO_AD_SHEET_URL = `https://docs.google.com/spreadsheets/d/1SZdfnCH3NksoGTL5mBBWSI1eHKXTyN7B3jGdlrM2ABA/gviz/tq?tqx=out:json`;
-
-            let heroAdSlide = 0; 
-            let totalHeroAds = 0; 
-            let heroAdInterval;
-
-            function updateHeroActiveDot() {
-                const dots = document.querySelectorAll('.hero-ad-dot');
-                dots.forEach((dot, index) => {
-                    if(index === heroAdSlide) dot.classList.add('active');
-                    else dot.classList.remove('active');
-                });
-            }
-
-            function startHeroAutoSlide() {
-                clearInterval(heroAdInterval);
-                if (totalHeroAds > 1) {
-                    heroAdInterval = setInterval(() => { 
-                        heroAdSlide = (heroAdSlide + 1) % totalHeroAds; 
-                        heroAdTrack.style.transform = `translateX(-${heroAdSlide * 100}%)`; 
-                        updateHeroActiveDot();
-                    }, 3500);
-                }
-            }
-
-            async function fetchHeroAds() {
-                try {
-                    const response = await fetch(HERO_AD_SHEET_URL);
-                    const textData = await response.text();
-                    const jsonString = textData.substring(textData.indexOf('{'), textData.lastIndexOf('}') + 1);
-                    const jsonData = JSON.parse(jsonString);
-                    const rows = jsonData.table.rows;
-
-                    rows.forEach((row, index) => {
-                        if (!row || !row.c) return;
-                        
-                        let rawLink = null;
-                        for(let i=0; i<row.c.length; i++) {
-                            if(row.c[i] && row.c[i].v && String(row.c[i].v).includes('http')) {
-                                rawLink = row.c[i].v;
-                                break;
-                            }
-                        }
-                        if(!rawLink) {
-                            for(let i=0; i<row.c.length; i++) {
-                                if(row.c[i] && row.c[i].v) {
-                                    rawLink = row.c[i].v;
-                                    break;
-                                }
-                            }
-                        }
-
-                        if (rawLink) {
-                            const directImgUrl = convertToHostingLink(rawLink) || rawLink;
-                            
-                            // 1. Create Slide
-                            const slideDiv = document.createElement('div');
-                            slideDiv.className = 'carousel-slide';
-                            slideDiv.style.backgroundColor = 'transparent'; 
-                            slideDiv.innerHTML = `<img src="${directImgUrl}" alt="Flexigigs Ad" referrerpolicy="no-referrer">`;
-                            heroAdTrack.appendChild(slideDiv);
-                            
-                            // 2. Create corresponding Dot indicator
-                            const dot = document.createElement('div');
-                            dot.className = 'hero-ad-dot';
-                            if (totalHeroAds === 0) dot.classList.add('active'); 
-                            
-                            // Optional: Allow clicking the dots to navigate
-                            dot.addEventListener('click', () => {
-                                heroAdSlide = totalHeroAds - (totalHeroAds - index);
-                                heroAdTrack.style.transform = `translateX(-${heroAdSlide * 100}%)`;
-                                updateHeroActiveDot();
-                                startHeroAutoSlide(); // reset timer
-                            });
-                            
-                            heroAdDotsContainer.appendChild(dot);
-                            
-                            totalHeroAds++;
-                        }
-                    });
-
-                    heroAdLoader.style.display = 'none';
-                    if (totalHeroAds > 1) { 
-                        startHeroAutoSlide();
-                    } else if (totalHeroAds === 1) {
-                        heroAdDotsContainer.style.display = 'none'; // hide dots if only 1 image
-                    }
-                } catch (error) {
-                    heroAdLoader.innerHTML = `<p style="color:white;">Error Loading Ads</p>`;
-                }
-            }
-            fetchHeroAds();
-
-
-            // --- 3. Dynamic Carousel Logic (MAIN CAROUSEL) ---
+            // --- 3. Dynamic Carousel Logic (USING THE EXACT 2ND METHOD FOR GOOGLE SHEET PARSING) ---
             const carouselTrack = document.getElementById('carousel-track');
             const carouselLoader = document.getElementById('carousel-loader');
             const prevBtn = document.getElementById('carousel-prev');
@@ -1417,6 +1377,7 @@
                     rows.forEach(row => {
                         if (!row || !row.c) return;
                         
+                        // Exact 2nd Method: Dynamic column scanning to locate the valid URL
                         let rawLink = null;
                         for(let i=0; i<row.c.length; i++) {
                             if(row.c[i] && row.c[i].v && String(row.c[i].v).includes('http')) {
@@ -1621,7 +1582,7 @@
                 bnavHome.classList.add('active');
             });
 
-            // --- 5. Registration Overlay Logic (WITH NAME SAVING) ---
+            // --- 5. Registration Overlay Logic ---
             const regOverlay = document.getElementById('registration-overlay');
             const regForm = document.getElementById('flexigigs-reg-form');
             const regSubmitBtn = document.getElementById('reg-submit-btn');
@@ -1639,17 +1600,12 @@
                 regSubmitBtn.style.opacity = '0.8';
                 regSubmitBtn.disabled = true;
 
-                const userNameInput = document.getElementById('reg-name').value;
-
                 fetch('https://docs.google.com/forms/u/0/d/e/1FAIpQLSf4I5ay_F6vr5qRAdTGJeyxa6KMnAAPlaEvM28SivRs88q7Qg/formResponse', {
                     method: 'POST',
                     body: new FormData(regForm),
                     mode: 'no-cors'
                 }).then(() => {
                     localStorage.setItem('flexigigs_registered', 'true');
-                    localStorage.setItem('flexigigs_user_name', userNameInput);
-                    updateUserUI(userNameInput);
-                    
                     regSubmitBtn.innerHTML = 'Access Granted <i class="ph-bold ph-check-circle"></i>';
                     regSubmitBtn.style.background = '#22c55e'; 
                     regSubmitBtn.style.boxShadow = '0 0 20px rgba(34, 197, 94, 0.4)';
@@ -1660,9 +1616,6 @@
                     }, 1000);
                 }).catch(err => {
                     localStorage.setItem('flexigigs_registered', 'true');
-                    localStorage.setItem('flexigigs_user_name', userNameInput);
-                    updateUserUI(userNameInput);
-
                     regOverlay.classList.remove('active');
                     document.body.classList.remove('no-scroll');
                 });
@@ -1696,6 +1649,7 @@
             quickHireForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 
+                // Get Form Data
                 const service = hireRequirementInput.value;
                 const bName = document.getElementById('hire-business-name').value;
                 const niche = document.getElementById('hire-niche').value;
@@ -1706,9 +1660,33 @@
                 const budget = document.getElementById('hire-budget').value;
                 const desc = document.getElementById('hire-desc').value;
 
+                // Construct Email Body
                 const subject = encodeURIComponent(`New Hire Request: ${service}`);
-                const body = encodeURIComponent(`Hello Flexigigs Team,\n\nI am looking to hire a professional for my business. Here are my details:\n\n--- HIRE REQUIREMENT ---\nSelected Service: ${service}\nExpected Budget: ${budget}\nRequirement Description: ${desc}\n\n--- BUSINESS DETAILS ---\nBusiness Name: ${bName}\nBusiness Niche: ${niche}\n\n--- CLIENT DETAILS ---\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nAddress: ${address}\n\nLooking forward to your response.\n\nThanks,\n${name}`);
+                const body = encodeURIComponent(`Hello Flexigigs Team,
 
+I am looking to hire a professional for my business. Here are my details:
+
+--- HIRE REQUIREMENT ---
+Selected Service: ${service}
+Expected Budget: ${budget}
+Requirement Description: ${desc}
+
+--- BUSINESS DETAILS ---
+Business Name: ${bName}
+Business Niche: ${niche}
+
+--- CLIENT DETAILS ---
+Name: ${name}
+Phone: ${phone}
+Email: ${email}
+Address: ${address}
+
+Looking forward to your response.
+
+Thanks,
+${name}`);
+
+                // Trigger Mailto
                 window.location.href = `mailto:flexigigsconnect@gmail.com?subject=${subject}&body=${body}`;
                 closeHireModal();
                 quickHireForm.reset();

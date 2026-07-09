@@ -238,13 +238,21 @@
         select.form-control { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; }
         textarea.form-control { resize: vertical; min-height: 100px; }
         
-        /* Modern Multi-select Checkboxes */
+        /* Modern Multi-select Checkboxes & Radios */
         .checkbox-grid { display: flex; flex-direction: column; gap: 10px; }
         .custom-checkbox-wrapper { position: relative; width: 100%; }
-        .custom-checkbox-wrapper input[type="checkbox"] { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
-        .custom-checkbox-label { display: flex; align-items: center; padding: 14px 20px; background: var(--input-bg); border: 2px solid var(--input-border); border-radius: var(--radius-md); font-size: 0.95rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: all var(--transition-fast); user-select: none; width: 100%; }
-        .custom-checkbox-wrapper input[type="checkbox"]:checked ~ .custom-checkbox-label { background: rgba(255, 107, 0, 0.1); border-color: var(--accent-color); color: var(--accent-color); box-shadow: inset 0 2px 5px rgba(255, 107, 0, 0.05); }
-        .custom-checkbox-wrapper input[type="checkbox"]:focus ~ .custom-checkbox-label { box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.1); }
+        .custom-checkbox-wrapper input[type="checkbox"], .custom-checkbox-wrapper input[type="radio"] { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
+        .custom-checkbox-label { display: flex; align-items: center; gap: 12px; padding: 14px 20px; background: var(--input-bg); border: 2px solid var(--input-border); border-radius: var(--radius-md); font-size: 0.95rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: all var(--transition-fast); user-select: none; width: 100%; }
+        .custom-checkbox-label i { font-size: 1.4rem; color: var(--text-secondary); transition: transform var(--transition-fast), color var(--transition-fast); }
+        
+        .custom-checkbox-wrapper input[type="checkbox"]:checked ~ .custom-checkbox-label, 
+        .custom-checkbox-wrapper input[type="radio"]:checked ~ .custom-checkbox-label { background: rgba(255, 107, 0, 0.1); border-color: var(--accent-color); color: var(--accent-color); box-shadow: inset 0 2px 5px rgba(255, 107, 0, 0.05); }
+        
+        .custom-checkbox-wrapper input[type="checkbox"]:checked ~ .custom-checkbox-label i, 
+        .custom-checkbox-wrapper input[type="radio"]:checked ~ .custom-checkbox-label i { color: var(--accent-color); transform: scale(1.15); }
+        
+        .custom-checkbox-wrapper input[type="checkbox"]:focus ~ .custom-checkbox-label, 
+        .custom-checkbox-wrapper input[type="radio"]:focus ~ .custom-checkbox-label { box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.1); }
 
         /* Custom Continuous Range Slider */
         .range-slider-wrapper { padding: 10px 0; margin-bottom: 1rem; }
@@ -499,41 +507,32 @@
                             </div>
                         </div>
 
-                        <!-- Slide 4: Requirements -->
+                        <!-- Slide 4: What's your dream? -->
                         <div class="form-slide">
-                            <h4 class="slide-title"><i class="ph-fill ph-package"></i> What Do You Need?</h4>
+                            <h4 class="slide-title"><i class="ph-fill ph-star"></i> What's Your Dream?</h4>
                             <div class="form-grid">
                                 <div class="form-group full-width">
-                                    <label>Select Your Required Setup *</label>
+                                    <label>Select Your Ultimate Goal *</label>
                                     <div class="checkbox-grid" id="needs-grid">
                                         <label class="custom-checkbox-wrapper">
-                                            <input type="checkbox" name="needs" value="Complete online setup">
-                                            <span class="custom-checkbox-label">Complete online setup</span>
+                                            <input type="radio" name="needs" value="To build a famous brand">
+                                            <span class="custom-checkbox-label"><i class="ph-duotone ph-crown"></i> To build a famous brand</span>
                                         </label>
                                         <label class="custom-checkbox-wrapper">
-                                            <input type="checkbox" name="needs" value="Launch a product">
-                                            <span class="custom-checkbox-label">Launch a product</span>
+                                            <input type="radio" name="needs" value="To create a business community">
+                                            <span class="custom-checkbox-label"><i class="ph-duotone ph-users-three"></i> To create a business community</span>
                                         </label>
                                         <label class="custom-checkbox-wrapper">
-                                            <input type="checkbox" name="needs" value="Complete startup kit for beginners">
-                                            <span class="custom-checkbox-label">Complete startup kit for beginners</span>
+                                            <input type="radio" name="needs" value="To create a best agency">
+                                            <span class="custom-checkbox-label"><i class="ph-duotone ph-buildings"></i> To create the best agency</span>
                                         </label>
                                         <label class="custom-checkbox-wrapper">
-                                            <input type="checkbox" name="needs" value="Complete startup kit for pro">
-                                            <span class="custom-checkbox-label">Complete startup kit for pro</span>
-                                        </label>
-                                        <!-- Added New Options -->
-                                        <label class="custom-checkbox-wrapper">
-                                            <input type="checkbox" name="needs" value="Real time customer experience">
-                                            <span class="custom-checkbox-label">Real time customer experience</span>
+                                            <input type="radio" name="needs" value="To launch an innovative tech startup">
+                                            <span class="custom-checkbox-label"><i class="ph-duotone ph-rocket-launch"></i> To launch an innovative tech startup</span>
                                         </label>
                                         <label class="custom-checkbox-wrapper">
-                                            <input type="checkbox" name="needs" value="Website logo and brand setup">
-                                            <span class="custom-checkbox-label">Website logo and brand setup</span>
-                                        </label>
-                                        <label class="custom-checkbox-wrapper">
-                                            <input type="checkbox" name="needs" value="Simple landing page">
-                                            <span class="custom-checkbox-label">Simple landing page</span>
+                                            <input type="radio" name="needs" value="To establish a global e-commerce empire">
+                                            <span class="custom-checkbox-label"><i class="ph-duotone ph-globe-hemisphere-west"></i> To establish a global e-commerce empire</span>
                                         </label>
                                     </div>
                                 </div>
@@ -541,9 +540,9 @@
                                 <!-- Manual Request Box -->
                                 <div class="form-group full-width" style="margin-top: 0.5rem;">
                                     <label for="s-manual-need">Need something else? (Optional)</label>
-                                    <textarea id="s-manual-need" class="form-control" style="min-height: 80px;" placeholder="Write any specific services or custom requirements here..."></textarea>
+                                    <textarea id="s-manual-need" class="form-control" style="min-height: 80px;" placeholder="Write any specific services, unique dreams, or custom requirements here..."></textarea>
                                 </div>
-                                <span class="error-message full-width" id="needs-error" style="margin-top: -10px; margin-bottom: 10px;">Please select at least one option or write your requirement below.</span>
+                                <span class="error-message full-width" id="needs-error" style="margin-top: -10px; margin-bottom: 10px;">Please select your dream or write your requirement below.</span>
                             </div>
                         </div>
 
@@ -634,7 +633,7 @@
             // --- Dynamic Budget Slider Logic ---
             const budgetSlider = document.getElementById('s-budget');
             const budgetDisplay = document.getElementById('budget-value');
-            const checkboxes = document.querySelectorAll('input[name="needs"]');
+            const radios = document.querySelectorAll('input[name="needs"]');
             
             const formatINR = (amount) => {
                 return new Intl.NumberFormat('en-IN', {
@@ -645,27 +644,9 @@
             };
 
             function updateBudgetBase() {
-                const checkedBoxes = document.querySelectorAll('input[name="needs"]:checked');
-                const checkedCount = checkedBoxes.length;
-                const manualNeeds = document.getElementById('s-manual-need').value.trim();
+                // Base pricing starts from ₹99 regardless of choice as requested
+                let newMin = 99; 
                 
-                let hasCompletePackage = false;
-                checkedBoxes.forEach(cb => {
-                    if (cb.value === "Complete startup kit for beginners" || cb.value === "Complete startup kit for pro") {
-                        hasCompletePackage = true;
-                    }
-                });
-                
-                let newMin = 99; // Default 
-                
-                if (hasCompletePackage) {
-                    newMin = 1999;
-                } else if (checkedCount > 1 || (checkedCount === 1 && manualNeeds !== '')) {
-                    newMin = 399; // Start from 399 if more than 1 selected or selected + manual
-                } else if (checkedCount === 0 && manualNeeds !== '') {
-                    newMin = 99; // Textbox only
-                }
-
                 // Update min bounds
                 budgetSlider.min = newMin;
                 
@@ -677,7 +658,7 @@
                 budgetDisplay.textContent = formatINR(budgetSlider.value);
             }
 
-            checkboxes.forEach(cb => cb.addEventListener('change', updateBudgetBase));
+            radios.forEach(r => r.addEventListener('change', updateBudgetBase));
             document.getElementById('s-manual-need').addEventListener('input', updateBudgetBase);
 
             budgetSlider.addEventListener('input', (e) => {
@@ -729,7 +710,7 @@
                     field.addEventListener('change', () => group.classList.remove('has-error'), {once: true});
                 });
 
-                // specifically validate Checkboxes / Manual Needs on Slide 4 (Index 3)
+                // specifically validate Radios / Manual Needs on Slide 4 (Index 3)
                 if (currentStep === 3) {
                     const needsChecked = document.querySelectorAll('input[name="needs"]:checked');
                     const manualNeed = document.getElementById('s-manual-need').value.trim();
@@ -859,7 +840,7 @@ Description:
 ${desc}
 
 --- REQUIREMENTS & BUDGET ---
-Services Needed: ${needsString}
+Ultimate Goal: ${needsString}
 Estimated Budget: ${budget}
 
 --- ADDITIONAL NOTES ---

@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Flexigigs | Grow Your Brand</title>
+    
+    <link rel="icon" href="https://i.postimg.cc/Vv19gBFx/IMG-20250924-155058.jpg" type="image/jpeg">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        /* =========================================
+           1. CSS Variables & Theme Configuration
+           ========================================= */
+        :root {
+            --font-primary: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            --header-height: 88px;
+            --container-max: 1100px;
+            --container-padding: 0 1.5rem;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-full: 9999px;
+            
+            --transition-fast: 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+            --transition-smooth: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+            --accent-color: #ff6b00; 
+            --accent-gradient: linear-gradient(135deg, #ff8a00, #e52e71);
+            --whatsapp-color: #25D366;
+            
+            --shadow-header: 0 4px 40px rgba(0, 0, 0, 0.03);
+            --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.04);
+            --shadow-hover: 0 20px 40px rgba(255, 107, 0, 0.15);
+        }
+
+        /* Light Theme Variables */
+        [data-theme="light"] {
+            --bg-color: #fcfcfd;
+            --surface-color: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --header-bg: rgba(255, 255, 255, 0.75);
+            --header-border: rgba(15, 23, 42, 0.08);
+            --btn-hover-bg: rgba(15, 23, 42, 0.04);
+            --step-bg: #ffffff;
+            --input-bg: #f8fafc;
+            --input-border: #e2e8f0;
+            --overlay-bg: rgba(15, 23, 42, 0.6);
+        }
+
+        /* Dark Theme Variables */
+        [data-theme="dark"] {
+            --bg-color: #050810;
+            --surface-color: #0f1422;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --header-bg: rgba(5, 8, 16, 0.75);
+            --header-border: rgba(255, 255, 255, 0.08);
+            --btn-hover-bg: rgba(255, 255, 255, 0.08);
+            --step-bg: #151b2b;
+            --input-bg: #1e293b;
+            --input-border: #334155;
+            --overlay-bg: rgba(0, 0, 0, 0.8);
+        }
+
+        /* =========================================
+           2. Base Reset & Ambient Background
+           ========================================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        html { scroll-behavior: smooth; }
+        
+        body { 
+            font-family: var(--font-primary); 
+            background-color: var(--bg-color); 
+            background-image: radial-gradient(circle at 50% 0%, rgba(255, 107, 0, 0.04) 0%, transparent 70%);
+            background-attachment: fixed;
+            color: var(--text-primary); 
+            line-height: 1.6; 
+            transition: background-color var(--transition-smooth), color var(--transition-smooth); 
+            -webkit-font-smoothing: antialiased; 
+            overflow-x: hidden; 
+            padding-top: var(--header-height);
+        }
+        
+        body.no-scroll { overflow: hidden; }
+        .container { max-width: var(--container-max); margin: 0 auto; padding: var(--container-padding); }
+
+        /* Scroll Animations */
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* =========================================
+           3. Premium Glassmorphism Header
+           ========================================= */
+        .site-header { 
+            position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height); 
+            background: var(--header-bg); 
+            backdrop-filter: blur(24px) saturate(180%); 
+            -webkit-backdrop-filter: blur(24px) saturate(180%); 
+            border-bottom: 1px solid var(--header-border); 
+            z-index: 1000; 
+            transition: all var(--transition-smooth); 
+        }
+        .site-header.scrolled { box-shadow: var(--shadow-header); }
+        
+        .header-inner { display: flex; align-items: center; justify-content: space-between; height: 100%; padding: var(--container-padding); max-width: var(--container-max); margin: 0 auto; }
+        
+        .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--text-primary); transition: transform var(--transition-fast); }
+        .brand:hover { transform: scale(1.02); }
+        .brand-logo-wrapper { width: 44px; height: 44px; border-radius: var(--radius-md); overflow: hidden; display: flex; align-items: center; justify-content: center; background: var(--surface-color); border: 1px solid var(--header-border); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .brand-logo { width: 100%; height: 100%; object-fit: cover; }
+        .brand-name { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; }
+
+        .icon-btn { background: transparent; border: none; color: var(--text-primary); width: 44px; height: 44px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.5rem; transition: background-color var(--transition-fast), transform var(--transition-fast); }
+        .icon-btn:hover { background-color: var(--btn-hover-bg); transform: scale(1.05); }
+        .icon-light, .icon-dark { display: none; }
+        [data-theme="dark"] .icon-light { display: block; }
+        [data-theme="light"] .icon-dark { display: block; }
+
+        /* =========================================
+           4. Buttons & Interactive Elements
+           ========================================= */
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 1rem 2.2rem; border-radius: var(--radius-full); font-size: 1.05rem; font-weight: 700; cursor: pointer; border: none; transition: all var(--transition-fast); text-decoration: none; }
+        .btn-primary { background: var(--accent-gradient); color: white; box-shadow: 0 8px 20px -5px rgba(255, 107, 0, 0.4); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+        .btn-whatsapp { background: var(--whatsapp-color); color: white; box-shadow: 0 8px 20px -5px rgba(37, 211, 102, 0.4); width: 100%; padding: 1.1rem; font-size: 1.05rem; }
+        .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 12px 25px -5px rgba(37, 211, 102, 0.5); }
+        .btn-outline { background: transparent; color: var(--text-primary); border: 2px solid var(--header-border); }
+        .btn-outline:hover { border-color: var(--accent-color); color: var(--accent-color); }
+
+        /* =========================================
+           5. Layout Sections
+           ========================================= */
+        .section { padding: 5rem 0; }
+        .section-title { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; text-align: center; margin-bottom: 1rem; line-height: 1.2; }
+        .section-subtitle { text-align: center; color: var(--text-secondary); font-size: 1.1rem; max-width: 650px; margin: 0 auto 3rem auto; }
+        .text-gradient { background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* Hero */
+        .hero { text-align: center; padding: 6rem 0 4rem; }
+        .hero h1 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -0.03em; }
+        .hero p { font-size: 1.2rem; color: var(--text-secondary); max-width: 700px; margin: 0 auto 2.5rem auto; }
+
+        /* Features Grid */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .feature-card { background: var(--step-bg); padding: 1.5rem; border-radius: var(--radius-lg); border: 1px solid var(--header-border); display: flex; align-items: center; gap: 1rem; transition: transform var(--transition-fast); }
+        .feature-card:hover { transform: translateY(-4px); border-color: var(--accent-color); box-shadow: var(--shadow-card); }
+        .feature-icon { background: rgba(255, 107, 0, 0.1); color: var(--accent-color); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+        .feature-text { font-weight: 600; font-size: 1.05rem; }
+
+        /* Pricing Grid */
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
+        .pricing-card { background: var(--step-bg); border: 1px solid var(--header-border); border-radius: var(--radius-lg); padding: 2.5rem; box-shadow: var(--shadow-card); transition: all var(--transition-smooth); display: flex; flex-direction: column; position: relative; overflow: hidden; }
+        .pricing-card:hover { transform: translateY(-8px); border-color: var(--accent-color); box-shadow: var(--shadow-hover); }
+        .pricing-card.popular { border-color: var(--accent-color); }
+        .popular-badge { position: absolute; top: 1rem; right: 1rem; background: var(--accent-gradient); color: white; padding: 0.3rem 1rem; border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 700; }
+        
+        .pricing-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+        .pricing-card h3 { font-size: 1.3rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .pricing-card .price { font-size: 2.8rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .pricing-card .price span { font-size: 1rem; color: var(--text-secondary); font-weight: 500; }
+        .pricing-card p.ideal-for { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1.5rem; min-height: 45px; }
+        
+        .pricing-features { list-style: none; padding: 0; margin: 0 0 2rem 0; flex-grow: 1; border-top: 1px solid var(--header-border); padding-top: 1.5rem; }
+        .pricing-features li { display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem; font-size: 0.95rem; font-weight: 500; }
+        .pricing-features li i { color: var(--whatsapp-color); font-size: 1.2rem; margin-top: 2px; }
+
+        /* Services Table */
+        .table-wrapper { background: var(--step-bg); border-radius: var(--radius-lg); border: 1px solid var(--header-border); overflow-x: auto; box-shadow: var(--shadow-card); }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th, td { padding: 1.25rem 1.5rem; text-align: left; border-bottom: 1px solid var(--header-border); }
+        th { background: rgba(15, 23, 42, 0.02); font-weight: 700; font-size: 1.1rem; }
+        [data-theme="dark"] th { background: rgba(255, 255, 255, 0.02); }
+        tr:last-child td { border-bottom: none; }
+        td:first-child { font-weight: 600; }
+        td:last-child { color: var(--accent-color); font-weight: 700; }
+
+        /* Floating WhatsApp Button */
+        .fab-whatsapp { position: fixed; bottom: 2rem; right: 2rem; background: var(--whatsapp-color); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4); cursor: pointer; z-index: 900; transition: transform var(--transition-fast); border: none; }
+        .fab-whatsapp:hover { transform: scale(1.1) rotate(-10deg); }
+
+        /* =========================================
+           6. Fully Responsive & Scrollable Modal
+           ========================================= */
+        .modal-overlay { 
+            position: fixed; 
+            inset: 0; 
+            background: var(--overlay-bg); 
+            backdrop-filter: blur(8px); 
+            -webkit-backdrop-filter: blur(8px); 
+            z-index: 2000; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            opacity: 0; 
+            pointer-events: none; 
+            transition: opacity var(--transition-smooth); 
+            padding: 1rem; 
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        
+        .modal-content { 
+            background: var(--surface-color); 
+            width: 100%; 
+            max-width: 650px; 
+            border-radius: var(--radius-lg); 
+            border: 1px solid var(--header-border); 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2); 
+            transform: translateY(30px) scale(0.95); 
+            opacity: 0; 
+            transition: all var(--transition-smooth); 
+            
+            /* Critical for Scrollable Mobile Form */
+            display: flex; 
+            flex-direction: column; 
+            max-height: 90vh; 
+            overflow: hidden; /* Contains inner form scroll */
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0) scale(1); opacity: 1; }
+        
+        .modal-header { 
+            padding: 1.5rem 2rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid var(--header-border); 
+            background: rgba(15, 23, 42, 0.01); 
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            flex-shrink: 0; /* Prevents header from collapsing */
+        }
+        [data-theme="dark"] .modal-header { background: rgba(255, 255, 255, 0.01); }
+        .modal-header h3 { font-size: 1.3rem; font-weight: 800; display: flex; align-items: center; gap: 8px; margin: 0; }
+        
+        .modal-close { 
+            background: var(--btn-hover-bg); 
+            border: none; 
+            width: 36px; 
+            height: 36px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer; 
+            color: var(--text-primary); 
+            font-size: 1.2rem; 
+            transition: transform var(--transition-fast); 
+        }
+        .modal-close:hover { transform: rotate(90deg); background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+        
+        /* Form Wrapper Layout */
+        #reachout-form {
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 auto; /* Allows form to take remaining height */
+            min-height: 0; /* Important constraint for flex scrolling */
+        }
+
+        .modal-body { 
+            padding: 2rem; 
+            flex: 1 1 auto; 
+            overflow-y: auto; /* Enables internal scrolling */
+            -webkit-overflow-scrolling: touch; /* Smooth iOS scrolling */
+            scrollbar-width: thin; 
+        }
+        
+        .modal-footer { 
+            padding: 1.25rem 2rem; 
+            background: var(--surface-color); 
+            border-top: 1px solid var(--header-border); 
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            flex-shrink: 0; /* Prevents footer from collapsing */
+        }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+        .form-group { margin-bottom: 0; }
+        .form-group.full { grid-column: 1 / -1; }
+        
+        .form-group label { display: block; font-size: 0.9rem; font-weight: 700; margin-bottom: 6px; color: var(--text-primary); }
+        
+        .input-wrapper { position: relative; }
+        .form-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 1.2rem; color: var(--text-secondary); pointer-events: none; transition: color var(--transition-fast); }
+        .textarea-wrapper .form-icon { top: 1.1rem; transform: none; }
+        
+        .form-control { width: 100%; padding: 0.8rem 1rem 0.8rem 2.8rem; border-radius: 10px; border: 2px solid var(--input-border); background: var(--input-bg); color: var(--text-primary); font-family: inherit; font-size: 0.95rem; outline: none; transition: all var(--transition-fast); }
+        .form-control:focus { border-color: var(--accent-color); background: var(--surface-color); box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.1); }
+        .input-wrapper:focus-within .form-icon { color: var(--accent-color); }
+        
+        select.form-control { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; }
+        textarea.form-control { resize: vertical; min-height: 100px; line-height: 1.5; }
+
+        /* Highly Optimized Mobile Queries */
+        @media (max-width: 768px) {
+            .form-grid { grid-template-columns: 1fr; gap: 1rem; }
+            .hero { padding: 4rem 0 3rem; }
+            .section { padding: 3rem 0; }
+            
+            /* Maximize Modal Area on Mobile */
+            .modal-overlay { padding: 0.5rem; }
+            .modal-content { max-height: 95vh; border-radius: 20px; }
+            .modal-header { padding: 1rem 1.5rem; border-radius: 20px 20px 0 0;}
+            .modal-body { padding: 1.25rem 1.5rem; }
+            .modal-footer { padding: 1rem 1.5rem; border-radius: 0 0 20px 20px;}
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header" id="header">
+        <div class="header-inner">
+            <a href="#" class="brand">
+                <div class="brand-logo-wrapper">
+                    <img src="https://i.postimg.cc/Vv19gBFx/IMG-20250924-155058.jpg" alt="Flexigigs Logo" class="brand-logo">
+                </div>
+                <span class="brand-name">Flexigigs</span>
+            </a>
+            <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme">
+                <i class="ph ph-sun icon-light"></i>
+                <i class="ph ph-moon icon-dark"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="section hero container reveal">
+            <h1>Grow Your Brand with <br><span class="text-gradient">FLEXIGIGS.in</span></h1>
+            <p>We don't just market your business — we help it grow. Build trust, attract customers, generate quality leads, and increase revenue through our result-driven digital marketing strategies.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary open-modal-btn" data-plan="Custom Business Strategy">Start Your Journey <i class="ph-bold ph-rocket-launch"></i></button>
+                <a href="#packages" class="btn btn-outline">View Packages</a>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="section container reveal" style="padding-top: 0;">
+            <h2 class="section-title">How We Help Your Brand</h2>
+            <p class="section-subtitle">Your success is our success. We focus on long-term business growth—not just likes and followers.</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-fill ph-fingerprint"></i></div>
+                    <div class="feature-text">Build a Strong Brand Identity</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-fill ph-eye"></i></div>
+                    <div class="feature-text">Increase Online Visibility</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-fill ph-target"></i></div>
+                    <div class="feature-text">Reach the Right Audience</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-fill ph-users-three"></i></div>
+                    <div class="feature-text">Generate High-Quality Leads</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-fill ph-trend-up"></i></div>
+                    <div class="feature-text">Improve Google Rankings</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph-fill ph-chart-line-up"></i></div>
+                    <div class="feature-text">Increase Sales & Revenue</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Packages -->
+        <section id="packages" class="section container reveal">
+            <h2 class="section-title">Digital Marketing Packages</h2>
+            <p class="section-subtitle">Tailored strategies based on your specific goals and budget.</p>
+            
+            <div class="pricing-grid">
+                <!-- Startup -->
+                <div class="pricing-card">
+                    <div class="pricing-icon">🌱</div>
+                    <h3>Startup Boost</h3>
+                    <div class="price">₹1,999<span>/mo</span></div>
+                    <p class="ideal-for">Perfect for startups, freelancers, and local shops.</p>
+                    <ul class="pricing-features">
+                        <li><i class="ph-fill ph-check-circle"></i> Social Media Strategy</li>
+                        <li><i class="ph-fill ph-check-circle"></i> 8 Professional Posts & 4 Posters</li>
+                        <li><i class="ph-fill ph-check-circle"></i> Facebook & Instagram Management</li>
+                        <li><i class="ph-fill ph-check-circle"></i> Google Business Profile Optimization</li>
+                        <li><i class="ph-fill ph-check-circle"></i> Monthly Performance Report</li>
+                    </ul>
+                    <button class="btn btn-outline open-modal-btn" data-plan="Startup Boost Plan">Choose Plan</button>
+                </div>
+
+                <!-- Business (Popular) -->
+                <div class="pricing-card popular">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="pricing-icon">🚀</div>
+                    <h3>Business Growth</h3>
+                    <div class="price">₹4,999<span>/mo</span></div>
+                    <p class="ideal-for">Ideal for growing businesses wanting more leads.</p>
+                    <ul class="pricing-features">
+                        <li><i class="ph-fill ph-check-circle"></i> 16 Posts & 8 Premium Graphics</li>
+                        <li><i class="ph-fill ph-check-circle"></i> 4 Short Reels & Content Calendar</li>
+                        <li><i class="ph-fill ph-check-circle"></i> FB, IG & Basic LinkedIn Marketing</li>
+                        <li><i class="ph-fill ph-check-circle"></i> SEO Content Suggestions</li>
+                        <li><i class="ph-fill ph-check-circle"></i> Priority WhatsApp Support</li>
+                    </ul>
+                    <button class="btn btn-primary open-modal-btn" data-plan="Business Growth Plan">Choose Plan</button>
+                </div>
+
+                <!-- Enterprise -->
+                <div class="pricing-card">
+                    <div class="pricing-icon">👑</div>
+                    <h3>Enterprise Success</h3>
+                    <div class="price">₹12,999<span>/mo</span></div>
+                    <p class="ideal-for">For established brands needing large-scale marketing.</p>
+                    <ul class="pricing-features">
+                        <li><i class="ph-fill ph-check-circle"></i> Up to 30 Posts, Premium Graphics & Reels</li>
+                        <li><i class="ph-fill ph-check-circle"></i> Google & Meta Ads Mgmt (Ad Spend Extra)</li>
+                        <li><i class="ph-fill ph-check-circle"></i> Advanced SEO & Keyword Research</li>
+                        <li><i class="ph-fill ph-check-circle"></i> Lead Generation Campaigns</li>
+                        <li><i class="ph-fill ph-check-circle"></i> Dedicated Account Manager</li>
+                    </ul>
+                    <button class="btn btn-outline open-modal-btn" data-plan="Enterprise Success Plan">Choose Plan</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Individual Services -->
+        <section class="section container reveal">
+            <h2 class="section-title">Individual Marketing Services</h2>
+            <p class="section-subtitle">Need something specific? Build your own custom strategy.</p>
+            
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Starting From</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Social Media Management</td><td>₹1,499 / Month</td></tr>
+                        <tr><td>Search Engine Optimization (SEO)</td><td>₹2,999 / Month</td></tr>
+                        <tr><td>Google Ads Management*</td><td>₹2,499 / Month</td></tr>
+                        <tr><td>Meta Ads Management*</td><td>₹1,999 / Month</td></tr>
+                        <tr><td>Brand Identity Kit (Logo, Colors, Typography)</td><td>₹3,999</td></tr>
+                        <tr><td>Email & WhatsApp Marketing Campaigns</td><td>₹1,499 / Campaign</td></tr>
+                        <tr><td>Short Video/Reel Editing</td><td>₹399 / Reel</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-size: 0.9rem;">*Advertising budget is charged separately.</p>
+        </section>
+        
+        <!-- Outro -->
+        <section class="section container reveal" style="text-align: center; padding-bottom: 6rem;">
+            <h2 class="section-title">Need a Custom Plan?</h2>
+            <p class="section-subtitle" style="margin-bottom: 2rem;">Every business is unique. We offer personalized marketing plans for Startups, Real Estate, Hospitals, E-commerce, and more.</p>
+            <button class="btn btn-primary open-modal-btn" data-plan="Custom Strategy Request">Request Free Quotation</button>
+        </section>
+    </main>
+
+    <!-- Floating WhatsApp Action -->
+    <button class="fab-whatsapp open-modal-btn" data-plan="General Inquiry" aria-label="Contact on WhatsApp">
+        <i class="ph-fill ph-whatsapp-logo"></i>
+    </button>
+
+    <!-- Clean & Standard Reachout Form Modal -->
+    <div class="modal-overlay" id="contact-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="ph-fill ph-rocket-launch" style="color: var(--accent-color);"></i> Reach Out</h3>
+                <button class="modal-close" id="close-modal"><i class="ph-bold ph-x"></i></button>
+            </div>
+            
+            <!-- Wrap body and footer inside the form so flexbox works flawlessly -->
+            <form id="reachout-form">
+                <div class="modal-body">
+                    <p style="margin-bottom: 1.5rem; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5;">Fill out your details below. Once submitted, we will redirect you directly to our official WhatsApp to discuss your marketing strategy.</p>
+                    
+                    <div class="form-grid">
+                        
+                        <!-- Name Field -->
+                        <div class="form-group full">
+                            <label for="c-name">Your Full Name *</label>
+                            <div class="input-wrapper">
+                                <i class="ph ph-user form-icon"></i>
+                                <input type="text" id="c-name" class="form-control" placeholder="E.g., John Doe" required>
+                            </div>
+                        </div>
+                        
+                        <!-- Phone Field -->
+                        <div class="form-group">
+                            <label for="c-phone">Phone / WhatsApp *</label>
+                            <div class="input-wrapper">
+                                <i class="ph ph-phone form-icon"></i>
+                                <input type="tel" id="c-phone" class="form-control" placeholder="+91" required>
+                            </div>
+                        </div>
+                        
+                        <!-- Email Field -->
+                        <div class="form-group">
+                            <label for="c-email">Email Address *</label>
+                            <div class="input-wrapper">
+                                <i class="ph ph-envelope-simple form-icon"></i>
+                                <input type="email" id="c-email" class="form-control" placeholder="hello@example.com" required>
+                            </div>
+                        </div>
+
+                        <!-- Divider -->
+                        <div class="form-group full" style="border-top: 1px dashed var(--header-border); padding-top: 1.25rem; margin-top: 0.25rem;">
+                            <label for="c-biz">Business Name *</label>
+                            <div class="input-wrapper">
+                                <i class="ph ph-briefcase form-icon"></i>
+                                <input type="text" id="c-biz" class="form-control" placeholder="Startup or Company" required>
+                            </div>
+                        </div>
+
+                        <!-- Category Select -->
+                        <div class="form-group">
+                            <label for="c-category">Category *</label>
+                            <div class="input-wrapper">
+                                <i class="ph ph-tag form-icon"></i>
+                                <select id="c-category" class="form-control" required>
+                                    <option value="" disabled selected>Select an option...</option>
+                                    <option value="E-Commerce">E-Commerce</option>
+                                    <option value="Real Estate">Real Estate</option>
+                                    <option value="Health / Medical">Health / Clinic</option>
+                                    <option value="Restaurant / Cafe">Restaurant / Cafe</option>
+                                    <option value="Tech Startup">Tech Startup</option>
+                                    <option value="Local Service">Local Service / Shop</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Stage Select -->
+                        <div class="form-group">
+                            <label for="c-stage">Current Stage *</label>
+                            <div class="input-wrapper">
+                                <i class="ph ph-chart-bar form-icon"></i>
+                                <select id="c-stage" class="form-control" required>
+                                    <option value="" disabled selected>Select an option...</option>
+                                    <option value="Just an Idea">Just an Idea</option>
+                                    <option value="Starting Soon">Starting Soon</option>
+                                    <option value="Currently Running">Currently Running</option>
+                                    <option value="Scaling Up">Scaling Up</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="form-group full">
+                            <label for="c-address">City & Address *</label>
+                            <div class="input-wrapper">
+                                <i class="ph ph-map-pin form-icon"></i>
+                                <input type="text" id="c-address" class="form-control" placeholder="City, State, Zip" required>
+                            </div>
+                        </div>
+                        
+                        <!-- Specifications -->
+                        <div class="form-group full" style="margin-bottom: 0;">
+                            <label for="c-specs">Requirements *</label>
+                            <div class="input-wrapper textarea-wrapper">
+                                <i class="ph ph-pencil-simple-line form-icon"></i>
+                                <textarea id="c-specs" class="form-control" placeholder="Tell us about your goals, audience, or budget..." required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-whatsapp">
+                        <i class="ph-bold ph-whatsapp-logo"></i> Send via WhatsApp
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Theme Logic ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const htmlElement = document.documentElement;
+            const header = document.getElementById('header');
+            const savedTheme = localStorage.getItem('theme');
+            
+            if (savedTheme) htmlElement.setAttribute('data-theme', savedTheme);
+            else htmlElement.setAttribute('data-theme', 'light');
+
+            themeToggle.addEventListener('click', () => {
+                const newTheme = htmlElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                htmlElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+
+            // --- Header Scroll Logic ---
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
+            });
+
+            // --- Scroll Reveal Animations ---
+            const reveals = document.querySelectorAll('.reveal');
+            const revealOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+            
+            const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); 
+                });
+            }, revealOptions);
+
+            reveals.forEach(reveal => revealOnScroll.observe(reveal));
+
+            // --- Modal Logic ---
+            const modalOverlay = document.getElementById('contact-modal');
+            const closeModalBtn = document.getElementById('close-modal');
+            const openBtns = document.querySelectorAll('.open-modal-btn');
+            const specInput = document.getElementById('c-specs');
+
+            function openModal(e) {
+                const planContext = e.currentTarget.getAttribute('data-plan');
+                
+                // NEW LOGIC: Pre-fill the box mentioning "marketing strategy" contextually
+                if(planContext && planContext !== "General Inquiry") {
+                    specInput.value = `I am interested in the ${planContext} marketing strategy.\n\nMy additional requirements are: `;
+                } else {
+                    specInput.value = 'I am reaching out regarding a custom marketing strategy.\n\n';
+                }
+                
+                modalOverlay.classList.add('active');
+                document.body.classList.add('no-scroll');
+            }
+
+            function closeModal() {
+                modalOverlay.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+            }
+
+            openBtns.forEach(btn => btn.addEventListener('click', openModal));
+            closeModalBtn.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) closeModal();
+            });
+
+            // --- Reachout Form Submission ---
+            const form = document.getElementById('reachout-form');
+            
+            form.addEventListener('submit', (e) => {
+                e.preventDefault(); 
+                
+                // Collect Data
+                const name = document.getElementById('c-name').value.trim();
+                const phone = document.getElementById('c-phone').value.trim();
+                const email = document.getElementById('c-email').value.trim();
+                const biz = document.getElementById('c-biz').value.trim();
+                const category = document.getElementById('c-category').value;
+                const stage = document.getElementById('c-stage').value;
+                const address = document.getElementById('c-address').value.trim();
+                const specs = document.getElementById('c-specs').value.trim();
+
+                // Format Message for WhatsApp - NEW LOGIC: Explicitly labels it as Marketing Strategy
+                const message = `*New Marketing Strategy Inquiry* 🚀\n` +
+                                `*Source:* Flexigigs Landing Page\n\n` +
+                                `*--- Contact Info ---*\n` +
+                                `*Name:* ${name}\n` +
+                                `*Phone:* ${phone}\n` +
+                                `*Email:* ${email}\n` +
+                                `*Address:* ${address}\n\n` +
+                                `*--- Business Details ---*\n` +
+                                `*Business Name:* ${biz}\n` +
+                                `*Category:* ${category}\n` +
+                                `*Current Stage:* ${stage}\n\n` +
+                                `*--- Strategy Requirements ---*\n${specs}`;
+
+                const encodedMessage = encodeURIComponent(message);
+                
+                // Target WhatsApp Number Configuration
+                const targetWhatsAppNumber = "917450985883"; 
+                
+                const whatsappUrl = `https://wa.me/${targetWhatsAppNumber}?text=${encodedMessage}`;
+                
+                // Open WhatsApp in a new tab
+                window.open(whatsappUrl, '_blank');
+                
+                // Close modal after sending
+                closeModal();
+                form.reset();
+            });
+        });
+    </script>
+</body>
+</html>
